@@ -1,4 +1,4 @@
-package com.cs407.powerplates
+package com.cs407.lab5_milestone
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
