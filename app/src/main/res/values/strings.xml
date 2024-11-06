@@ -6,4 +6,5 @@
     <string name="login_button">Log In or Sign Up</string>
     <string name="userPasswdKV">com.cs407.lab5_milestone.userPasswdKV</string>
     <string name="fail_login">Wrong Username or Password</string>
+    <string name="workout_database">workoutDatabase</string>
 </resources>
