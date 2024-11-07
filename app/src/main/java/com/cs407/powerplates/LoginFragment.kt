@@ -36,6 +36,7 @@ class LoginFragment(
     private lateinit var userViewModel: UserViewModel
 
     private lateinit var userPasswdKV: SharedPreferences
+    private lateinit var userLevelKV: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,9 +60,10 @@ class LoginFragment(
         }
 
         // TODO - Get shared preferences from using R.string.userPasswdKV as the name
-        userPasswdKV = requireActivity().getSharedPreferences(
-            getString(R.string.userPasswdKV),
-            Context.MODE_PRIVATE)
+        this.userPasswdKV = activity?.getSharedPreferences(
+            getString(R.string.userPasswdKV), Context.MODE_PRIVATE)!!
+        this.userLevelKV = activity?.getSharedPreferences(
+            getString(R.string.userLevelKV), Context.MODE_PRIVATE)!!
         return view
     }
 
@@ -89,6 +91,11 @@ class LoginFragment(
             // Launch a coroutine to call the suspend function
             CoroutineScope(Dispatchers.Main).launch {
                 val loginSuccessful = getUserPasswd(user, pass)
+                val userCreated = userCreated(user)
+
+                if (userCreated){
+                    // TODO go directly to the shared page
+                }
 
                 if (loginSuccessful) {
                     // Navigate to another fragment after successful login
@@ -105,6 +112,15 @@ class LoginFragment(
         }
     }
 
+    private suspend fun userCreated(user: String): Boolean {
+        if (userLevelKV.contains(user)){
+            return true;
+        }
+        else {
+            return false
+        }
+    }
+
     private suspend fun getUserPasswd(
         name: String,
         passwdPlain: String
@@ -112,20 +128,17 @@ class LoginFragment(
         // TODO: Hash the plain password using a secure hashing function
         val hashedInput = hash(passwdPlain)
         // TODO: Check if the user exists in SharedPreferences (using the username as the key)
-        val sharedPref = activity?.getSharedPreferences(
-            getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
 
-        if(sharedPref?.contains(name) == true){
-            val findPassword = sharedPref.getString(name, "")
+
+        if(userPasswdKV.contains(name) == true){
+            val findPassword = userPasswdKV.getString(name, "")
             return findPassword == hashedInput
         }
         else{
-            val editor = sharedPref?.edit()
+            val editor = userPasswdKV.edit()
             //hash password
             editor?.putString(name, hashedInput)
             editor?.apply()
-
-
 
             return true
         }
