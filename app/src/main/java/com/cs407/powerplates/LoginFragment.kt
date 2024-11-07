@@ -77,13 +77,9 @@ class LoginFragment(
 
         // Set the login button click action
         loginButton.setOnClickListener {
-            // TODO: Get the entered username and password from EditText fields
+
             val user = usernameEditText.text.toString()
             val pass = passwordEditText.text.toString()
-            //Log.d("string check", user)
-            // TODO: Set the logged-in user in the ViewModel (store user info) (placeholder)
-            //userViewModel.setUser(UserState(0, user, pass)) // You will implement this in UserViewModel
-            // TODO: Navigate to another fragment after successful login
 
             if (user.isEmpty() || pass.isEmpty()) {
                 errorTextView.visibility = View.VISIBLE
@@ -133,21 +129,6 @@ class LoginFragment(
 
             return true
         }
-
-
-        // TODO: Retrieve the stored password from SharedPreferences
-
-        // TODO: Compare the hashed password with the stored one and return false if they don't match
-
-        // TODO: If the user doesn't exist in SharedPreferences, create a new user
-
-        // TODO: Insert the new user into the Room database (implement this in your User DAO)
-
-        // TODO: Store the hashed password in SharedPreferences for future logins
-
-        // TODO: Return true if the user login is successful or the user was newly created
-
-        //return true
     }
 
     private fun hash(input: String): String {
