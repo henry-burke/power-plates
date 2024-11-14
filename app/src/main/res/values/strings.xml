@@ -8,4 +8,6 @@
     <string name="fail_login">Wrong Username or Password</string>
     <string name="greeting_text">Welcome %1$s!</string>
     <string name="choice_level_screen">Choice Level</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
