@@ -25,6 +25,7 @@
         <action
             android:id="@+id/action_choiceLevelFragment_to_chooseWorkoutFragment"
             app:destination="@id/rankPrefsFragment"
+
             app:popUpTo="@id/choiceLevelFragment"
             app:popUpToInclusive="true"/>
 
@@ -35,6 +36,7 @@
         android:name="com.cs407.powerplates.RankPrefs"
         android:label="@string/rank_prefs"
         tools:layout="@layout/fragment_rank_prefs">
+
 
         <!--
         <action
