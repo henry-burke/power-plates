@@ -21,14 +21,29 @@
         android:name="com.cs407.powerplates.ChoiceLevel"
         android:label="@string/choice_level_screen"
         tools:layout="@layout/fragment_choice_level">
+
+        <action
+            android:id="@+id/action_choiceLevelFragment_to_chooseWorkoutFragment"
+            app:destination="@id/chooseWorkoutsFragment"
+            app:popUpTo="@id/choiceLevelFragment"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseWorkoutsFragment"
+        android:name="com.cs407.powerplates.ChooseWorkout"
+        android:label="@string/choose_workout"
+        tools:layout="@layout/fragment_choose_workout">
+
         <!--
         <action
-            android:id="@+id/action_loginFragment_to_noteListFragment"
+            android:id="@+id/action_choiceLevelFragment_to_chooseWorkoutFragment"
 
 
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/choiceLevelFragment"
             app:popUpToInclusive="true"/>
-           -->
+        -->
     </fragment>
 
 
