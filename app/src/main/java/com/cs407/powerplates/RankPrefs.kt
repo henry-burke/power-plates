@@ -71,7 +71,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         super.onViewCreated(view, savedInstanceState)
 
         val userState = userViewModel.userState.value
-        greetingTextView.text = getString(R.string.greeting_text, userState.name)
+        greetingTextView.text = getString(R.string.rank_prefs_greeting)
         showPrefs(view)
 
 
