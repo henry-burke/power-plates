@@ -2,7 +2,6 @@ package com.cs407.powerplates.data
 
 import android.content.Context
 import androidx.paging.PagingSource
-import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -14,14 +13,12 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import androidx.room.Upsert
+//import com.cs407.powerplates.PopulateDatabase
 import com.cs407.powerplates.R
-import java.util.Date
+import java.io.File
 
 // User Entity with a unique ID on user name
-// Define the User entity with a unique index on userName
 @Entity(
     indices = [Index(
         value = ["userName"], unique = true
@@ -49,18 +46,19 @@ data class User(
 //    }
 //}
 
-// Exercise Entity
 // Define the Exercise entity with a primary key and various fields, including nullable fields
 @Entity
 data class Exercise(
     @PrimaryKey(autoGenerate = true) val exerciseId: Int = 0, // Auto-generated primary key for Exercise
-    val exerciseName: String, // Name of exercise
-    // TODO: FILL IN EXERCISE VALUES
-//    val noteAbstract: String, // Short summary of the note
-//    // Detailed content of the note (optional, might be null)
-//    @ColumnInfo(typeAffinity = ColumnInfo.TEXT) val noteDetail: String?,
-//    val notePath: String?, // Path to the note's file (optional)
-//    val lastEdited: Date // Date of the last edit of the note
+    val exerciseName: String,
+    val primaryMuscle: String,
+    val secondaryMuscle: String,
+    val compound: Boolean, // true if compound, false if not compound
+    val type: String, // strength, mass, mobility, stamina, body fat
+    val type2: String,
+    val level: String, // beginner, intermediate, advanced
+    val progressionType: String, // reps, weight, or time
+    val category: String // push, pull, legs, abs, or cardio
 )
 
 // UserExerciseRelation
@@ -84,35 +82,34 @@ data class UserExerciseRelation(
     val exerciseId: Int // Foreign key to Exercise
 )
 
-// TODO: uncomment and fill in if we want exercise summaries
-// Summary projection of the Exercise entity
-// a summary projection of the Exercise entity, for displaying limited fields in queries
+// Summary projection of the Exercise entity, for displaying limited fields in queries
 data class ExerciseSummary(
-    val exerciseId: Int, // ID of the exercise
-//    val noteTitle: String, // Title of the note
-//    val noteAbstract: String, // Summary of the note
-//    val lastEdited: Date // Date of the last edit
+    val exerciseId: Int,
+    val primaryMuscle: String,
+    val type: String,
+    val level: String,
+    val category: String
 )
 
 // DAO for interacting with the User Entity
-// DAO (Data Access Object) for interacting with the User entity in the database
 @Dao
 interface UserDao {
     // Query to get a User by their userName
-    @Query("SELECT * FROM user WHERE userNAME = :name")
+    @Query("SELECT * FROM User WHERE userName = :name")
     suspend fun getByName(name: String): User
 
     // Query to get a User by their userId
-    @Query("SELECT * FROM user WHERE userId = :id")
+    @Query("SELECT * FROM User WHERE userId = :id")
     suspend fun getById(id: Int): User
 
     // Query to get a list of ExerciseSummary for a user, ordered by lastEdited
     @Query(
-        """SELECT * FROM User, Exercise, UserExerciseRelation
-                WHERE User.userId = :id
-                AND UserExerciseRelation.userId = User.userId
-                AND Exercise.exerciseId = UserExerciseRelation.exerciseId
-                ORDER BY Exercise.exerciseName DESC""" // TODO: COULD ORDER BY BEGINNER INTERMEDIATE ADVANCED
+        """SELECT * FROM User u, Exercise e, UserExerciseRelation ue
+                WHERE u.userId = :id
+                AND ue.userId = u.userId
+                AND e.exerciseId = ue.exerciseId
+                ORDER BY e.exerciseName DESC"""
+    // TODO: ORDER BY BEGINNER INTERMEDIATE ADVANCED
     )
     suspend fun getUsersWithExerciseListsById(id: Int): List<ExerciseSummary>
 
@@ -218,16 +215,18 @@ abstract class ExerciseDatabase : RoomDatabase() {
         // Get or create the database instance
         fun getDatabase(context: Context): ExerciseDatabase {
             // if the INSTANCE is not null, then return it,
-            // if it is null, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ExerciseDatabase::class.java,
-                    context.getString(R.string.workout_database), // Database name from resources
-                ).build()
+                    context.getString(R.string.exercise_database), // Database name from resources
+                )
+                    .createFromFile(File("app/src/main/assets/exercise_list.db"))
+                    .fallbackToDestructiveMigration()
+//                    .addCallback(PopulateDatabase(context))
+                    .build()
                 INSTANCE = instance
-                // return instance
-                instance
+                instance // if it is null, then create the database
             }
         }
     }
