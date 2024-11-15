@@ -19,8 +19,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.lab5_milestone.UserState
-import com.cs407.lab5_milestone.UserViewModel
+import com.cs407.powerplates.UserState
+import com.cs407.powerplates.UserViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ChoiceLevel (
