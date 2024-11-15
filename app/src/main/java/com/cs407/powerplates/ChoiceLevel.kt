@@ -86,15 +86,15 @@ class ChoiceLevel (
         // setting up the button
         beginner.setOnClickListener{
             buttonClicked("beginner")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkoutFragment)
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         intermediate.setOnClickListener{
             buttonClicked("intermediate")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkoutFragment)
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         advanced.setOnClickListener{
             buttonClicked("advanced")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkoutFragment)
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
     }
 

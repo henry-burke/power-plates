@@ -23,7 +23,8 @@
         tools:layout="@layout/fragment_choice_level">
 
         <action
-            android:id="@+id/action_choiceLevelFragment_to_chooseWorkoutFragment"
+            android:id="@+id/action_choiceLevelFragment_to_rankPrefFragment"
+
             app:destination="@id/rankPrefsFragment"
 
             app:popUpTo="@id/choiceLevelFragment"
