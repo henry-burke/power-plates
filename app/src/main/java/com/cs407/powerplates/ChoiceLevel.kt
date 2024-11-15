@@ -101,7 +101,7 @@ class ChoiceLevel (
     private fun buttonClicked(level: String){
         // TODO make a new shared preference
         val userState = userViewModel.userState.value
-        val name1 = userState.name
+        val name1 = userState.name + "_level"
         val editor = userLevelKV.edit()
         //hash password
         editor?.putString(name1, level)
