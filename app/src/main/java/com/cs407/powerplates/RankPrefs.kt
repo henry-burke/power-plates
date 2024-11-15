@@ -11,11 +11,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.UserViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null // For testing only
+class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ): Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var userViewModel: UserViewModel
@@ -54,7 +53,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_choose_workout, container, false)
+        val view = inflater.inflate(R.layout.fragment_rank_prefs, container, false)
         greetingTextView = view.findViewById(R.id.greetingTextView)
         return view
     }
