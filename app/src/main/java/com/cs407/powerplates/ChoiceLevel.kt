@@ -19,8 +19,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.lab5_milestone.UserState
-import com.cs407.lab5_milestone.UserViewModel
+import com.cs407.powerplates.UserState
+import com.cs407.powerplates.UserViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ChoiceLevel (
@@ -86,19 +86,22 @@ class ChoiceLevel (
         // setting up the button
         beginner.setOnClickListener{
             buttonClicked("beginner")
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         intermediate.setOnClickListener{
             buttonClicked("intermediate")
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         advanced.setOnClickListener{
             buttonClicked("advanced")
+            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
     }
 
     private fun buttonClicked(level: String){
         // TODO make a new shared preference
         val userState = userViewModel.userState.value
-        val name1 = userState.name
+        val name1 = userState.name + "_level"
         val editor = userLevelKV.edit()
         //hash password
         editor?.putString(name1, level)
