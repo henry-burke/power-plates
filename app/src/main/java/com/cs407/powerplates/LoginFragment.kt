@@ -14,9 +14,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.cs407.lab5_milestone.UserState
-import com.cs407.lab5_milestone.UserViewModel
-import com.cs407.powerplates.R
+import com.cs407.powerplates.UserState
+import com.cs407.powerplates.UserViewModel
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.User
 
@@ -52,6 +51,9 @@ class LoginFragment(
         passwordEditText = view.findViewById(R.id.passwordEditText)
         loginButton = view.findViewById(R.id.loginButton)
         errorTextView = view.findViewById(R.id.errorTextView)
+
+
+
 
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel

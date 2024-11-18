@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Background Colors -->
+    <color name="backgroundColor">#1A1D21</color> <!-- Dark grey background -->
+    <color name="inputBackground">#2D2F36</color> <!-- Slightly lighter for input fields -->
+
+    <!-- Text Colors -->
+    <color name="primaryTextColor">#E8EAED</color> <!-- Light grey text -->
+    <color name="secondaryTextColor">#A3A6AB</color> <!-- Muted grey for hints and secondary text -->
+
+    <!-- Button Colors -->
+    <color name="buttonColor">#23785A</color> <!-- Green button color -->
+    <color name="buttonTextColor">#FFFFFF</color> <!-- White text for contrast -->
+
+    <!-- Accent Colors -->
+    <color name="accentBlue">#36C5F0</color> <!-- Slack's blue -->
+    <color name="accentGreen">#2EB67D</color> <!-- Slack's green -->
+    <color name="accentYellow">#ECB22E</color> <!-- Slack's yellow -->
+    <color name="accentRed">#E01E5A</color> <!-- Slack's red -->
+
+    <!-- Error Color -->
+    <color name="errorColor">#E01E5A</color> <!-- Red for error messages -->
 </resources>

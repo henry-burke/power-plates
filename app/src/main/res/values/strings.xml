@@ -10,4 +10,10 @@
     <string name="exercise_database">exerciseDatabase</string>
     <string name="greeting_text">Welcome %1$s!</string>
     <string name="choice_level_screen">Choice Level</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rank_prefs">Rank Prefs</string>
+    <string name="rank_prefs_greeting">Rank Your Preferences:</string>
+    <string name="choose_workout">Choose your workouts</string>
+    <string name="app_logo">Power Plates logo</string>
 </resources>
