@@ -10,10 +10,25 @@
         android:label="@string/login_screen"
         tools:layout="@layout/fragment_login">
         <action
+            android:id="@+id/action_loginFragment_to_choiceLevelFragment"
+            app:destination="@id/choiceLevelFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/choiceLevelFragment"
+        android:name="com.cs407.powerplates.ChoiceLevel"
+        android:label="@string/choice_level_screen"
+        tools:layout="@layout/fragment_choice_level">
+        <!--
+        <action
             android:id="@+id/action_loginFragment_to_noteListFragment"
+
 
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+           -->
     </fragment>
 
 
