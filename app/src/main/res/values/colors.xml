@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="backgroundColor">#F5F5F5</color> <!-- Light grey background -->
+    <color name="buttonColor">#6200EE</color> <!-- Purple color -->
+
+    <color name="textColorPrimary">#000000</color> <!-- Black -->
+    <color name="textColorSecondary">#808080</color> <!-- Grey -->
+    <color name="errorColor">#B00020</color> <!-- Red for error messages -->
 </resources>
