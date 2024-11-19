@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.cs407.lab5_milestone.UserState
+//import com.cs407.lab5_milestone.UserState
 //import com.cs407.lab5_milestone.UserState
 //import com.cs407.lab5_milestone.UserViewModel
 //import com.cs407.powerplates.R
