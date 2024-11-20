@@ -38,6 +38,7 @@
         android:label="@string/rank_prefs"
         tools:layout="@layout/fragment_rank_prefs">
 
+
         <action
             android:id="@+id/action_rankPrefsFragment_to_chooseWorkout"
 
@@ -79,6 +80,7 @@
 <!--            app:popUpTo="@id/ChooseWorkoutFragment"-->
 <!--            app:popUpToInclusive="true"/>-->
     </fragment>
+
 
 
 </navigation>

@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+
 class WorkoutAdapter(
     private val onClick: (String) -> Unit,  // Updated to expect a String (workoutName)
     private val workList: List<WorkoutType>
 ) : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>() {
+
 
     // ViewHolder class
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +31,7 @@ class WorkoutAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wType: WorkoutType = workList[position]
 
+
         // Bind workout details to the views
         holder.exItems.text = wType.excersizeName
         holder.difItems.text = wType.difficulty
@@ -36,6 +39,7 @@ class WorkoutAdapter(
 
         // Set onClickListener to pass workoutName to the callback
         holder.itemView.setOnClickListener { onClick(wType.excersizeName) }
+
     }
 
     // Return the size of the dataset
