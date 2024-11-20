@@ -74,7 +74,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.rank_prefs_greeting)
 
-
+     
         showPrefs(view)
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
