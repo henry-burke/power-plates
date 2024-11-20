@@ -52,9 +52,6 @@ class LoginFragment(
         loginButton = view.findViewById(R.id.loginButton)
         errorTextView = view.findViewById(R.id.errorTextView)
 
-
-
-
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
@@ -109,8 +106,10 @@ class LoginFragment(
                 if (loginSuccessful) {
                     // Navigate to another fragment after successful login
                     //userViewModel.setUser(UserState(0, user, pass)) // Assuming you want to store an ID as well
-                    val usersid = exerciseDB.userDao().getByName(user).userId
-                    userViewModel.setUser(UserState(usersid, user, pass))
+
+//                    val usersid = exerciseDB.userDao().getByName(user).userId
+//                    userViewModel.setUser(UserState(usersid, user, pass))
+                    userViewModel.setUser(UserState(id, user, pass))
                     findNavController().navigate(R.id.action_loginFragment_to_choiceLevelFragment)
                 } else {
                     // Show an error message if login fails
@@ -144,9 +143,9 @@ class LoginFragment(
             return findPassword == hashedInput
         }
         else{
-            withContext(Dispatchers.IO) {
-                exerciseDB.userDao().insert(User(userName = name))
-            }
+//            withContext(Dispatchers.IO) {
+//                exerciseDB.userDao().insert(User(userName = name))
+//            }
 
             val editor = userPasswdKV.edit()
             //hash password
