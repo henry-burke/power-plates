@@ -13,10 +13,14 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import androidx.room.Upsert
+import com.cs407.powerplates.PopulateDatabase
 //import com.cs407.powerplates.PopulateDatabase
 import com.cs407.powerplates.R
 import java.io.File
+import java.util.Date
 
 // User Entity with a unique ID on user name
 @Entity(
@@ -32,19 +36,19 @@ data class User(
 // TODO: uncomment if need converter classes
 // Converter class to handle Date <-> Long type conversions
 // Converter class to handle conversion between custom type Data and SQL-compatible type Long
-//class Converters {
-//    // Converts a timestamp (Long) to a Date object
-//    @TypeConverter
-//    fun fromTimestamp(value: Long): Date {
-//        return Date(value)
-//    }
-//
-//    // Converts a Date object to a timestamp (Long)
-//    @TypeConverter
-//    fun dateToTimestamp(date: Date): Long {
-//        return date.time
-//    }
-//}
+class Converters {
+    // Converts a timestamp (Long) to a Date object
+    @TypeConverter
+    fun fromTimestamp(value: Long): Date {
+        return Date(value)
+    }
+
+    // Converts a Date object to a timestamp (Long)
+    @TypeConverter
+    fun dateToTimestamp(date: Date): Long {
+        return date.time
+    }
+}
 
 // Define the Exercise entity with a primary key and various fields, including nullable fields
 @Entity
@@ -200,7 +204,7 @@ interface DeleteDao {
 // Database class with all entities and DAOs
 @Database(entities = [User::class, Exercise::class, UserExerciseRelation::class], version = 1)
 // Database class with all entities and DAOs
-//@TypeConverters(Converters::class)
+@TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
     // Provide DAOs to access the database
     abstract fun userDao(): UserDao
@@ -221,8 +225,8 @@ abstract class ExerciseDatabase : RoomDatabase() {
                     ExerciseDatabase::class.java,
                     context.getString(R.string.exercise_database), // Database name from resources
                 )
-                    .createFromFile(File("app/src/main/assets/exercise_list.db"))
-                    .fallbackToDestructiveMigration()
+//                    .createFromFile(File("app/src/main/assets/exercise_list.db"))
+//                    .fallbackToDestructiveMigration()
 //                    .addCallback(PopulateDatabase(context))
                     .build()
                 INSTANCE = instance

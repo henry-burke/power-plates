@@ -14,10 +14,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-//import com.cs407.lab5_milestone.UserState
-//import com.cs407.lab5_milestone.UserState
-//import com.cs407.lab5_milestone.UserViewModel
-//import com.cs407.powerplates.R
 import com.cs407.powerplates.UserState
 import com.cs407.powerplates.UserViewModel
 import com.cs407.powerplates.data.ExerciseDatabase
@@ -43,7 +39,7 @@ class LoginFragment(
     private lateinit var userPasswdKV: SharedPreferences
     private lateinit var userLevelKV: SharedPreferences
 
-//    private lateinit var exerciseDB: ExerciseDatabase
+    private lateinit var exerciseDB: ExerciseDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,22 +52,18 @@ class LoginFragment(
         loginButton = view.findViewById(R.id.loginButton)
         errorTextView = view.findViewById(R.id.errorTextView)
 
-
-
-
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
             // TODO - Use ViewModelProvider to init UserViewModel
             ViewModelProvider(requireActivity())[UserViewModel::class.java]
         }
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-//        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
-//
-//        CoroutineScope(Dispatchers.Main).launch {
-//            val dbTest = exerciseDB.exerciseDao().getById(0).toString()
-//            Log.v("DATABASE TESTING", dbTest)
-//        }
+        CoroutineScope(Dispatchers.Main).launch {
+            val dbTest = exerciseDB.exerciseDao().getById(0).toString()
+            Log.v("DATABASE TESTING", dbTest)
+        }
 
         // TODO - Get shared preferences from using R.string.userPasswdKV as the name
         this.userPasswdKV = activity?.getSharedPreferences(
@@ -114,9 +106,9 @@ class LoginFragment(
                 if (loginSuccessful) {
                     // Navigate to another fragment after successful login
                     //userViewModel.setUser(UserState(0, user, pass)) // Assuming you want to store an ID as well
+
 //                    val usersid = exerciseDB.userDao().getByName(user).userId
 //                    userViewModel.setUser(UserState(usersid, user, pass))
-
                     userViewModel.setUser(UserState(id, user, pass))
                     findNavController().navigate(R.id.action_loginFragment_to_choiceLevelFragment)
                 } else {
