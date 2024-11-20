@@ -77,7 +77,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
      
         showPrefs(view)
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkoutFragment)
+            findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
         }
     }
 
