@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.WorkoutType
@@ -32,6 +33,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var intermediate: Button
     private lateinit var userLevelKV: SharedPreferences
     private lateinit var itemsArrayList: ArrayList<WorkoutType>
+    private lateinit var workoutName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         userPasswdKV = requireContext().getSharedPreferences(
             getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
         userLevelKV = requireContext().getSharedPreferences(
-            getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
+            getString(R.string.userLevelKV), Context.MODE_PRIVATE)
 
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
@@ -89,7 +91,16 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         itemsArrayList.add(workout6)
         itemsArrayList.add(workout7)
 
-        worAdap = WorkoutAdapter(itemsArrayList)
+        workoutName = "abs"
+
+        worAdap = WorkoutAdapter(
+            onClick = { workoutName ->
+                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutName)
+                findNavController().navigate(action)
+            },
+            itemsArrayList
+        )
+
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
 
