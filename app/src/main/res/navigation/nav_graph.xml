@@ -39,30 +39,26 @@
         tools:layout="@layout/fragment_rank_prefs">
 
         <action
-            android:id="@+id/action_rankPrefsFragment_to_chooseWorkout"
+            android:id="@+id/action_rankPrefsFragment_to_chooseWorkoutFragment"
 
-            app:destination="@+id/chooseWorkout"
+            app:destination="@+id/ChooseWorkoutFragment"
 
             app:popUpTo="@id/rankPrefsFragment"
             app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
-        android:id="@+id/chooseWorkout"
+        android:id="@+id/ChooseWorkoutFragment"
         android:name="com.cs407.powerplates.ChooseWorkout"
         android:label="@string/choose_workout"
         tools:layout="@layout/fragment_choose_workout">
 
         <action
-            android:id="@+id/action_chooseWorkout_to_WorkoutContentFragment"
+            android:id="@+id/action_chooseWorkoutFragment_to_WorkoutContentFragment"
 
-            app:destination="@+id/WorkoutContentFragment" />
-        <action
-            android:id="@+id/action_chooseWorkout_to_loginFragment"
+            app:destination="@+id/WorkoutContentFragment"
 
-            app:destination="@+id/loginFragment"
-
-            app:popUpTo="@id/chooseWorkout"
+            app:popUpTo="@id/ChooseWorkoutFragment"
             app:popUpToInclusive="true"/>
     </fragment>
 
@@ -75,13 +71,13 @@
             android:name="workoutName"
             app:argType="string" />
 
-        <!--        <action-->
-        <!--            android:id="@+id/action_chooseWorkoutFragment_to_WorkoutContentFragment"-->
+<!--        <action-->
+<!--            android:id="@+id/action_chooseWorkoutFragment_to_WorkoutContentFragment"-->
 
-        <!--            app:destination="@+id/WorkoutContentFragment"-->
+<!--            app:destination="@+id/WorkoutContentFragment"-->
 
-        <!--            app:popUpTo="@id/ChooseWorkoutFragment"-->
-        <!--            app:popUpToInclusive="true"/>-->
+<!--            app:popUpTo="@id/ChooseWorkoutFragment"-->
+<!--            app:popUpToInclusive="true"/>-->
     </fragment>
 
 

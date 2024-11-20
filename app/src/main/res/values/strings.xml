@@ -7,7 +7,7 @@
     <string name="userPasswdKV">com.cs407.powerplates.userPasswdKV</string>
     <string name="userLevelKV">com.cs407.powerplates.userLevelKV</string>
     <string name="fail_login">Wrong Username or Password</string>
-    <string name="exercise_database">exerciseDatabase</string>
+    <string name="workout_database">workoutDatabase</string>
     <string name="greeting_text">Welcome %1$s!</string>
     <string name="choice_level_screen">Choice Level</string>
     <!-- TODO: Remove or change this placeholder text -->
