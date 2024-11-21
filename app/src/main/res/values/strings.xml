@@ -15,5 +15,8 @@
     <string name="rank_prefs">Rank Prefs</string>
     <string name="rank_prefs_greeting">Rank Your Preferences:</string>
     <string name="choose_workout">Choose your workouts</string>
+    <string name="about_workout">Workout information</string>
+
     <string name="app_logo">Power Plates logo</string>
+
 </resources>
