@@ -16,7 +16,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cs407.powerplates.UserState
 import com.cs407.powerplates.UserViewModel
-
+import com.cs407.powerplates.data.ExerciseDatabase
+import com.cs407.powerplates.data.User
+import com.cs407.powerplates.data.populateExercises
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +39,8 @@ class LoginFragment(
     private lateinit var userPasswdKV: SharedPreferences
     private lateinit var userLevelKV: SharedPreferences
 
+    private lateinit var exerciseDB: ExerciseDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -48,14 +52,18 @@ class LoginFragment(
         loginButton = view.findViewById(R.id.loginButton)
         errorTextView = view.findViewById(R.id.errorTextView)
 
+        // Use ViewModelProvider to init UserViewModel
+        userViewModel = injectedUserViewModel ?:
+                ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
 
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-        userViewModel = if (injectedUserViewModel != null) {
-            injectedUserViewModel
-        } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
-            ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        // if db is empty, populate with existing exercise data
+        CoroutineScope(Dispatchers.Main).launch {
+            if (exerciseDB.exerciseDao().getExerciseCount() == 0) {
+                context?.let { populateExercises(it, exerciseDB.exerciseDao()) }
+            }
         }
 
         // TODO - Get shared preferences from using R.string.userPasswdKV as the name
@@ -96,11 +104,23 @@ class LoginFragment(
                     // TODO go directly to the shared page
                 }
 
+                // Navigate to another fragment after successful login
                 if (loginSuccessful) {
-                    // Navigate to another fragment after successful login
-                    //userViewModel.setUser(UserState(0, user, pass)) // Assuming you want to store an ID as well
+                    // crash check: if user exists in sharedPref but not db, add to db and log in
+                    if(exerciseDB.userDao().getByName(user) == null) {
+                        withContext(Dispatchers.IO) {
+                            exerciseDB.userDao().insert(User(userName = user))
+                        }
+                    }
 
-                    userViewModel.setUser(UserState(id, user, pass))
+                    val usersId = exerciseDB.userDao().getByName(user).userId
+
+                    // database setUser implementation
+                    userViewModel.setUser(UserState(usersId, user, pass))
+
+                    // no functional database implementation
+                    // userViewModel.setUser(UserState(id, user, pass))
+
                     findNavController().navigate(R.id.action_loginFragment_to_choiceLevelFragment)
                 } else {
                     // Show an error message if login fails
@@ -112,33 +132,33 @@ class LoginFragment(
     }
 
     private suspend fun userCreated(user: String): Boolean {
-        if (userLevelKV.contains(user)){
-            return true;
-        }
-        else {
-            return false
-        }
+        return userLevelKV.contains(user)
     }
 
     private suspend fun getUserPasswd(
         name: String,
         passwdPlain: String
     ): Boolean {
-        // TODO: Hash the plain password using a secure hashing function
+        // Hash the plain password using a secure hashing function
         val hashedInput = hash(passwdPlain)
-        // TODO: Check if the user exists in SharedPreferences (using the username as the key)
 
-
-        if(userPasswdKV.contains(name) == true){
+        // Check if the user exists in SharedPreferences (using the username as the key)
+        if(userPasswdKV.contains(name)){
             val findPassword = userPasswdKV.getString(name, "")
             return findPassword == hashedInput
         }
         else{
+            // add new users to database
+            withContext(Dispatchers.IO) {
+                exerciseDB.userDao().insert(User(userName = name))
+            }
+
+            // store hashed password in sharedPref
             val editor = userPasswdKV.edit()
-            //hash password
             editor?.putString(name, hashedInput)
             editor?.apply()
 
+            // return true if user login is successful or new user created
             return true
         }
     }
