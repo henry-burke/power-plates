@@ -18,7 +18,6 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import androidx.room.Upsert
 import com.cs407.powerplates.R
-import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.File
 import java.util.Date
@@ -118,15 +117,16 @@ interface UserDao {
     )
     suspend fun getUsersWithExerciseListsById(id: Int): List<ExerciseSummary>
 
+    // needs room-paging implementation
     // Same query but returns a PagingSource for pagination
-    @Query(
-        """SELECT * FROM User, Exercise, UserExerciseRelation
-                WHERE User.userId = :id
-                AND UserExerciseRelation.userId = User.userId
-                AND Exercise.exerciseId = UserExerciseRelation.exerciseId
-                ORDER BY Exercise.exerciseName DESC"""
-    )
-    fun getUsersWithExerciseListsByIdPaged(id: Int): PagingSource<Int, ExerciseSummary>
+//    @Query(
+//        """SELECT * FROM User, Exercise, UserExerciseRelation
+//                WHERE User.userId = :id
+//                AND UserExerciseRelation.userId = User.userId
+//                AND Exercise.exerciseId = UserExerciseRelation.exerciseId
+//                ORDER BY Exercise.exerciseName DESC"""
+//    )
+//    fun getUsersWithExerciseListsByIdPaged(id: Int): PagingSource<Int, ExerciseSummary>
 
     // Insert a new user into the database
     @Insert(entity = User::class)
