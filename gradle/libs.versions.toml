@@ -26,6 +26,7 @@ roomRuntime = "2.6.1"
 roomRxjava2 = "2.6.1"
 navigationRuntimeKtx = "2.8.2"
 coreTesting = "1.1.1"
+gson = "2.11.0"
 
 
 [libraries]
@@ -59,6 +60,7 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-androidx-navigation-safeargs-kotlin-gradle-plugin = { group = "androidx.navigation.safeargs.kotlin", name = "androidx.navigation.safeargs.kotlin.gradle.plugin", version.ref = "androidxNavigationSafeargsKotlinGradlePlugin" }
 com-google-devtools-ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "comGoogleDevtoolsKspGradlePlugin" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

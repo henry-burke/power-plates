@@ -1,6 +1,7 @@
 package com.cs407.powerplates.data
 
 import android.content.Context
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Database
@@ -16,9 +17,9 @@ import androidx.room.Transaction
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import androidx.room.Upsert
-import com.cs407.powerplates.PopulateDatabase
-//import com.cs407.powerplates.PopulateDatabase
 import com.cs407.powerplates.R
+import com.google.gson.Gson
+import org.json.JSONArray
 import java.io.File
 import java.util.Date
 
@@ -135,6 +136,10 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // Query to count all exercises
+    @Query("SELECT COUNT(*) FROM exercise")
+    suspend fun getExerciseCount(): Int
+
     // Query to get an Exercise by its exerciseName
     @Query("SELECT primaryMuscle FROM exercise WHERE exerciseName = :name")
     suspend fun getByName(name: String): String
@@ -230,14 +235,43 @@ abstract class ExerciseDatabase : RoomDatabase() {
                     ExerciseDatabase::class.java,
                     context.getString(R.string.exercise_database), // Database name from resources
                 )
-//                    .createFromFile(File("app/src/main/assets/exercise_list.db"))
-                    .createFromAsset("exercise.db")
-//                    .fallbackToDestructiveMigration()
-//                    .addCallback(PopulateDatabase(context))
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance // if it is null, then create the database
             }
         }
+    }
+}
+
+// read exercise_list.json to populate db with Exercise objects
+fun readJsonFromAssets(context: Context): JSONArray {
+    val json = context.assets.open("exercise_list.json").bufferedReader().use { JSONArray(it.readText()) }
+    return json
+}
+
+// populate database with existing exercise data
+suspend fun populateExercises(context: Context, exerciseDao: ExerciseDao) {
+    // read the JSON file from assets
+    val exercisesJson = readJsonFromAssets(context)
+    Log.v("test", exercisesJson[0].toString())
+
+    // map the JSON objects to Exercise objects and upsert into db
+    for (i in 0 until exercisesJson.length()){
+        val item = exercisesJson.getJSONObject(i)
+        val exerciseName = item.getString("Exercise")
+        val primaryMuscle = item.getString("Primary Muscle")
+        val secondaryMuscle = item.getString("Secondary Muscle")
+        val compound = item.getBoolean("Compound")
+        val type = item.getString("Type")
+        val type2 = item.getString("Type 2")
+        val level = item.getString("Level")
+        val progressionType = item.getString("Progression Type")
+        val category = item.getString("Category")
+
+        val exerciseEntity = Exercise(
+            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category
+        )
+        exerciseDao.upsert(exerciseEntity)
     }
 }

@@ -18,6 +18,7 @@ import com.cs407.powerplates.UserState
 import com.cs407.powerplates.UserViewModel
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.User
+import com.cs407.powerplates.data.populateExercises
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,18 +52,17 @@ class LoginFragment(
         loginButton = view.findViewById(R.id.loginButton)
         errorTextView = view.findViewById(R.id.errorTextView)
 
-        userViewModel = injectedUserViewModel ?: // Use ViewModelProvider to init UserViewModel
+        // Use ViewModelProvider to init UserViewModel
+        userViewModel = injectedUserViewModel ?:
                 ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
 
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
+        // if db is empty, populate with existing exercise data
         CoroutineScope(Dispatchers.Main).launch {
-            val dbTest = exerciseDB.exerciseDao().getByName("Lying Leg Raise")
-            if(dbTest == null) {
-                Log.v("DATABASE TESTING", "EMPTY")
-            } else{
-                Log.v("DATABASE TESTING", dbTest)
+            if (exerciseDB.exerciseDao().getExerciseCount() == 0) {
+                context?.let { populateExercises(it, exerciseDB.exerciseDao()) }
             }
         }
 
@@ -113,10 +113,10 @@ class LoginFragment(
                         }
                     }
 
-                    val usersid = exerciseDB.userDao().getByName(user).userId
+                    val usersId = exerciseDB.userDao().getByName(user).userId
 
                     // database setUser implementation
-                    userViewModel.setUser(UserState(usersid, user, pass))
+                    userViewModel.setUser(UserState(usersId, user, pass))
 
                     // no functional database implementation
                     // userViewModel.setUser(UserState(id, user, pass))
