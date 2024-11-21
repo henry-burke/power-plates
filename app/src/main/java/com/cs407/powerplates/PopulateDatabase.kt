@@ -10,11 +10,16 @@ import org.json.JSONException
 import java.io.BufferedReader
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PopulateDatabase(private val context: Context) : RoomDatabase.Callback() {
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
-
+        CoroutineScope(Dispatchers.Main).launch {
+            fillWithStartingExercises(context)
+        }
     }
 
     private fun loadJSONArray(context: Context): JSONArray {
@@ -26,9 +31,7 @@ class PopulateDatabase(private val context: Context) : RoomDatabase.Callback() {
         }
     }
 
-
-    private suspend fun fillWithStartingNotes(context: Context){
-
+    private suspend fun fillWithStartingExercises(context: Context){
         val dao = ExerciseDatabase.getDatabase(context).exerciseDao()
 
         try {
@@ -45,11 +48,6 @@ class PopulateDatabase(private val context: Context) : RoomDatabase.Callback() {
                 val progressionType = item.getString("Progression Type")
                 val category = item.getString("Category")
 
-
-                val noteTitle = item.getString("note-title")
-                val notesDescription = item.getString("note-description")
-
-
                 val exerciseEntity = Exercise(
                     i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category
                 )
@@ -58,8 +56,7 @@ class PopulateDatabase(private val context: Context) : RoomDatabase.Callback() {
         }
 
         catch (e: JSONException) {
-            // TODO: log error
-            // Log.e("fillWithStartingNotes: $e")
+             Log.v("fillWithStartingNotes: $e", e.toString())
         }
     }
 }

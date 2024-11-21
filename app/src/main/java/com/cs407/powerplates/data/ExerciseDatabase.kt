@@ -135,6 +135,11 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // Query to get an Exercise by its exerciseName
+    @Query("SELECT primaryMuscle FROM exercise WHERE exerciseName = :name")
+    suspend fun getByName(name: String): String
+
+
     // Query to get a Exercise by its exerciseId
     @Query("SELECT * FROM exercise WHERE exerciseId = :id")
     suspend fun getById(id: Int): Exercise
@@ -226,6 +231,7 @@ abstract class ExerciseDatabase : RoomDatabase() {
                     context.getString(R.string.exercise_database), // Database name from resources
                 )
 //                    .createFromFile(File("app/src/main/assets/exercise_list.db"))
+                    .createFromAsset("exercise.db")
 //                    .fallbackToDestructiveMigration()
 //                    .addCallback(PopulateDatabase(context))
                     .build()
