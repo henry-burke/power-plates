@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -36,9 +37,9 @@ class ChoiceLevel (
     private lateinit var greetingTextView: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
-    private lateinit var beginner: Button
-    private lateinit var intermediate: Button
-    private lateinit var advanced: Button
+    private lateinit var beginner: CardView
+    private lateinit var intermediate: CardView
+    private lateinit var advanced: CardView
     private lateinit var userLevelKV: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,9 +67,9 @@ class ChoiceLevel (
     ): View {
         val view = inflater.inflate(R.layout.fragment_choice_level, container, false)
         greetingTextView = view.findViewById(R.id.greetingTextView)
-        beginner = view.findViewById<Button>(R.id.begButton)
-        intermediate = view.findViewById<Button>(R.id.interButton)
-        advanced = view.findViewById<Button>(R.id.advButton)
+        beginner = view.findViewById(R.id.begButton)
+        intermediate = view.findViewById(R.id.interButton)
+        advanced = view.findViewById(R.id.advButton)
 
        // noteRecyclerView = view.findViewById(R.id.noteRecyclerView)
         //fab = view.findViewById(R.id.fab)
