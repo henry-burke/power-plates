@@ -52,13 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="0dp">
 
             <!-- Icon -->
             <ImageView
                 android:id="@+id/beginnerWeight"
                 android:layout_width="256dp"
-                android:layout_height="96dp"
+                android:layout_height="128dp"
                 android:src="@drawable/asset_9"
                 android:contentDescription="Beginner Weight"
                 android:layout_gravity="center" />
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="Beginner"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:background="@color/buttonColor"
                 android:textColor="@color/buttonTextColor"
                 android:textStyle="bold" />
@@ -94,13 +94,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="0dp">
 
             <!-- Icon -->
             <ImageView
                 android:id="@+id/intermediateWeight"
                 android:layout_width="256dp"
-                android:layout_height="96dp"
+                android:layout_height="128dp"
                 android:src="@drawable/asset_7"
                 android:contentDescription="Intermediate Weight"
                 android:layout_gravity="center" />
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:text="Intermediate"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:background="@color/buttonColor"
                 android:textColor="@color/buttonTextColor"
                 android:textStyle="bold" />
@@ -136,13 +136,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="0dp">
 
             <!-- Icon -->
             <ImageView
                 android:id="@+id/advancedWeight"
                 android:layout_width="256dp"
-                android:layout_height="96dp"
+                android:layout_height="128dp"
                 android:src="@drawable/asset_10"
                 android:contentDescription="Advanced Weight"
                 android:layout_gravity="center" />
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:text="Advanced"
                 android:gravity="center"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:background="@color/buttonColor"
                 android:textColor="@color/buttonTextColor"
                 android:textStyle="bold" />
