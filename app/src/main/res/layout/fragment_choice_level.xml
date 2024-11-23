@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome!"
         android:textColor="@color/primaryTextColor"
-        android:textSize="32sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
