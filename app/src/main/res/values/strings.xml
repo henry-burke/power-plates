@@ -18,4 +18,5 @@
     <string name="about_workout">Workout information</string>
     <string name="app_logo">Power Plates logo</string>
     <string name="logout">Logout</string>
+    <string name="exercise_database">exerciseDatabase</string>
 </resources>
