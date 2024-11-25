@@ -73,7 +73,6 @@
         android:id="@+id/passwordLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         app:endIconMode="password_toggle"
@@ -91,6 +90,7 @@
             android:textColor="@color/primaryTextColor"
             android:textColorHint="@color/secondaryTextColor"/>
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <!-- Login Button -->
     <com.google.android.material.button.MaterialButton
