@@ -1,48 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:padding="24dp">
 
+    <!-- Greeting Text -->
     <TextView
         android:id="@+id/greetingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="30sp"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="102dp" />
+        android:text="Welcome!"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
 
-    <Button
+    <!-- Experience Level Text -->
+    <TextView
+        android:id="@+id/experienceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Your Experience Level"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/greetingTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="64dp" />
+
+    <!-- Beginner Button -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/begButton"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:text="beginner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.382" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/inputBackground"
+        app:layout_constraintTop_toBottomOf="@id/experienceText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="4dp">
 
-    <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/beginnerWeight"
+                android:layout_width="256dp"
+                android:layout_height="128dp"
+                android:src="@drawable/asset_9"
+                android:contentDescription="Beginner Weight"
+                android:layout_gravity="center" />
+
+            <!-- Level Name Section -->
+            <TextView
+                android:id="@+id/beginnerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Beginner"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Intermediate Button -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/interButton"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:text="intermediate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/inputBackground"
+        app:layout_constraintTop_toBottomOf="@id/begButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="4dp">
 
-    <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/intermediateWeight"
+                android:layout_width="256dp"
+                android:layout_height="128dp"
+                android:src="@drawable/asset_7"
+                android:contentDescription="Intermediate Weight"
+                android:layout_gravity="center" />
+
+            <!-- Level Name Section -->
+            <TextView
+                android:id="@+id/intermediateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Intermediate"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Advanced Button -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/advButton"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:text="advanced"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.616" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/inputBackground"
+        app:layout_constraintTop_toBottomOf="@id/interButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/advancedWeight"
+                android:layout_width="256dp"
+                android:layout_height="128dp"
+                android:src="@drawable/asset_10"
+                android:contentDescription="Advanced Weight"
+                android:layout_gravity="center" />
+
+            <!-- Level Name Section -->
+            <TextView
+                android:id="@+id/advancedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Advanced"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@color/buttonColor"
+                android:textColor="@color/buttonTextColor"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

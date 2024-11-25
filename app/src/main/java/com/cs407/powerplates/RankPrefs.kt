@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -31,7 +32,6 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     private lateinit var fab: FloatingActionButton
     private lateinit var beginner: Button
     private lateinit var intermediate: Button
-    private lateinit var advanced: Button
     private lateinit var userLevelKV: SharedPreferences
 
     private lateinit var items: ArrayList<String>
@@ -64,6 +64,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     ): View? {
         val view = inflater.inflate(R.layout.fragment_rank_prefs, container, false)
         greetingTextView = view.findViewById(R.id.greetingTextView)
+        fab = view.findViewById(R.id.fab1)
         return view
     }
 
@@ -75,19 +76,18 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
      
         showPrefs(view)
+        fab.setOnClickListener {
 
+            findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
 
+        }
     }
 
     private fun showPrefs(view: View){
 
-
         recyclerView = view.findViewById(R.id.recyclerView)
 
-
         itemsArrayList = arrayListOf()
-
-
 
         items = arrayListOf(
             "Strength",
@@ -97,19 +97,13 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
             "Mobility"
         )
 
-
-
         for (i in items.indices) {
             val item = WorkoutData(items[i])
             itemsArrayList.add(item)
         }
         myAdapter = Adapter(itemsArrayList)
-
         recyclerView.setHasFixedSize(true)
-
-
         recyclerView.adapter = myAdapter
-
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0){
             override fun onMove(
@@ -123,11 +117,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
                 Collections.swap(itemsArrayList,sourcePosition,targetPosition)
                 myAdapter.notifyItemMoved(sourcePosition,targetPosition)
 
-                //check position
-                //Log.d("array" ,itemsArrayList[0].toString())
-
                 return true
-
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -136,11 +126,5 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
-
-
     }
-
-
-
 }

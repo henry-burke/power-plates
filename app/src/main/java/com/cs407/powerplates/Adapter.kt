@@ -8,8 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class Adapter(private val itemsList: List<WorkoutData>) :
-    RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(
+    private val itemsList: List<WorkoutData>
+) : RecyclerView.Adapter<Adapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val tvItems : TextView = itemView.findViewById(R.id.tv_item)
