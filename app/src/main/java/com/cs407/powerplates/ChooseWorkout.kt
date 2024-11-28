@@ -3,11 +3,10 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -15,16 +14,18 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-
 import androidx.navigation.fragment.findNavController
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.WorkoutType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.core.view.MenuProvider
 
 
 class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -43,9 +44,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var intermediate: Button
     private lateinit var userLevelKV: SharedPreferences
     private lateinit var itemsArrayList: ArrayList<WorkoutType>
-
     private lateinit var workoutName: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,10 +93,9 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             }
         }, viewLifecycleOwner)
 
-
         val userState = userViewModel.userState.value
-        //greetingTextView.text = getString(R.string.greeting_text, userState.name)
         showWorkouts(view)
+
 
 
     }
@@ -122,7 +120,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         itemsArrayList.add(workout5)
         itemsArrayList.add(workout6)
         itemsArrayList.add(workout7)
-
 
         workoutName = "abs"
 
