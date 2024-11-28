@@ -5,10 +5,18 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 
 import androidx.navigation.fragment.findNavController
@@ -28,7 +36,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
     private var userId: Int = 0
 
-    private lateinit var greetingTextView: TextView
+    //private lateinit var greetingTextView: TextView
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var worAdap: WorkoutAdapter
@@ -41,6 +49,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        super.setHasOptionsMenu(true)
 
         //load user view model
         userPasswdKV = requireContext().getSharedPreferences(
@@ -61,17 +70,36 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_workout, container, false)
-        greetingTextView = view.findViewById(R.id.greetingTextView)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userState = userViewModel.userState.value
-        greetingTextView.text = getString(R.string.greeting_text, userState.name)
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.nav_bar_menu, menu)
+            }
 
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_logout -> {
+                        userViewModel.setUser(UserState())
+                        findNavController().navigate(R.id.action_chooseWorkout_to_loginFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+
+
+        val userState = userViewModel.userState.value
+        //greetingTextView.text = getString(R.string.greeting_text, userState.name)
         showWorkouts(view)
+
+
     }
 
     private fun showWorkouts(view: View){
@@ -105,12 +133,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             },
             itemsArrayList
         )
-
-
-
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
-
     }
 
 }

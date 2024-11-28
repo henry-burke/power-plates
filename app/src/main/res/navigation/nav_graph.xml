@@ -61,6 +61,12 @@
 
             app:popUpTo="@id/ChooseWorkout"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_chooseWorkout_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/ChooseWorkout"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
