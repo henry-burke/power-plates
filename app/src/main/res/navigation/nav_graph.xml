@@ -38,18 +38,17 @@
         android:label="@string/rank_prefs"
         tools:layout="@layout/fragment_rank_prefs">
 
-
         <action
             android:id="@+id/action_rankPrefsFragment_to_chooseWorkout"
 
-            app:destination="@+id/ChooseWorkout"
+            app:destination="@+id/chooseWorkout"
 
             app:popUpTo="@id/rankPrefsFragment"
             app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
-        android:id="@+id/ChooseWorkout"
+        android:id="@+id/chooseWorkout"
         android:name="com.cs407.powerplates.ChooseWorkout"
         android:label="@string/choose_workout"
         tools:layout="@layout/fragment_choose_workout">
@@ -57,9 +56,13 @@
         <action
             android:id="@+id/action_chooseWorkout_to_WorkoutContentFragment"
 
-            app:destination="@+id/WorkoutContentFragment"
+            app:destination="@+id/WorkoutContentFragment" />
+        <action
+            android:id="@+id/action_chooseWorkout_to_loginFragment"
 
-            app:popUpTo="@id/ChooseWorkout"
+            app:destination="@+id/loginFragment"
+
+            app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
     </fragment>
 
@@ -80,7 +83,6 @@
 <!--            app:popUpTo="@id/ChooseWorkoutFragment"-->
 <!--            app:popUpToInclusive="true"/>-->
     </fragment>
-
 
 
 </navigation>
