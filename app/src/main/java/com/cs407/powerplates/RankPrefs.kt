@@ -90,10 +90,10 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         itemsArrayList = arrayListOf(
             WorkoutData("Strength", R.drawable.baseline_fitness_center_24),        // Strength icon
-            WorkoutData("Stamina", R.drawable.baseline_battery_5_bar_24),        // Stamina icon
-            WorkoutData("Muscle Mass", R.drawable.baseline_person_24),   // Muscle Mass icon
-            WorkoutData("Mobility", R.drawable.baseline_directions_walk_24),      // Mobility icon
-            WorkoutData("Body Fat", R.drawable.baseline_directions_run_24)     // Body Fat icon
+            WorkoutData("Stamina", R.drawable.stamina_icon),        // Stamina icon
+            WorkoutData("Muscle Mass", R.drawable.mass_icon),   // Muscle Mass icon
+            WorkoutData("Mobility", R.drawable.mobility_icon),      // Mobility icon
+            WorkoutData("Body Fat", R.drawable.body_fat_icon)     // Body Fat icon
         )
 
         myAdapter = Adapter(itemsArrayList)
