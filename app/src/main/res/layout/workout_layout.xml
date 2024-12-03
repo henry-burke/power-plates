@@ -8,6 +8,7 @@
     android:elevation="8dp"
     app:cardCornerRadius="10dp">
 
+<!--card layout for long list of exercises after selecting level and preferences-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,13 +17,13 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/excersize"
+            android:id="@+id/exercise_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="excersize name"
+            android:text="@string/card_exercise_name"
+            android:textAlignment="center"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,19 +34,19 @@
                 android:id="@+id/muscleGrp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="muscleGrp"
+                android:text="@string/card_musclegrp"
                 android:textSize="15sp"
                 android:layout_weight="0.5"
                 android:textAlignment="center"/>
 
             <TextView
-                android:id="@+id/difficulty"
+                android:id="@+id/level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="0.5"
                 android:textSize="15sp"
-                android:text="difficulty"
+                android:text="@string/card_level"
                 android:textAlignment="center"/>
         </LinearLayout>
     </LinearLayout>

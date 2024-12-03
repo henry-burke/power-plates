@@ -136,6 +136,14 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // get primary muscle group given exercise name
+    @Query("SELECT e.primaryMuscle FROM exercise e WHERE e.exerciseName == :name")
+    suspend fun getPrimaryMuscleFromName(name: String): String
+
+    // get difficulty level given exercise name
+    @Query("SELECT e.level FROM exercise e WHERE e.exerciseName == :name")
+    suspend fun getLevelFromName(name: String): String
+
     // Query to count all exercises
     @Query("SELECT COUNT(*) FROM exercise")
     suspend fun getExerciseCount(): Int
@@ -144,6 +152,17 @@ interface ExerciseDao {
     @Query("SELECT primaryMuscle FROM exercise WHERE exerciseName = :name")
     suspend fun getByName(name: String): String
 
+    // Query to get all exercise names
+    @Query("SELECT e.exerciseName FROM Exercise e")
+    suspend fun getExerciseNames(): List<String>
+
+    // Query to get all exercise primary muscle group
+    @Query("SELECT e.primaryMuscle FROM Exercise e")
+    suspend fun getExerciseMuscles(): List<String>
+
+    // Query to get all exercise levels
+    @Query("SELECT e.level FROM Exercise e")
+    suspend fun getExerciseLevels(): List<String>
 
     // Query to get a Exercise by its exerciseId
     @Query("SELECT * FROM exercise WHERE exerciseId = :id")
