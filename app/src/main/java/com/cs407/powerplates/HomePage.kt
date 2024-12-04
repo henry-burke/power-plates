@@ -28,9 +28,6 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var start: Button
-    private lateinit var push: Button
-    private lateinit var pull: Button
-    private lateinit var leg: Button
     private lateinit var userLevelKV: SharedPreferences
 
     private lateinit var items: ArrayList<String>
@@ -63,9 +60,7 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
 
         start = view.findViewById(R.id.startButton)
-        pull = view.findViewById(R.id.pullButton)
-        push = view.findViewById(R.id.pushButton)
-        leg = view.findViewById(R.id.legButton)
+
 
         return view
     }
@@ -80,17 +75,6 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
             //buttonClicked("beginner")
             //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
-        push.setOnClickListener{
-            //buttonClicked("intermediate")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
-        }
-        pull.setOnClickListener{
-            //buttonClicked("advanced")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
-        }
-        leg.setOnClickListener{
-            //buttonClicked("advanced")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
-        }
+
     }
 }
