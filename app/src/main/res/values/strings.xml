@@ -1,5 +1,7 @@
 <resources>
+    <!--login screen-->
     <string name="app_name">Power Plates</string>
+    <string name="app_logo">Power Plates logo</string>
     <string name="login_screen">LoginScreen</string>
     <string name="username_hint">Enter Username</string>
     <string name="password_hint">Enter Password</string>
@@ -7,18 +9,30 @@
     <string name="userPasswdKV">com.cs407.powerplates.userPasswdKV</string>
     <string name="userLevelKV">com.cs407.powerplates.userLevelKV</string>
     <string name="fail_login">Wrong Username or Password</string>
-    <string name="exercise_database">exerciseDatabase</string>
-    <string name="greeting_text">Welcome %1$s!</string>
+
+    <!--experience level-->
+    <string name="workout_database">workoutDatabase</string>
     <string name="choice_level_screen">Choice Level</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--rank preferences-->
     <string name="rank_prefs">Rank Prefs</string>
     <string name="rank_prefs_greeting">Rank Your Preferences:</string>
+
+    <!--workout_layout.xml-->
+    <string name="card_exercise_name">exercise name</string>
+    <string name="card_musclegrp">muscleGrp</string>
+    <string name="card_level">level</string>
+
+    <!--fragment_workout_content.xml-->
+    <string name="exercise_name">exercise name</string>
+    <string name="musclegrp">muscleGrp</string>
+    <string name="level">level</string>
+
+    <!--miscellaneous / multi-use-->
+    <string name="greeting_text">Welcome %1$s!</string>
+    <string name="logout">Logout</string>
+    <string name="exercise_database">exerciseDatabase</string>
     <string name="choose_workout">Choose your workouts</string>
     <string name="about_workout">Workout information</string>
-    <string name="logout">Logout</string>
-    <string name="delete_account">Delete Account</string>
-
-    <string name="app_logo">Power Plates logo</string>
 
 </resources>
