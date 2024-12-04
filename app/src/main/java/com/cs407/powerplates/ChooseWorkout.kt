@@ -41,7 +41,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var worAdap: WorkoutAdapter
-    private lateinit var intermediate: Button
+    private lateinit var done: Button
     private lateinit var userLevelKV: SharedPreferences
     private lateinit var itemsArrayList: ArrayList<WorkoutType>
     private lateinit var workoutName: String
@@ -69,11 +69,18 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_workout, container, false)
+        done = view.findViewById(R.id.done)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        done.setOnClickListener{
+            Log.d("clicked", "pressed")
+            findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+        }
+
 
         val menuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
@@ -95,8 +102,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         val userState = userViewModel.userState.value
         showWorkouts(view)
-
-
 
     }
 
@@ -125,8 +130,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         worAdap = WorkoutAdapter(
             onClick = { workoutName ->
-                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutName)
-                findNavController().navigate(action)
+                //val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutName)
+                //findNavController().navigate(action)
             },
             itemsArrayList
         )
