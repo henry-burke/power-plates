@@ -88,18 +88,14 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         itemsArrayList = arrayListOf()
 
-        items = arrayListOf(
-            "Strength",
-            "Muscle Mass",
-            "Stamina",
-            "Body Fat",
-            "Mobility"
+        itemsArrayList = arrayListOf(
+            WorkoutData("Strength", R.drawable.baseline_fitness_center_24),        // Strength icon
+            WorkoutData("Stamina", R.drawable.stamina_icon),        // Stamina icon
+            WorkoutData("Muscle Mass", R.drawable.mass_icon),   // Muscle Mass icon
+            WorkoutData("Mobility", R.drawable.mobility_icon),      // Mobility icon
+            WorkoutData("Body Fat", R.drawable.body_fat_icon)     // Body Fat icon
         )
 
-        for (i in items.indices) {
-            val item = WorkoutData(items[i])
-            itemsArrayList.add(item)
-        }
         myAdapter = Adapter(itemsArrayList)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = myAdapter

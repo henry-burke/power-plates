@@ -59,7 +59,7 @@
                 android:id="@+id/beginnerWeight"
                 android:layout_width="256dp"
                 android:layout_height="128dp"
-                android:src="@drawable/asset_9"
+                android:src="@drawable/beginner_icon"
                 android:contentDescription="Beginner Weight"
                 android:layout_gravity="center" />
 
@@ -101,7 +101,7 @@
                 android:id="@+id/intermediateWeight"
                 android:layout_width="256dp"
                 android:layout_height="128dp"
-                android:src="@drawable/asset_7"
+                android:src="@drawable/intermediate_icon"
                 android:contentDescription="Intermediate Weight"
                 android:layout_gravity="center" />
 
@@ -143,7 +143,7 @@
                 android:id="@+id/advancedWeight"
                 android:layout_width="256dp"
                 android:layout_height="128dp"
-                android:src="@drawable/asset_10"
+                android:src="@drawable/advanced_icon"
                 android:contentDescription="Advanced Weight"
                 android:layout_gravity="center" />
 
