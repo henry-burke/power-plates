@@ -1,29 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="8dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="15dp"
+    app:cardElevation="4dp"
+    android:layout_margin="10dp"
+    android:background="@color/backgroundColor">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="@drawable/card_border">
 
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/itemIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_fitness_center_24"
+            android:contentDescription="Icon"
+            android:layout_marginEnd="16dp"
+            app:tint="@color/primaryTextColor"/>
 
+        <!-- Title -->
         <TextView
-            android:id="@+id/tv_item"
-            android:layout_width="wrap_content"
+            android:id="@+id/itemTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:text="position 01"
-            android:textSize="34sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_weight="1"
+            android:text="Preference"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            />
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/dragIndicator"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_drag_indicator_24"
+            android:contentDescription="Handle"
+            android:layout_gravity="end"
+            android:layout_marginStart="16dp"
+            app:tint="@color/primaryTextColor"/>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

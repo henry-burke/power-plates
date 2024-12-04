@@ -6,17 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-
 class WorkoutAdapter(
-    private val onClick: (String) -> Unit,  // Updated to expect a String (workoutName)
+    private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
     private val workList: List<WorkoutType>
 ) : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>() {
 
-
     // ViewHolder class
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val exItems: TextView = itemView.findViewById(R.id.excersize)
-        val difItems: TextView = itemView.findViewById(R.id.difficulty)
+        val exItems: TextView = itemView.findViewById(R.id.exercise_name)
+        val difItems: TextView = itemView.findViewById(R.id.level)
         val musItems: TextView = itemView.findViewById(R.id.muscleGrp)
     }
 
@@ -31,15 +29,13 @@ class WorkoutAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wType: WorkoutType = workList[position]
 
-
         // Bind workout details to the views
-        holder.exItems.text = wType.excersizeName
+        holder.exItems.text = wType.exerciseName
         holder.difItems.text = wType.difficulty
         holder.musItems.text = wType.muscleGrp
 
         // Set onClickListener to pass workoutName to the callback
-        holder.itemView.setOnClickListener { onClick(wType.excersizeName) }
-
+        holder.itemView.setOnClickListener { onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp)) }
     }
 
     // Return the size of the dataset

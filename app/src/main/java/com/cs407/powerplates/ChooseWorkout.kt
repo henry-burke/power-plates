@@ -3,6 +3,7 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-
 import androidx.navigation.fragment.findNavController
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.WorkoutType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.core.view.MenuProvider
+import com.cs407.powerplates.data.ExerciseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -34,9 +41,15 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var worAdap: WorkoutAdapter
     private lateinit var intermediate: Button
     private lateinit var userLevelKV: SharedPreferences
-    private lateinit var itemsArrayList: ArrayList<WorkoutType>
 
     private lateinit var workoutName: String
+
+    // showWorkouts() variables
+    private lateinit var exerciseDB: ExerciseDatabase
+    private lateinit var nameList: List<String>
+    private lateinit var muscleList: List<String>
+    private lateinit var levelList: List<String>
+    private lateinit var exerciseArrayList: ArrayList<WorkoutType>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,45 +81,60 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.workout_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_logout -> {
+                        userViewModel.setUser(UserState())
+                        findNavController().navigate(R.id.action_chooseWorkout_to_loginFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.greeting_text, userState.name)
 
-        showWorkouts(view)
+        // call showWorkouts from coroutine to query from db
+        CoroutineScope(Dispatchers.Main).launch {
+            showWorkouts(view)
+        }
     }
 
-    private fun showWorkouts(view: View){
+    private suspend fun showWorkouts(view: View){
         workRecyclerView = view.findViewById(R.id.workoutRecyclerView)
         workRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val workout1 = WorkoutType("a", "a", "a")
-        val workout2 = WorkoutType("b", "b", "b")
-        val workout3 = WorkoutType("c", "c", "c")
-        val workout4 = WorkoutType("d", "d", "d")
-        val workout5 = WorkoutType("e", "e", "e")
-        val workout6 = WorkoutType("f", "f", "f")
-        val workout7 = WorkoutType("g", "g", "g")
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-        itemsArrayList = arrayListOf()
-        itemsArrayList.add(workout1)
-        itemsArrayList.add(workout2)
-        itemsArrayList.add(workout3)
-        itemsArrayList.add(workout4)
-        itemsArrayList.add(workout5)
-        itemsArrayList.add(workout6)
-        itemsArrayList.add(workout7)
+        // uncomment coroutine IF showWorkouts not suspend AND not called from a coroutine
+//        CoroutineScope(Dispatchers.Main).launch {
+        nameList = exerciseDB.exerciseDao().getExerciseNames()
+        muscleList = exerciseDB.exerciseDao().getExerciseMuscles()
+        levelList = exerciseDB.exerciseDao().getExerciseLevels()
+//        }
+        exerciseArrayList = arrayListOf()
 
-
-        workoutName = "abs"
+        for (i in 1..<nameList.size) {
+            exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
+        }
 
         worAdap = WorkoutAdapter(
-            onClick = { workoutName ->
-                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutName)
+            onClick = { exerciseName ->
+                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
+                    exerciseName.toString()
+                )
                 findNavController().navigate(action)
             },
-            itemsArrayList
+            exerciseArrayList
         )
-
-
 
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
