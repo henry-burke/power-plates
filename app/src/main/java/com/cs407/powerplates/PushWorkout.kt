@@ -38,7 +38,7 @@ class PushWorkout(
 
 
     // UI elements for other parts of the layout (RecyclerView, FAB, etc.)
-    private lateinit var greetingTextView: TextView
+    private lateinit var card1Text: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var start: Button
@@ -66,20 +66,20 @@ class PushWorkout(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.checkbox_card, container, false)
+        val view = inflater.inflate(R.layout.checkbox_card, container, false)
 
         // Initialize checkboxes
         //checkBox1 = rootView.findViewById(R.id.checkBox)
-        checkBox2 = rootView.findViewById(R.id.checkBox2)
-        checkBox3 = rootView.findViewById(R.id.checkBox3)
-        checkBox4 = rootView.findViewById(R.id.checkBox4)
-        checkBox5 = rootView.findViewById(R.id.checkBox5)
-        checkBox6 = rootView.findViewById(R.id.checkBox6)
-        checkBox7 = rootView.findViewById(R.id.checkBox7)
-        checkBox8 = rootView.findViewById(R.id.checkBox8)
-        checkBox9 = rootView.findViewById(R.id.checkBox9)
+        checkBox2 = view.findViewById(R.id.checkBox2)
+        checkBox3 = view.findViewById(R.id.checkBox3)
+        checkBox4 = view.findViewById(R.id.checkBox4)
+        checkBox5 = view.findViewById(R.id.checkBox5)
+        checkBox6 = view.findViewById(R.id.checkBox6)
+        checkBox7 = view.findViewById(R.id.checkBox7)
+        checkBox8 = view.findViewById(R.id.checkBox8)
+        checkBox9 = view.findViewById(R.id.checkBox9)
 
-
+        card1Text = view.findViewById(R.id.card1_text)
 
 
 
@@ -97,7 +97,7 @@ class PushWorkout(
 
         // Additional setup for RecyclerView, FAB, or other UI components can go here
 
-        return rootView
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,6 +109,8 @@ class PushWorkout(
         // Example setup for RecyclerView
         // myAdapter = Adapter(items)  // Assuming Adapter and items are defined
         // recyclerView.adapter = myAdapter
+
+        card1Text.text = getString(R.string.workout_details, "Push Ups", "Advanced", 20)
     }
 
     private fun areAllCheckboxesChecked(): Boolean {

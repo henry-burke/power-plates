@@ -8,194 +8,208 @@
     android:background="#168BC34A"
     tools:context=".PushWorkout">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-    android:background="#168BC34A"
-    tools:context=".PushWorkout">
-
-    <!-- Card 1 -->
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select your options"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.037" />
-
-    <androidx.cardview.widget.CardView
-android:id="@+id/cardView1"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:layout_marginTop="16dp"
-android:layout_marginStart="16dp"
-android:layout_marginEnd="16dp"
-app:cardCornerRadius="8dp"
-app:cardElevation="4dp"
-app:layout_constraintTop_toBottomOf="@id/textView"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- Text for Card 1 -->
-
-    <TextView
-        android:id="@+id/card1_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Card 1: Select options"
-        android:textSize="18sp"
-        android:paddingBottom="10dp"/>
+        android:background="#168BC34A"
+        tools:context=".PushWorkout">
 
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 1"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+        <!-- Card 1 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 2"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+            <!-- Horizontal LinearLayout to divide TextView and CheckBoxes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 3"
-        android:textSize="18sp"
-        android:padding="7dp"/>
-</LinearLayout>
-</androidx.cardview.widget.CardView>
+                <!-- Text for Card 1 (left side) -->
+                <TextView
+                    android:id="@+id/card1_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select Options for Card 1"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"/>
 
-    <!-- Card 2 -->
-<androidx.cardview.widget.CardView
-android:id="@+id/cardView2"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:layout_marginTop="16dp"
-android:layout_marginStart="16dp"
-android:layout_marginEnd="16dp"
-app:cardCornerRadius="8dp"
-app:cardElevation="4dp"
-app:layout_constraintTop_toBottomOf="@id/cardView1"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+                <!-- Checkboxes for Card 1 (right side) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp">
 
-    <!-- Text for Card 2 -->
-    <TextView
-        android:id="@+id/card2_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Card 2: Select options"
-        android:textSize="18sp"
-        android:paddingBottom="10dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBox1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 1"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
 
-    <CheckBox
-        android:id="@+id/checkBox4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 4"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBox2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 2"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
 
-    <CheckBox
-        android:id="@+id/checkBox5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 5"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBox3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 3"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-    <CheckBox
-        android:id="@+id/checkBox6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 6"
-        android:textSize="18sp"
-        android:padding="7dp"/>
-</LinearLayout>
-</androidx.cardview.widget.CardView>
+        <!-- Card 2 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/cardView1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Card 3 -->
-<androidx.cardview.widget.CardView
-android:id="@+id/cardView3"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:layout_marginTop="16dp"
-android:layout_marginStart="16dp"
-android:layout_marginEnd="16dp"
-app:cardCornerRadius="8dp"
-app:cardElevation="4dp"
-app:layout_constraintTop_toBottomOf="@id/cardView2"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent">
+            <!-- Horizontal LinearLayout to divide TextView and CheckBoxes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+                <!-- Text for Card 2 (left side) -->
+                <TextView
+                    android:id="@+id/card2_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Card 2: Select options"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"/>
 
-    <!-- Text for Card 3 -->
-    <TextView
-        android:id="@+id/card3_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Card 3: Select options"
-        android:textSize="18sp"
-        android:paddingBottom="10dp"/>
+                <!-- Checkboxes for Card 2 (right side) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp">
 
-    <CheckBox
-        android:id="@+id/checkBox7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 7"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBox4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 4"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
 
-    <CheckBox
-        android:id="@+id/checkBox8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 8"
-        android:textSize="18sp"
-        android:padding="7dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBox5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 5"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
 
-    <CheckBox
-        android:id="@+id/checkBox9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Option 9"
-        android:textSize="18sp"
-        android:padding="7dp"/>
-</LinearLayout>
-</androidx.cardview.widget.CardView>
+                    <CheckBox
+                        android:id="@+id/checkBox6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 6"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Card 3 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/cardView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Horizontal LinearLayout to divide TextView and CheckBoxes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <!-- Text for Card 3 (left side) -->
+                <TextView
+                    android:id="@+id/card3_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Card 3: Select options"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"/>
+
+                <!-- Checkboxes for Card 3 (right side) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp">
+
+                    <CheckBox
+                        android:id="@+id/checkBox7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 7"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBox8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 8"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBox9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option 9"
+                        android:textSize="18sp"
+                        android:padding="7dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
