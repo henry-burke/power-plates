@@ -95,6 +95,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                         findNavController().navigate(R.id.action_chooseWorkout_to_loginFragment)
                         true
                     }
+                    R.id.stopwatch -> {
+                        findNavController().navigate(R.id.action_chooseWorkout_to_StopwatchFragment)
+                        true
+                    }
                     else -> false
                 }
             }
@@ -126,12 +130,12 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         itemsArrayList.add(workout6)
         itemsArrayList.add(workout7)
 
-        workoutName = "abs"
-
         worAdap = WorkoutAdapter(
             onClick = { workoutName ->
-                //val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutName)
-                //findNavController().navigate(action)
+                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
+                    workoutName.toString()
+                )
+                findNavController().navigate(action)
             },
             itemsArrayList
         )
