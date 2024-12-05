@@ -92,6 +92,11 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        done.setOnClickListener{
+            Log.d("clicked", "pressed")
+            findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+        }
+
         val menuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
