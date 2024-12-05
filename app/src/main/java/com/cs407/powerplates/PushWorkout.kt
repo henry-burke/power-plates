@@ -39,6 +39,8 @@ class PushWorkout(
 
     // UI elements for other parts of the layout (RecyclerView, FAB, etc.)
     private lateinit var card1Text: TextView
+    private lateinit var card2Text: TextView
+    private lateinit var card3Text: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var start: Button
@@ -80,6 +82,9 @@ class PushWorkout(
         checkBox9 = view.findViewById(R.id.checkBox9)
 
         card1Text = view.findViewById(R.id.card1_text)
+        card2Text = view.findViewById(R.id.card2_text)
+        card3Text = view.findViewById(R.id.card3_text)
+
 
 
 
@@ -110,7 +115,9 @@ class PushWorkout(
         // myAdapter = Adapter(items)  // Assuming Adapter and items are defined
         // recyclerView.adapter = myAdapter
 
-        card1Text.text = getString(R.string.workout_details, "Push Ups", "Advanced", 20)
+        card1Text.text = getString(R.string.workout_details, "Push Ups", "Advanced", 30)
+        card2Text.text = getString(R.string.workout_details, "Arm Curls", "Advanced", 20)
+        card3Text.text = getString(R.string.workout_details, "Bicep Curls", "Advanced", 10)
     }
 
     private fun areAllCheckboxesChecked(): Boolean {

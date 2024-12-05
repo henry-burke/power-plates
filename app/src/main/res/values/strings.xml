@@ -36,7 +36,7 @@
     <string name="about_workout">Workout information</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="workout_details">• %1$s\n• Level: %2$s\n• %3$d reps each set</string>
+    <string name="workout_details">%1$s\n• Level: %2$s\n• %3$d reps each set</string>
 
 
 
