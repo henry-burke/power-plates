@@ -126,6 +126,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
         }
 
+        // TODO: change action to go from push -> pull -> legs -> cardio -> abs
         worAdap = WorkoutAdapter(
             onClick = { exerciseName ->
                 val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
