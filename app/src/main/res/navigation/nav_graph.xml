@@ -114,6 +114,22 @@
         android:label="Choose Session"
         tools:layout="@layout/fragment_choose_session">
 
+        <action
+            android:id="@+id/action_chooseSession_to_pushWorkout"
+
+            app:destination="@+id/PushWorkout"
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/PushWorkout"
+        android:name="com.cs407.powerplates.PushWorkout"
+        android:label="Push Workout"
+        tools:layout="@layout/fragment_push_workout">
+
     </fragment>
 
 
