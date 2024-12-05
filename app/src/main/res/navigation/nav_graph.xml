@@ -72,6 +72,13 @@
 
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseWorkout_to_StopwatchFragment"
+
+            app:destination="@+id/StopwatchFragment"
+
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -98,6 +105,14 @@
         android:name="com.cs407.powerplates.HomePage"
         android:label="Home Page"
         tools:layout="@layout/fragment_home_page">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/StopwatchFragment"
+        android:name="com.cs407.powerplates.StopwatchFragment"
+        android:label="Stopwatch"
+        tools:layout="@layout/fragment_stopwatch">
 
     </fragment>
 
