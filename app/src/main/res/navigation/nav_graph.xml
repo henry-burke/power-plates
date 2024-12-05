@@ -128,7 +128,7 @@
         android:id="@+id/PushWorkout"
         android:name="com.cs407.powerplates.PushWorkout"
         android:label="Push Workout"
-        tools:layout="@layout/fragment_push_workout">
+        tools:layout="@layout/checkbox_card">
 
     </fragment>
 

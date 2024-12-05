@@ -3,53 +3,62 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
-class PushWorkout(private val injectedUserViewModel: UserViewModel? = null // For testing only
+class PushWorkout(
+    private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
-    // TODO: Rename and change types of parameters
+
+    // User ViewModel and SharedPreferences
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var userPasswdKV: SharedPreferences
-
+    private lateinit var userLevelKV: SharedPreferences
     private var userId: Int = 0
 
+    // UI elements for checkboxes and submit button
+    private lateinit var checkBox1: CheckBox
+    private lateinit var checkBox2: CheckBox
+    private lateinit var checkBox3: CheckBox
+    private lateinit var checkBox4: CheckBox
+    private lateinit var checkBox5: CheckBox
+    private lateinit var checkBox6: CheckBox
+    private lateinit var checkBox7: CheckBox
+    private lateinit var checkBox8: CheckBox
+    private lateinit var checkBox9: CheckBox
+
+
+    // UI elements for other parts of the layout (RecyclerView, FAB, etc.)
     private lateinit var greetingTextView: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var start: Button
-    private lateinit var userLevelKV: SharedPreferences
 
     private lateinit var items: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
     private lateinit var myAdapter: Adapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //load user view model
+        // Load user ViewModel and SharedPreferences
         userPasswdKV = requireContext().getSharedPreferences(
-            getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
+            getString(R.string.userPasswdKV), Context.MODE_PRIVATE
+        )
         userLevelKV = requireContext().getSharedPreferences(
-            getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
+            getString(R.string.userPasswdKV), Context.MODE_PRIVATE
+        )
 
-        userViewModel = if (injectedUserViewModel != null) {
-            injectedUserViewModel
-        } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
-            ViewModelProvider(requireActivity())[UserViewModel::class.java]
-        }
+        userViewModel = injectedUserViewModel ?: ViewModelProvider(requireActivity())[UserViewModel::class.java]
         userId = userViewModel.userState.value.id
     }
 
@@ -57,17 +66,60 @@ class PushWorkout(private val injectedUserViewModel: UserViewModel? = null // Fo
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_push_workout, container, false)
+        val rootView = inflater.inflate(R.layout.checkbox_card, container, false)
 
-        return view
+        // Initialize checkboxes
+        //checkBox1 = rootView.findViewById(R.id.checkBox)
+        checkBox2 = rootView.findViewById(R.id.checkBox2)
+        checkBox3 = rootView.findViewById(R.id.checkBox3)
+        checkBox4 = rootView.findViewById(R.id.checkBox4)
+        checkBox5 = rootView.findViewById(R.id.checkBox5)
+        checkBox6 = rootView.findViewById(R.id.checkBox6)
+        checkBox7 = rootView.findViewById(R.id.checkBox7)
+        checkBox8 = rootView.findViewById(R.id.checkBox8)
+        checkBox9 = rootView.findViewById(R.id.checkBox9)
+
+
+
+
+
+        // Set up submit button to check if all checkboxes are checked
+        /*
+        submitButton.setOnClickListener {
+            if (areAllCheckboxesChecked()) {
+                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+         */
+
+        // Additional setup for RecyclerView, FAB, or other UI components can go here
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // You can use this method to handle any additional logic after the view has been created
         val userState = userViewModel.userState.value
 
+        // Example setup for RecyclerView
+        // myAdapter = Adapter(items)  // Assuming Adapter and items are defined
+        // recyclerView.adapter = myAdapter
+    }
 
-
+    private fun areAllCheckboxesChecked(): Boolean {
+        return checkBox1.isChecked &&
+                checkBox2.isChecked &&
+                checkBox3.isChecked &&
+                checkBox4.isChecked &&
+                checkBox5.isChecked &&
+                checkBox6.isChecked &&
+                checkBox7.isChecked &&
+                checkBox8.isChecked &&
+                checkBox9.isChecked
     }
 }
