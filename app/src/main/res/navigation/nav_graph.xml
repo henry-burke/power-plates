@@ -218,6 +218,13 @@
         android:name="com.cs407.powerplates.AbWorkout"
         android:label="Ab Workout"
         tools:layout="@layout/checkbox_card">
+        <action
+            android:id="@+id/action_abWorkout_to_homePage"
+
+            app:destination="@+id/homePage"
+            app:popUpTo="@id/AbWorkout"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
 

@@ -11,9 +11,11 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -50,6 +52,10 @@ class AbWorkout(
     private lateinit var card1Text: TextView
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
+
+
+    //Finish Button
+    private lateinit var finishButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +98,8 @@ class AbWorkout(
         card2Text = view.findViewById(R.id.card2_text)
         card3Text = view.findViewById(R.id.card3_text)
 
+        //Initialize Finish Button
+        finishButton = view.findViewById(R.id.finishButton)
 
 
 
@@ -133,6 +141,18 @@ class AbWorkout(
         checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox9.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
+
+        //if all checkboxes checked, automatically go back to home page
+        //else ask for confirmation that finished with workout
+        finishButton.setOnClickListener {
+            if (areAllCheckboxesChecked()) {
+                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_abWorkout_to_homePage)
+            } else {
+                //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
+                unfinishedDialog()
+            }
+        }
     }
 
 
@@ -174,5 +194,20 @@ class AbWorkout(
                 checkBox7.isChecked &&
                 checkBox8.isChecked &&
                 checkBox9.isChecked
+    }
+
+    private fun unfinishedDialog(){
+        AlertDialog.Builder(requireContext())
+            .setTitle("Not Finished")
+            .setMessage("You haven't finished all sets. Finish now or go back")
+            .setPositiveButton("Finish"){ dialog, _->
+                dialog.dismiss()
+                findNavController().navigate(R.id.action_abWorkout_to_homePage)
+            }
+            .setNegativeButton("Back"){ dialog, _->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 }
