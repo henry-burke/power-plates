@@ -2,6 +2,7 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +43,12 @@ class PushWorkout(
     private lateinit var card1Text: TextView
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
+
+    //cards
+    private lateinit var card1: CardView
+    private lateinit var card2: CardView
+    private lateinit var card3: CardView
+
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var start: Button
@@ -70,8 +78,13 @@ class PushWorkout(
     ): View? {
         val view = inflater.inflate(R.layout.checkbox_card, container, false)
 
+        //Initialize Cards
+        card1 = view.findViewById(R.id.cardView1)
+        card2 = view.findViewById(R.id.cardView2)
+        card3 = view.findViewById(R.id.cardView3)
+
         // Initialize checkboxes
-        //checkBox1 = rootView.findViewById(R.id.checkBox)
+        checkBox1 = view.findViewById(R.id.checkBox1)
         checkBox2 = view.findViewById(R.id.checkBox2)
         checkBox3 = view.findViewById(R.id.checkBox3)
         checkBox4 = view.findViewById(R.id.checkBox4)
@@ -100,24 +113,61 @@ class PushWorkout(
 
          */
 
-        // Additional setup for RecyclerView, FAB, or other UI components can go here
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // You can use this method to handle any additional logic after the view has been created
-        val userState = userViewModel.userState.value
-
-        // Example setup for RecyclerView
-        // myAdapter = Adapter(items)  // Assuming Adapter and items are defined
-        // recyclerView.adapter = myAdapter
-
+        //hardcoded workout details
         card1Text.text = getString(R.string.workout_details, "Push Ups", "Advanced", 30)
         card2Text.text = getString(R.string.workout_details, "Arm Curls", "Advanced", 20)
         card3Text.text = getString(R.string.workout_details, "Bicep Curls", "Advanced", 10)
+
+
+        //card changes color if all text boxes are checked for that card
+        checkBox1.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
+        checkBox2.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
+        checkBox3.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
+
+
+        checkBox4.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
+        checkBox5.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
+        checkBox6.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
+
+
+        checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
+        checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
+        checkBox9.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
+    }
+
+
+
+    private fun card1AllCheckBoxes(){
+        if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked){
+            card1.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+        }
+        else{
+            card1.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+        }
+    }
+
+    private fun card2AllCheckBoxes(){
+        if (checkBox4.isChecked && checkBox5.isChecked && checkBox6.isChecked){
+            card2.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+        }
+        else{
+            card2.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+        }
+    }
+
+    private fun card3AllCheckBoxes(){
+        if (checkBox7.isChecked && checkBox8.isChecked && checkBox9.isChecked){
+            card3.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+        }
+        else{
+            card3.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+        }
     }
 
     private fun areAllCheckboxesChecked(): Boolean {
