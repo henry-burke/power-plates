@@ -72,6 +72,13 @@
 
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseWorkout_to_StopwatchFragment"
+
+            app:destination="@+id/StopwatchFragment"
+
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -98,133 +105,15 @@
         android:name="com.cs407.powerplates.HomePage"
         android:label="Home Page"
         tools:layout="@layout/fragment_home_page">
-        <action
-            android:id="@+id/action_homePage_to_chooseSession"
-
-            app:destination="@+id/ChooseSession"
-            app:popUpTo="@id/chooseWorkout"
-            app:popUpToInclusive="true"
-            />
 
     </fragment>
 
     <fragment
-        android:id="@+id/ChooseSession"
-        android:name="com.cs407.powerplates.ChooseSession"
-        android:label="Choose Session"
-        tools:layout="@layout/fragment_choose_session">
+        android:id="@+id/StopwatchFragment"
+        android:name="com.cs407.powerplates.StopwatchFragment"
+        android:label="Stopwatch"
+        tools:layout="@layout/fragment_stopwatch">
 
-        <action
-            android:id="@+id/action_chooseSession_to_pushWorkout"
-
-            app:destination="@+id/PushWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
-            />
-        <action
-            android:id="@+id/action_chooseSession_to_pullWorkout"
-
-            app:destination="@+id/PullWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
-            />
-        <action
-            android:id="@+id/action_chooseSession_to_legWorkout"
-
-            app:destination="@+id/LegWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
-            />
-        <action
-            android:id="@+id/action_chooseSession_to_cardioWorkout"
-
-            app:destination="@+id/CardioWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
-            />
-        <action
-            android:id="@+id/action_chooseSession_to_abWorkout"
-
-            app:destination="@+id/AbWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/PushWorkout"
-        android:name="com.cs407.powerplates.PushWorkout"
-        android:label="Push Workout"
-        tools:layout="@layout/checkbox_card">
-
-        <action
-            android:id="@+id/action_pushWorkout_to_homePage"
-
-            app:destination="@+id/homePage"
-            app:popUpTo="@id/PushWorkout"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/PullWorkout"
-        android:name="com.cs407.powerplates.PullWorkout"
-        android:label="Pull Workout"
-        tools:layout="@layout/checkbox_card">
-        <action
-            android:id="@+id/action_pullWorkout_to_homePage"
-
-            app:destination="@+id/homePage"
-            app:popUpTo="@id/PullWorkout"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/LegWorkout"
-        android:name="com.cs407.powerplates.LegWorkout"
-        android:label="Leg Workout"
-        tools:layout="@layout/checkbox_card">
-        <action
-            android:id="@+id/action_legWorkout_to_homePage"
-
-            app:destination="@+id/homePage"
-            app:popUpTo="@id/LegWorkout"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/CardioWorkout"
-        android:name="com.cs407.powerplates.CardioWorkout"
-        android:label="Cardio Workout"
-        tools:layout="@layout/checkbox_card">
-        <action
-            android:id="@+id/action_cardioWorkout_to_homePage"
-
-            app:destination="@+id/homePage"
-            app:popUpTo="@id/CardioWorkout"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/AbWorkout"
-        android:name="com.cs407.powerplates.AbWorkout"
-        android:label="Ab Workout"
-        tools:layout="@layout/checkbox_card">
-        <action
-            android:id="@+id/action_abWorkout_to_homePage"
-
-            app:destination="@+id/homePage"
-            app:popUpTo="@id/AbWorkout"
-            app:popUpToInclusive="true"
-            />
     </fragment>
 
 
