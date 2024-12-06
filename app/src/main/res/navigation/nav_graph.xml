@@ -203,6 +203,13 @@
         android:name="com.cs407.powerplates.CardioWorkout"
         android:label="Cardio Workout"
         tools:layout="@layout/checkbox_card">
+        <action
+            android:id="@+id/action_cardioWorkout_to_homePage"
+
+            app:destination="@+id/homePage"
+            app:popUpTo="@id/CardioWorkout"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
