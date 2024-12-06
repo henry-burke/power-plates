@@ -173,7 +173,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 //                            var curLayout = R.id.card_lin_layout
                             var curLayout = workRecyclerView
 //                            Log.v("test", curLayout[2].toString())
-                            curLayout[exerciseId].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+                            curLayout[exerciseId - 1].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
                         }
                         Log.v("TEST", exerciseName[0])
 
