@@ -38,4 +38,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="stopwatch">Stopwatch</string>
 
+
+    <string name="workout_details">%1$s\n• Level: %2$s\n• %3$d reps each set</string>
+    <string name="workout_details_no_reps">%1$s\n• Level: %2$s\n• %3$d min</string>
+
+
+    <!-- checkbox strings -->
+    <string name="checkBox1">Coding contests</string>
+    <string name="checkBox2_text">Civil Engineering Courses</string>
+    <string name="checkBox1_text">Coding Contests</string>
+    <string name="checkBox3_text">Computer Science Courses</string>
+    <string name="checkBox4_text">Company specific coding questions</string>
+    <string name="checkBox5_text">Download movies</string>
+
+
 </resources>

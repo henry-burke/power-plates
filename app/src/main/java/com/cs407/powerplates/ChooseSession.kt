@@ -3,6 +3,7 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.recyclerview.widget.ItemTouchHelper
+import java.util.Collections
 
 
-class HomePage(private val injectedUserViewModel: UserViewModel? = null // For testing only
-) : Fragment() {
+class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // For testing only
+): Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var userViewModel: UserViewModel
 
@@ -27,13 +30,18 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
     private lateinit var greetingTextView: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
-    private lateinit var start: Button
+    private lateinit var push: Button
+    private lateinit var pull: Button
+    private lateinit var leg: Button
+    private lateinit var cardio: Button
+    private lateinit var abs: Button
     private lateinit var userLevelKV: SharedPreferences
 
     private lateinit var items: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
-    private lateinit var myAdapter: Adapter
 
+
+    private lateinit var itemsArrayList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +65,12 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home_page, container, false)
-
-        start = view.findViewById(R.id.startButton)
-
-
+        val view = inflater.inflate(R.layout.fragment_choose_session, container, false)
+        push = view.findViewById(R.id.pushButton)
+        pull = view.findViewById(R.id.pullButton)
+        leg = view.findViewById(R.id.legButton)
+        cardio = view.findViewById(R.id.cardioButton)
+        abs = view.findViewById(R.id.absButton)
         return view
     }
 
@@ -70,11 +79,31 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
 
         val userState = userViewModel.userState.value
 
-        // setting up the button
-        start.setOnClickListener{
+        push.setOnClickListener{
             //buttonClicked("beginner")
-            findNavController().navigate(R.id.action_homePage_to_chooseSession)
+            findNavController().navigate(R.id.action_chooseSession_to_pushWorkout)
+        }
+        pull.setOnClickListener{
+            //buttonClicked("beginner")
+            findNavController().navigate(R.id.action_chooseSession_to_pullWorkout)
+        }
+        leg.setOnClickListener{
+            //buttonClicked("beginner")
+            findNavController().navigate(R.id.action_chooseSession_to_legWorkout)
+        }
+        cardio.setOnClickListener{
+            //buttonClicked("beginner")
+            findNavController().navigate(R.id.action_chooseSession_to_cardioWorkout)
+        }
+        abs.setOnClickListener{
+            //buttonClicked("beginner")
+            findNavController().navigate(R.id.action_chooseSession_to_abWorkout)
         }
 
+
+
     }
+
+
+
 }
