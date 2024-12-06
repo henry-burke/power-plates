@@ -51,6 +51,10 @@ class PushWorkout(
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
 
+
+    //Finish Button
+    private lateinit var finishButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -92,7 +96,8 @@ class PushWorkout(
         card2Text = view.findViewById(R.id.card2_text)
         card3Text = view.findViewById(R.id.card3_text)
 
-
+        //Initialize Finish Button
+        finishButton = view.findViewById(R.id.finishButton)
 
 
         // Set up submit button to check if all checkboxes are checked
@@ -133,6 +138,15 @@ class PushWorkout(
         checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox9.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
+
+
+        finishButton.setOnClickListener {
+            if (areAllCheckboxesChecked()) {
+                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
