@@ -144,7 +144,7 @@ class PullWorkout(
         finishButton.setOnClickListener {
             if (areAllCheckboxesChecked()) {
                 Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_pushWorkout_to_homePage)
+                findNavController().navigate(R.id.action_pullWorkout_to_homePage)
             } else {
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
