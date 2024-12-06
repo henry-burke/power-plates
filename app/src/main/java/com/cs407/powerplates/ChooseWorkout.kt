@@ -143,9 +143,23 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         exerciseArrayList = arrayListOf()
 
+        // TODO: only add a specific category of workouts
         for (i in nameList.indices) {
             exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
         }
+
+        // find the currently selected exercises by userId
+        val userExerciseList = exerciseDB.exerciseDao().getUerExercisesByUID(userId)
+        Log.v("TESTINGTESTING", userExerciseList.toString())
+
+
+        // TODO: persist selected userExerciseRelations
+//        for(exercise in userExerciseList) {
+//            workRecyclerView[exercise.exerciseId - 1].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+//        }
+
+
+
 
         var selectedCount = 0
         var currCategory = "Abs"
@@ -165,32 +179,23 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             onClick = { exerciseName ->
                 // TODO: IMPLEMENT THREE SELECT LOGIC HERE
                 CoroutineScope(Dispatchers.IO).launch {
+                    // see number of exercises chosen by user
                     selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currCategory)
+
+                    // exerciseId of most recently clicked exercise
                     val exerciseId = exerciseDB.exerciseDao().getIdFromName(exerciseName[0])
 
-                    if (selectedCount < 3) {
+                    // check if exerciseName[0] is already a UER for userId
+                    val checker = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId)
+
+                    // insert and grey out chosen exercise if room and not already chosen
+                    if (selectedCount < 3 && checker == 0) {
                         CoroutineScope(Dispatchers.Main).launch {
-//                            var curLayout = R.id.card_lin_layout
-                            var curLayout = workRecyclerView
-//                            Log.v("test", curLayout[2].toString())
-                            curLayout[exerciseId].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
-                        }
-                        Log.v("TEST", exerciseName[0])
-
-                        val checker = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId)
-                        if(checker == 0) {
                             exerciseDB.exerciseDao().insertUserExerciseRelation(userId, exerciseName[0])
-
+                            workRecyclerView[exerciseId - 1].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
                         }
-
                     }
-
                 }
-
-
-
-
-                Log.v("Test", "test")
 //                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
 //                    exerciseName.toString()
 //                )
@@ -198,10 +203,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             },
             exerciseArrayList
         )
-
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
-
     }
-
 }

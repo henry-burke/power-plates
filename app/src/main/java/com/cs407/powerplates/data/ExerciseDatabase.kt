@@ -182,6 +182,11 @@ interface ExerciseDao {
 
     // TODO: start in progress
 
+    @Query("""SELECT Exercise.* FROM Exercise, UserExerciseRelation
+                WHERE UserExerciseRelation.userId = :userId
+                AND UserExerciseRelation.exerciseId == Exercise.exerciseId""")
+    suspend fun getUerExercisesByUID(userId: Int): List<Exercise>
+
     @Transaction
     suspend fun insertUserExerciseRelation(userId: Int, exerciseName: String) {
         val exerciseId = getIdFromName(exerciseName)
