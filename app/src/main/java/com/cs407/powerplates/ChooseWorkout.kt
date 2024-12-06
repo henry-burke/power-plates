@@ -152,11 +152,12 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         val userExerciseList = exerciseDB.exerciseDao().getUerExercisesByUID(userId)
         Log.v("TESTINGTESTING", userExerciseList.toString())
 
+        val testArr = arrayListOf<WorkoutType>()
 
         // TODO: persist selected userExerciseRelations
-//        for(exercise in userExerciseList) {
-//            workRecyclerView[exercise.exerciseId - 1].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
-//        }
+        for(exercise in userExerciseList) {
+            testArr.add(WorkoutType(exercise.exerciseName, exercise.primaryMuscle, exercise.level))
+        }
 
 
 
@@ -201,7 +202,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 //                )
 //                findNavController().navigate(action)
             },
-            exerciseArrayList
+            exerciseArrayList,
+            testArr
         )
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap

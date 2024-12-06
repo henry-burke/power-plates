@@ -1,14 +1,17 @@
 package com.cs407.powerplates
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.powerplates.data.Exercise
 
 class WorkoutAdapter(
     private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
-    private val workList: List<WorkoutType>
+    private val workList: List<WorkoutType>,
+    private val savedWorkouts: List<WorkoutType>
 ) : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>() {
 
     // ViewHolder class
@@ -36,6 +39,15 @@ class WorkoutAdapter(
 
         // Set onClickListener to pass workoutName to the callback
         holder.itemView.setOnClickListener { onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp)) }
+
+        if(savedWorkouts != null) {
+            for(workout in savedWorkouts) {
+                if(wType.exerciseName == workout.exerciseName) {
+                    holder.itemView.setBackgroundColor(Color.argb(255, 50, 255, 50))
+                }
+            }
+
+        }
     }
 
     // Return the size of the dataset
