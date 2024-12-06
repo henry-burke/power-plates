@@ -128,6 +128,27 @@
             app:popUpTo="@id/ChooseSession"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_chooseSession_to_legWorkout"
+
+            app:destination="@+id/LegWorkout"
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_chooseSession_to_cardioWorkout"
+
+            app:destination="@+id/CardioWorkout"
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_chooseSession_to_abWorkout"
+
+            app:destination="@+id/AbWorkout"
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
@@ -143,6 +164,30 @@
         android:id="@+id/PullWorkout"
         android:name="com.cs407.powerplates.PullWorkout"
         android:label="Pull Workout"
+        tools:layout="@layout/checkbox_card">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/LegWorkout"
+        android:name="com.cs407.powerplates.LegWorkout"
+        android:label="Leg Workout"
+        tools:layout="@layout/checkbox_card">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/CardioWorkout"
+        android:name="com.cs407.powerplates.CardioWorkout"
+        android:label="Cardio Workout"
+        tools:layout="@layout/checkbox_card">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/AbWorkout"
+        android:name="com.cs407.powerplates.AbWorkout"
+        android:label="Ab Workout"
         tools:layout="@layout/checkbox_card">
 
     </fragment>

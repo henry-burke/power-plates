@@ -89,15 +89,15 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         }
         leg.setOnClickListener{
             //buttonClicked("beginner")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            findNavController().navigate(R.id.action_chooseSession_to_legWorkout)
         }
         cardio.setOnClickListener{
             //buttonClicked("beginner")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            findNavController().navigate(R.id.action_chooseSession_to_cardioWorkout)
         }
         abs.setOnClickListener{
             //buttonClicked("beginner")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            findNavController().navigate(R.id.action_chooseSession_to_abWorkout)
         }
 
 
