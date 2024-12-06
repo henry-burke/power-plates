@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class PushWorkout(
+class PullWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
 
@@ -114,9 +114,9 @@ class PushWorkout(
         super.onViewCreated(view, savedInstanceState)
 
         //hardcoded workout details
-        card1Text.text = getString(R.string.workout_details, "Push Ups", "Advanced", 30)
-        card2Text.text = getString(R.string.workout_details, "Arm Curls", "Advanced", 20)
-        card3Text.text = getString(R.string.workout_details, "Bicep Curls", "Advanced", 10)
+        card1Text.text = getString(R.string.workout_details, "Pull Ups", "Advanced", 30)
+        card2Text.text = getString(R.string.workout_details, "Pull Up 2", "Advanced", 5)
+        card3Text.text = getString(R.string.workout_details, "Pulled a Muscle", "Advanced", 0)
 
 
         //card changes color if all text boxes are checked for that card

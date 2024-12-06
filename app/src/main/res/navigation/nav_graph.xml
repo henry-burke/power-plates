@@ -121,6 +121,13 @@
             app:popUpTo="@id/ChooseSession"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_chooseSession_to_pullWorkout"
+
+            app:destination="@+id/PullWorkout"
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
@@ -128,6 +135,14 @@
         android:id="@+id/PushWorkout"
         android:name="com.cs407.powerplates.PushWorkout"
         android:label="Push Workout"
+        tools:layout="@layout/checkbox_card">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/PullWorkout"
+        android:name="com.cs407.powerplates.PullWorkout"
+        android:label="Pull Workout"
         tools:layout="@layout/checkbox_card">
 
     </fragment>

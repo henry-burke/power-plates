@@ -85,7 +85,7 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         }
         pull.setOnClickListener{
             //buttonClicked("beginner")
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            findNavController().navigate(R.id.action_chooseSession_to_pullWorkout)
         }
         leg.setOnClickListener{
             //buttonClicked("beginner")
