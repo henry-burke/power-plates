@@ -24,6 +24,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
+import androidx.core.view.get
 import com.cs407.powerplates.data.ExerciseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,24 +137,64 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-        // TODO: uncomment coroutine IF showWorkouts not suspend AND not called from a coroutine
-        // CoroutineScope(Dispatchers.Main).launch {
-        nameList = exerciseDB.exerciseDao().getExerciseNames()
-        muscleList = exerciseDB.exerciseDao().getExerciseMuscles()
-        levelList = exerciseDB.exerciseDao().getExerciseLevels()
-        // }
+        nameList = exerciseDB.exerciseDao().getAllNames()
+        muscleList = exerciseDB.exerciseDao().getAllPrimaryMuscles()
+        levelList = exerciseDB.exerciseDao().getAllLevels()
+
         exerciseArrayList = arrayListOf()
 
-        for (i in 1..<nameList.size) {
+        for (i in nameList.indices) {
             exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
         }
 
+        var selectedCount = 0
+        var currCategory = "Abs"
+
+        // category: Abs
+        var e1 = "Lying Leg Raise"
+        var e2 = "Oblique Twist"
+        var e3 = "Bicycle Crunch"
+        var e4 = "Crunches"
+
+        // category: Cardio
+        var e5 = "Biking"
+
+        // TODO; NEED offsets for different categories
+
         worAdap = WorkoutAdapter(
             onClick = { exerciseName ->
-                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
-                    exerciseName.toString()
-                )
-                findNavController().navigate(action)
+                // TODO: IMPLEMENT THREE SELECT LOGIC HERE
+                CoroutineScope(Dispatchers.IO).launch {
+                    selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currCategory)
+                    val exerciseId = exerciseDB.exerciseDao().getIdFromName(exerciseName[0])
+
+                    if (selectedCount < 3) {
+                        CoroutineScope(Dispatchers.Main).launch {
+//                            var curLayout = R.id.card_lin_layout
+                            var curLayout = workRecyclerView
+//                            Log.v("test", curLayout[2].toString())
+                            curLayout[exerciseId].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+                        }
+                        Log.v("TEST", exerciseName[0])
+
+                        val checker = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId)
+                        if(checker == 0) {
+                            exerciseDB.exerciseDao().insertUserExerciseRelation(userId, exerciseName[0])
+
+                        }
+
+                    }
+
+                }
+
+
+
+
+                Log.v("Test", "test")
+//                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
+//                    exerciseName.toString()
+//                )
+//                findNavController().navigate(action)
             },
             exerciseArrayList
         )
