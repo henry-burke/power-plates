@@ -141,10 +141,12 @@ class PushWorkout(
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox9.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
 
-
+        //if all checkboxes checked, automatically go back to home page
+        //else ask for confirmation that finished with workout
         finishButton.setOnClickListener {
             if (areAllCheckboxesChecked()) {
                 Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_pushWorkout_to_homePage)
             } else {
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
