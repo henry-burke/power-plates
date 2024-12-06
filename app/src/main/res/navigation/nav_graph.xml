@@ -158,6 +158,14 @@
         android:label="Push Workout"
         tools:layout="@layout/checkbox_card">
 
+        <action
+            android:id="@+id/action_pushWorkaout_to_homePage"
+
+            app:destination="@+id/homePage"
+            app:popUpTo="@id/PushWorkout"
+            app:popUpToInclusive="true"
+            />
+
     </fragment>
 
     <fragment
@@ -189,7 +197,6 @@
         android:name="com.cs407.powerplates.AbWorkout"
         android:label="Ab Workout"
         tools:layout="@layout/checkbox_card">
-
     </fragment>
 
 
