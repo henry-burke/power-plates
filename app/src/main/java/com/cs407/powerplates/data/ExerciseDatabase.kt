@@ -210,10 +210,17 @@ interface ExerciseDao {
         SELECT COUNT(*) FROM UserExerciseRelation uer 
         WHERE uer.exerciseId IN
             (SELECT e.exerciseId FROM Exercise e WHERE e.category == :category)
-            AND
-            uer.userId == :userId
+            AND uer.userId == :userId
         """)
     suspend fun getUserExerciseCountByCategory(userId: Int, category: String): Int
+
+    @Query("""
+        SELECT e.exerciseName FROM UserExerciseRelation uer, Exercise e
+        WHERE uer.userId == :userId
+        AND uer.exerciseId == e.exerciseId
+        AND e.category == :category
+    """)
+    suspend fun getSavedWorkoutsByCategory(userId: Int, category: String): List<String>
 
     // TODO: end in progress
 

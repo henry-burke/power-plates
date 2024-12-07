@@ -54,6 +54,16 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var exerciseArrayList: ArrayList<WorkoutType>
     private val categories = listOf("Push", "Pull", "Legs", "Cardio", "Abs")
     private var currentCategoryIndex = 0
+    private val savedWorkoutsByCategory = mutableMapOf<String, ArrayList<String>>()
+    private lateinit var currCategory: String
+    private lateinit var savedWorkouts: List<String>
+    private lateinit var currentSavedWorkouts: ArrayList<String>
+    private lateinit var currentSavedCategories: ArrayList<String>
+
+    // handleWorkoutSelection() variables
+    private var exerciseId = -1
+    private var isSelected = false
+    private var selectedCount = -1
 
     // currently unused variables
     private lateinit var greetingTextView: TextView
@@ -100,18 +110,17 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         done.setOnClickListener{
             CoroutineScope(Dispatchers.IO).launch {
+                // if user has selected 3 workouts, move on to next category
                 val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, categories[currentCategoryIndex])
                 if (selectedCount == 3) {
                     moveToNextCategory(view)
+                // otherwise, send toast to prompt 3 exercises
                 } else {
-                    Toast.makeText(context, "Please select 3 workouts before proceeding.", Toast.LENGTH_LONG).show()
-                    Log.i("Selection", "Please select 3 workouts before proceeding")
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(context, "Please select 3 workouts before proceeding.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-
-            // TODO: IMPLEMENT ORIGINAL DONE ONCLICK
-//            Log.d("clicked", "pressed")
-//            findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
         }
 
         val menuHost = requireActivity()
@@ -148,10 +157,11 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     }
 
     private suspend fun showWorkouts(view: View){
+        // init variables
         workRecyclerView = view.findViewById(R.id.workoutRecyclerView)
         workRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
-        val currCategory = categories[currentCategoryIndex]
+        currCategory = categories[currentCategoryIndex]
 
         Toast.makeText(context, "Choose 3 workouts for category: $currCategory", Toast.LENGTH_LONG).show()
 
@@ -162,19 +172,16 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         // put all available exercise of currCategory into exerciseArrayList
         exerciseArrayList = arrayListOf()
-        val savedCategories = arrayListOf<String>()
-
         for (i in nameList.indices) {
             exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i], currCategory) )
         }
 
-        // find the currently selected exercises by userId
-        val userExerciseArrList = arrayListOf<String>()
-        val userExerciseList = exerciseDB.exerciseDao().getUerExercisesByUID(userId)
-        for (exercise in userExerciseList) {
-            userExerciseArrList.add(exercise)
-            savedCategories.add(currCategory)
-        }
+        // find the currently selected exercises by userId and currCategory
+        savedWorkouts = exerciseDB.exerciseDao().getSavedWorkoutsByCategory(userId, currCategory)
+        savedWorkoutsByCategory[currCategory] = ArrayList(savedWorkouts.map { it })
+
+        currentSavedWorkouts = savedWorkoutsByCategory[currCategory] ?: arrayListOf()
+        currentSavedCategories = ArrayList(currentSavedWorkouts.map { currCategory})
 
         // initialize the adapter
         worAdap = WorkoutAdapter(
@@ -182,85 +189,40 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 handleWorkoutSelection(workout[0], currCategory, view)
             },
             exerciseArrayList,
-            userExerciseArrList,
-            savedCategories
+            currentSavedWorkouts,
+            currentSavedCategories
         )
-
-//        var selectedCount = 0
-//
-//        worAdap = WorkoutAdapter(
-//            onClick = { workout ->
-//                var exerciseName = workout[0]
-//                CoroutineScope(Dispatchers.IO).launch {
-//
-//                    // exerciseId of most recently clicked exercise
-//                    val exerciseId = exerciseDB.exerciseDao().getIdFromName(exerciseName)
-//
-//                    // check if exerciseName is already a UER for userId
-//                    val isSelected = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId) > 0
-//
-//                    // remove clicked exercise if already selected by user
-//                    if (isSelected) {
-//                        exerciseDB.deleteDao().deleteExerciseFromUERelation(exerciseName)
-//                    // otherwise check if we already have 3 selected exercises
-//                    } else {
-//                        selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currCategory)
-//                        if (selectedCount < 3) {
-//                            exerciseDB.exerciseDao().insertUserExerciseRelation(userId, exerciseName)
-//                        }
-//                    }
-//                }
-////                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
-////                    exerciseName.toString()
-////                )
-////                findNavController().navigate(action)
-//            },
-//            exerciseArrayList,
-//            userExerciseArrList
-//        )
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
     }
 
     private fun handleWorkoutSelection(workoutName: String, currCategory: String, view: View) {
         CoroutineScope(Dispatchers.IO).launch {
-            val exerciseId = exerciseDB.exerciseDao().getIdFromName(workoutName)
-            val isSelected = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId) > 0
+            exerciseId = exerciseDB.exerciseDao().getIdFromName(workoutName)
+            isSelected = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId) > 0
 
             if (isSelected) {
                 // Remove from database if already selected
                 exerciseDB.deleteDao().deleteExerciseFromUERelation(workoutName)
             } else {
                 // Add to database if less than 3 selected in this category
-                val selectedCount = exerciseDB.exerciseDao().getUserExerciseCountByCategory(userId, currCategory)
-                Log.v("selectedCount", "selectedCount: $selectedCount")
+                selectedCount = exerciseDB.exerciseDao().getUserExerciseCountByCategory(userId, currCategory)
                 if (selectedCount < 3) {
-                    Log.v("test", "SELECTED--------------------")
                     exerciseDB.exerciseDao().insertUserExerciseRelation(userId, workoutName)
                 }
             }
-
-            // Check if the user has selected 3 exercises
-//            val updatedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currentCategory)
-//            if (updatedCount == 3) {
-//                // Move to the next category
-//                moveToNextCategory(view)
-//            }
         }
     }
-
 
     private fun moveToNextCategory(view: View) {
         CoroutineScope(Dispatchers.Main).launch {
             currentCategoryIndex++
 
             if (currentCategoryIndex < categories.size) {
-                Log.v("TESTING", "currentCategoryIndex: $currentCategoryIndex, ${categories[currentCategoryIndex]}")
                 // Load workouts for the next category
                 showWorkouts(view)
             } else {
                 // All categories processed, navigate or confirm
-                Log.i("Workflow", "All categories completed")
                 findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
             }
         }
