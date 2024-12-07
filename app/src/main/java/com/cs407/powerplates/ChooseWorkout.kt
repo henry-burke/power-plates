@@ -2,6 +2,7 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -49,6 +50,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var muscleList: List<String>
     private lateinit var levelList: List<String>
     private lateinit var exerciseArrayList: ArrayList<WorkoutType>
+    private val categories = listOf("Push", "Pull", "Legs", "Cardio", "Abs")
+    private var currentCategoryIndex = 0
 
     // currently unused variables
     private lateinit var greetingTextView: TextView
@@ -94,8 +97,18 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         super.onViewCreated(view, savedInstanceState)
 
         done.setOnClickListener{
-            Log.d("clicked", "pressed")
-            findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+            CoroutineScope(Dispatchers.IO).launch {
+                val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, categories[currentCategoryIndex])
+                if (selectedCount == 3) {
+                    moveToNextCategory(view)
+                } else {
+                    Log.i("Selection", "Please select 3 workouts before proceeding")
+                }
+            }
+
+            // TODO: IMPLEMENT ORIGINAL DONE ONCLICK
+//            Log.d("clicked", "pressed")
+//            findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
         }
 
         val menuHost = requireActivity()
@@ -131,81 +144,160 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         }
     }
 
-    private suspend fun showWorkouts(view: View){
+    private suspend fun showWorkouts(view: View) {
         workRecyclerView = view.findViewById(R.id.workoutRecyclerView)
         workRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-        nameList = exerciseDB.exerciseDao().getAllNames()
-        muscleList = exerciseDB.exerciseDao().getAllPrimaryMuscles()
-        levelList = exerciseDB.exerciseDao().getAllLevels()
+        val currentCategory = categories[currentCategoryIndex]
+        Log.i("Category", "Loading workouts for category: $currentCategory")
+
+        // Query the database for workouts in the current category
+        nameList = exerciseDB.exerciseDao().getAllNamesByCategory(currentCategory)
+        muscleList = exerciseDB.exerciseDao().getAllPrimaryMusclesByCategory(currentCategory)
+        levelList = exerciseDB.exerciseDao().getAllLevelsByCategory(currentCategory)
 
         exerciseArrayList = arrayListOf()
 
-        // TODO: only add a specific category of workouts
+        // Populate the workout list for the current category
         for (i in nameList.indices) {
-            exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
+            exerciseArrayList.add(WorkoutType(nameList[i], muscleList[i], levelList[i]))
         }
 
-        // find the currently selected exercises by userId
+        // Find already selected exercises for the user
+        val userExerciseArrList = arrayListOf<String>()
         val userExerciseList = exerciseDB.exerciseDao().getUerExercisesByUID(userId)
-        Log.v("TESTINGTESTING", userExerciseList.toString())
-
-        val testArr = arrayListOf<WorkoutType>()
-
-        // TODO: persist selected userExerciseRelations
-        for(exercise in userExerciseList) {
-            testArr.add(WorkoutType(exercise.exerciseName, exercise.primaryMuscle, exercise.level))
+        for (exercise in userExerciseList) {
+            userExerciseArrList.add(exercise)
         }
 
-
-
-
-        var selectedCount = 0
-        var currCategory = "Abs"
-
-        // category: Abs
-        var e1 = "Lying Leg Raise"
-        var e2 = "Oblique Twist"
-        var e3 = "Bicycle Crunch"
-        var e4 = "Crunches"
-
-        // category: Cardio
-        var e5 = "Biking"
-
-        // TODO; NEED offsets for different categories
-
+        // Initialize the adapter
         worAdap = WorkoutAdapter(
-            onClick = { exerciseName ->
-                // TODO: IMPLEMENT THREE SELECT LOGIC HERE
-                CoroutineScope(Dispatchers.IO).launch {
-                    // see number of exercises chosen by user
-                    selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currCategory)
-
-                    // exerciseId of most recently clicked exercise
-                    val exerciseId = exerciseDB.exerciseDao().getIdFromName(exerciseName[0])
-
-                    // check if exerciseName[0] is already a UER for userId
-                    val checker = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId)
-
-                    // insert and grey out chosen exercise if room and not already chosen
-                    if (selectedCount < 3 && checker == 0) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            exerciseDB.exerciseDao().insertUserExerciseRelation(userId, exerciseName[0])
-                            workRecyclerView[exerciseId - 1].setBackgroundColor(resources.getColor(android.R.color.darker_gray))
-                        }
-                    }
-                }
-//                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
-//                    exerciseName.toString()
-//                )
-//                findNavController().navigate(action)
+            onClick = { workout ->
+                handleWorkoutSelection(workout[0], currentCategory, view)
             },
             exerciseArrayList,
-            testArr
+            userExerciseArrList
         )
         workRecyclerView.setHasFixedSize(true)
         workRecyclerView.adapter = worAdap
     }
+
+
+//    private suspend fun showWorkouts(view: View){
+//        workRecyclerView = view.findViewById(R.id.workoutRecyclerView)
+//        workRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+//
+//        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+//
+//        // TODO: get names, muscles, levels specified by CATEGORY
+//        nameList = exerciseDB.exerciseDao().getAllNames()
+//        muscleList = exerciseDB.exerciseDao().getAllPrimaryMuscles()
+//        levelList = exerciseDB.exerciseDao().getAllLevels()
+//
+//        exerciseArrayList = arrayListOf()
+//
+//        // TODO: only add a specific category of workouts
+//        for (i in nameList.indices) {
+//            exerciseArrayList.add( WorkoutType(nameList[i], muscleList[i], levelList[i]) )
+//        }
+//
+//        // find the currently selected exercises by userId
+//        val userExerciseArrList = arrayListOf<String>()
+//        val userExerciseList = exerciseDB.exerciseDao().getUerExercisesByUID(userId)
+//        for (exercise in userExerciseList) {
+//            userExerciseArrList.add(exercise)
+//        }
+//        Log.i("userExerciseList", userExerciseList.toString())
+//
+//        var selectedCount = 0
+//        var currCategory = "Abs"
+//
+//        // category: Abs
+//        var e1 = "Lying Leg Raise"
+//        var e2 = "Oblique Twist"
+//        var e3 = "Bicycle Crunch"
+//        var e4 = "Crunches"
+//
+//        // category: Cardio
+//        var e5 = "Biking"
+//
+//        // TODO; NEED offsets for different categories
+//
+//        worAdap = WorkoutAdapter(
+//            onClick = { workout ->
+//                var exerciseName = workout[0]
+//                CoroutineScope(Dispatchers.IO).launch {
+//
+//                    // exerciseId of most recently clicked exercise
+//                    val exerciseId = exerciseDB.exerciseDao().getIdFromName(exerciseName)
+//
+//                    // check if exerciseName is already a UER for userId
+//                    val isSelected = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId) > 0
+//
+//                    // remove clicked exercise if already selected by user
+//                    if (isSelected) {
+//                        exerciseDB.deleteDao().deleteExerciseFromUERelation(exerciseName)
+//                    // otherwise check if we already have 3 selected exercises
+//                    } else {
+//                        selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currCategory)
+//                        if (selectedCount < 3) {
+//                            exerciseDB.exerciseDao().insertUserExerciseRelation(userId, exerciseName)
+//                        }
+//                    }
+//                }
+////                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(
+////                    exerciseName.toString()
+////                )
+////                findNavController().navigate(action)
+//            },
+//            exerciseArrayList,
+//            userExerciseArrList
+//        )
+//        workRecyclerView.setHasFixedSize(true)
+//        workRecyclerView.adapter = worAdap
+//    }
+
+    private fun handleWorkoutSelection(workoutName: String, currentCategory: String, view: View) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val exerciseId = exerciseDB.exerciseDao().getIdFromName(workoutName)
+            val isSelected = exerciseDB.exerciseDao().countUerByUIDandEID(userId, exerciseId) > 0
+
+            if (isSelected) {
+                // Remove from database if already selected
+                exerciseDB.deleteDao().deleteExerciseFromUERelation(workoutName)
+            } else {
+                // Add to database if less than 3 selected in this category
+                val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currentCategory)
+                if (selectedCount < 3) {
+                    exerciseDB.exerciseDao().insertUserExerciseRelation(userId, workoutName)
+                }
+            }
+
+            // Check if the user has selected 3 exercises
+            val updatedCount = exerciseDB.exerciseDao().userExerciseCount(userId, currentCategory)
+            if (updatedCount == 3) {
+                // Move to the next category
+                moveToNextCategory(view)
+            }
+        }
+    }
+
+
+    private fun moveToNextCategory(view: View) {
+        CoroutineScope(Dispatchers.Main).launch {
+            currentCategoryIndex++
+
+            if (currentCategoryIndex < categories.size) {
+                // Load workouts for the next category
+                showWorkouts(view)
+            } else {
+                // All categories processed, navigate or confirm
+                Log.i("Workflow", "All categories completed")
+                findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+            }
+        }
+    }
 }
+
+

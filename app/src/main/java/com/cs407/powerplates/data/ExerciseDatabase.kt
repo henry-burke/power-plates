@@ -142,13 +142,16 @@ interface ExerciseDao {
     @Query("SELECT e.exerciseName FROM Exercise e")
     suspend fun getAllNames(): List<String>
 
+    @Query("SELECT e.exerciseName FROM Exercise e WHERE e.category == :category")
+    suspend fun getAllNamesByCategory(category: String): List<String>
+
     // Query to get all exercise primary muscle group
-    @Query("SELECT e.primaryMuscle FROM Exercise e")
-    suspend fun getAllPrimaryMuscles(): List<String>
+    @Query("SELECT e.primaryMuscle FROM Exercise e WHERE e.category == :category")
+    suspend fun getAllPrimaryMusclesByCategory(category: String): List<String>
 
     // Query to get all exercise levels
-    @Query("SELECT e.level FROM Exercise e")
-    suspend fun getAllLevels(): List<String>
+    @Query("SELECT e.level FROM Exercise e WHERE e.category == :category")
+    suspend fun getAllLevelsByCategory(category: String): List<String>
 
     // Query to get a Exercise by its exerciseId
 //    @Query("SELECT * FROM exercise WHERE exerciseId = :id")
@@ -182,10 +185,10 @@ interface ExerciseDao {
 
     // TODO: start in progress
 
-    @Query("""SELECT Exercise.* FROM Exercise, UserExerciseRelation
+    @Query("""SELECT Exercise.exerciseName FROM Exercise, UserExerciseRelation
                 WHERE UserExerciseRelation.userId = :userId
                 AND UserExerciseRelation.exerciseId == Exercise.exerciseId""")
-    suspend fun getUerExercisesByUID(userId: Int): List<Exercise>
+    suspend fun getUerExercisesByUID(userId: Int): List<String>
 
     @Transaction
     suspend fun insertUserExerciseRelation(userId: Int, exerciseName: String) {
