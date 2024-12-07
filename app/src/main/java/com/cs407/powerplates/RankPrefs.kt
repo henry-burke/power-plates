@@ -52,7 +52,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
+            // Use ViewModelProvider to init UserViewModel
             ViewModelProvider(requireActivity())[UserViewModel::class.java]
         }
         userId = userViewModel.userState.value.id

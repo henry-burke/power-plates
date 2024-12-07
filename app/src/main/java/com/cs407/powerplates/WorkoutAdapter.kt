@@ -1,14 +1,25 @@
 package com.cs407.powerplates
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.powerplates.data.Exercise
+import com.cs407.powerplates.data.ExerciseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WorkoutAdapter(
     private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
-    private val workList: List<WorkoutType>
+    private val workList: List<WorkoutType>,
+    private var savedWorkouts: ArrayList<String>,
+    private val savedWorkoutsCategories: ArrayList<String>
 ) : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>() {
 
     // ViewHolder class
@@ -34,8 +45,30 @@ class WorkoutAdapter(
         holder.difItems.text = wType.difficulty
         holder.musItems.text = wType.muscleGrp
 
+        // highlight if already selected, default color (white for now) if otherwise
+        if (savedWorkouts.contains(wType.exerciseName)) {
+            holder.itemView.setBackgroundColor(Color.argb(255, 50, 255, 50))
+        } else {
+            holder.itemView.setBackgroundColor(Color.argb(255, 255, 255, 255))
+        }
+
         // Set onClickListener to pass workoutName to the callback
-        holder.itemView.setOnClickListener { onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp)) }
+        holder.itemView.setOnClickListener {
+            val categoryCount = savedWorkoutsCategories.count { it == wType.category }
+
+            if(savedWorkouts.contains(wType.exerciseName)) {
+                // deselect workout
+                savedWorkouts.remove(wType.exerciseName)
+                savedWorkoutsCategories.remove(wType.category)
+                onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
+            } else if(categoryCount < 3 && savedWorkouts.size < 15) {
+                // select workout
+                savedWorkouts.add(wType.exerciseName)
+                savedWorkoutsCategories.add(wType.category)
+                onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
+            }
+            notifyItemChanged(position)
+        }
     }
 
     // Return the size of the dataset

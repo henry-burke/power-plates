@@ -11,9 +11,12 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_choiceLevelFragment"
+
             app:destination="@id/choiceLevelFragment"
+
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+        <!--TODO: action for login to workout screen when user is logged in and has chosen exercises-->
     </fragment>
 
     <fragment
@@ -47,6 +50,7 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
+    <!--TODO: fragment action for push -> pull -> legs -> cardio -> abs-->
     <fragment
         android:id="@+id/chooseWorkout"
         android:name="com.cs407.powerplates.ChooseWorkout"
