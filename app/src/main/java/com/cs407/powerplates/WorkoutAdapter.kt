@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 class WorkoutAdapter(
     private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
     private val workList: List<WorkoutType>,
-    private val savedWorkouts: ArrayList<String>
+    private var savedWorkouts: ArrayList<String>,
+    private val savedWorkoutsCategories: ArrayList<String>
 ) : RecyclerView.Adapter<WorkoutAdapter.ViewHolder>() {
 
     // ViewHolder class
@@ -36,6 +37,10 @@ class WorkoutAdapter(
 
     // Bind data to ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        Log.v("BINDING", "BINDING")
+        Log.v("savedWorkouts", "savedWorkouts: $savedWorkouts")
+
         val wType: WorkoutType = workList[position]
 
         // Bind workout details to the views
@@ -52,11 +57,12 @@ class WorkoutAdapter(
 
         // Set onClickListener to pass workoutName to the callback
         holder.itemView.setOnClickListener {
+            val categoryCount = savedWorkoutsCategories.count { it == wType.category }
             if(savedWorkouts.contains(wType.exerciseName)) {
                 // deselect workout
                 savedWorkouts.remove(wType.exerciseName)
                 onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
-            } else if(savedWorkouts.size < 3) {
+            } else if(categoryCount < 3 && savedWorkouts.size < 15) {
                 // select workout
                 savedWorkouts.add(wType.exerciseName)
                 onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))

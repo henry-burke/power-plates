@@ -142,14 +142,20 @@ interface ExerciseDao {
     @Query("SELECT e.exerciseName FROM Exercise e")
     suspend fun getAllNames(): List<String>
 
+    // Query to get all exercise primary muscle group
+    @Query("SELECT e.primaryMuscle FROM Exercise e")
+    suspend fun getAllPrimaryMuscles(): List<String>
+
+    // Query to get all exercise levels
+    @Query("SELECT e.level FROM Exercise e")
+    suspend fun getAllLevels(): List<String>
+
     @Query("SELECT e.exerciseName FROM Exercise e WHERE e.category == :category")
     suspend fun getAllNamesByCategory(category: String): List<String>
 
-    // Query to get all exercise primary muscle group
     @Query("SELECT e.primaryMuscle FROM Exercise e WHERE e.category == :category")
     suspend fun getAllPrimaryMusclesByCategory(category: String): List<String>
 
-    // Query to get all exercise levels
     @Query("SELECT e.level FROM Exercise e WHERE e.category == :category")
     suspend fun getAllLevelsByCategory(category: String): List<String>
 
