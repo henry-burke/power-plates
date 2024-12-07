@@ -17,7 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.powerplates.data.ExerciseDatabase
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AbWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -40,8 +44,11 @@ class AbWorkout(
     private lateinit var checkBox8: CheckBox
     private lateinit var checkBox9: CheckBox
 
-
-
+    // database vars
+    private lateinit var exerciseDB: ExerciseDatabase
+    private val category = "Abs"
+    private lateinit var savedWorkouts: List<String>
+    private lateinit var savedWorkoutLevels: ArrayList<String>
 
     //cards
     private lateinit var card1: CardView
@@ -121,10 +128,27 @@ class AbWorkout(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //hardcoded workout details
-        card1Text.text = getString(R.string.workout_details_no_reps, "6 Pack", "Advanced", 20)
-        card2Text.text = getString(R.string.workout_details_no_reps, "8 pack", "Advanced", 30)
-        card3Text.text = getString(R.string.workout_details_no_reps, "Flabs", "Advanced", 0)
+        // query db for user selected exercises
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+        val getDao = exerciseDB.exerciseDao()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            savedWorkouts = getDao.getSavedWorkoutsByCategory(userId, category)
+
+            savedWorkoutLevels = arrayListOf()
+
+            for (workout in savedWorkouts) {
+                savedWorkoutLevels.add(getDao.getLevelFromName(workout))
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                if(savedWorkouts.isNotEmpty() && savedWorkoutLevels.isNotEmpty()) {
+                    card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", 30)
+                    card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", 20)
+                    card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", 10)
+                }
+            }
+        }
 
 
         //card changes color if all text boxes are checked for that card
