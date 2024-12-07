@@ -131,8 +131,8 @@ interface ExerciseDao {
 //    suspend fun getPrimaryMuscleFromName(name: String): String
 
     // get difficulty level given exercise name
-//    @Query("SELECT e.level FROM exercise e WHERE e.exerciseName == :name")
-//    suspend fun getLevelFromName(name: String): String
+    @Query("SELECT e.level FROM exercise e WHERE e.exerciseName == :name")
+    suspend fun getLevelFromName(name: String): String
 
     // Query to count all exercises
     @Query("SELECT COUNT(*) FROM exercise")
@@ -189,8 +189,6 @@ interface ExerciseDao {
         }
     }
 
-    // TODO: start in progress
-
     @Query("""SELECT Exercise.exerciseName FROM Exercise, UserExerciseRelation
                 WHERE UserExerciseRelation.userId = :userId
                 AND UserExerciseRelation.exerciseId == Exercise.exerciseId""")
@@ -221,8 +219,6 @@ interface ExerciseDao {
         AND e.category == :category
     """)
     suspend fun getSavedWorkoutsByCategory(userId: Int, category: String): List<String>
-
-    // TODO: end in progress
 
     // Query to count the number of exercises a user has
     @Query(
