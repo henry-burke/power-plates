@@ -60,7 +60,7 @@ class LoginFragment(
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
         // if db is empty, populate with existing exercise data
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             if (exerciseDB.exerciseDao().getExerciseCount() == 0) {
                 context?.let { populateExercises(it, exerciseDB.exerciseDao()) }
             }
