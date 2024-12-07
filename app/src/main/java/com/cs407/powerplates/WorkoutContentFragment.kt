@@ -29,6 +29,11 @@ class WorkoutContentFragment : Fragment() {
 
     private lateinit var workoutAdaptInput: String
 
+    // TODO: adjust max selection logic
+    private var selectedCount = 0  // Track the number of selected workouts
+    private val maxSelections = 3  // Maximum number of workouts user can select
+
+
     // TODO: text1 currently redundant
     private lateinit var text1 : TextView
 
@@ -63,7 +68,36 @@ class WorkoutContentFragment : Fragment() {
         val setLevel = view?.findViewById<TextView>(R.id.level)
         setLevel?.text = exerciseList[2]
 
+        // TODO: adjust max selection logic
+        // Handle the workout selection logic
+        setExerciseName?.setOnClickListener {
+            if (selectedCount < maxSelections) {
+                // Update the background to grey out the selected workout
+                setExerciseName.setBackgroundColor(resources.getColor(android.R.color.darker_gray))  // Change to grey color
+                selectedCount++
+
+                // If the user selects 3 workouts, disable further selection
+                if (selectedCount >= maxSelections) {
+                    disableAllSelections(view)
+                }
+            }
+        }
+
         return view
     }
 
+    // TODO: adjust max selection logic
+    // Disable all workout selections (grey out and make unclickable)
+    private fun disableAllSelections(view: View) {
+        val allWorkouts = listOf<TextView>(
+            view.findViewById(R.id.exercise_name),
+            view.findViewById(R.id.muscleGrp),
+            view.findViewById(R.id.level)
+        )
+
+        for (workout in allWorkouts) {
+            workout.isClickable = false
+            workout.setBackgroundColor(resources.getColor(android.R.color.darker_gray))  // Grey out any remaining options
+        }
+    }
 }
