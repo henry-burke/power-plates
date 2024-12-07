@@ -45,6 +45,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var worAdap: WorkoutAdapter
     private lateinit var done: Button
+    private lateinit var prev: Button
 
     // showWorkouts() variables
     private lateinit var exerciseDB: ExerciseDatabase
@@ -98,6 +99,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         val view = inflater.inflate(R.layout.fragment_choose_workout, container, false)
 
         done = view.findViewById(R.id.done)
+        prev = view.findViewById(R.id.backButton)
 
         // TODO: remove greeting text
         // greetingTextView = view.findViewById(R.id.greetingTextView)
@@ -108,13 +110,17 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        prev.setOnClickListener{
+            moveToPrevCategory(view)
+        }
+
         done.setOnClickListener{
             CoroutineScope(Dispatchers.IO).launch {
                 // if user has selected 3 workouts, move on to next category
                 val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, categories[currentCategoryIndex])
                 if (selectedCount == 3) {
                     moveToNextCategory(view)
-                // otherwise, send toast to prompt 3 exercises
+                    // otherwise, send toast to prompt 3 exercises
                 } else {
                     CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(context, "Please select 3 workouts before proceeding.", Toast.LENGTH_SHORT).show()
@@ -122,6 +128,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 }
             }
         }
+
 
         val menuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
@@ -227,6 +234,19 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             }
         }
     }
+
+    private fun moveToPrevCategory(view: View) {
+        CoroutineScope(Dispatchers.Main).launch {
+            currentCategoryIndex--
+
+            if (currentCategoryIndex >= 0) {
+                // Load workouts for the next category
+                showWorkouts(view)
+            } else {
+                // All categories processed, navigate or confirm
+                findNavController().navigate(R.id.action_chooseWorkout_to_rankPrefs)
+            }
+        }
+    }
+
 }
-
-

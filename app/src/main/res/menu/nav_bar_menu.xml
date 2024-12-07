@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/stopwatch"
+        android:title="@string/stopwatch"
+        app:showAsAction="never" />
+
+
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout"
@@ -9,10 +16,7 @@
         app:showAsAction="never" />
 
 
-    <item
-        android:id="@+id/stopwatch"
-        android:title="@string/stopwatch"
-        app:showAsAction="never" />
+
 
 
 </menu>
