@@ -17,7 +17,7 @@ class RepCount {
         this.workoutType = workoutType
     }
 
-    fun calculateReps(): String {
+    fun calculateReps(mass: Int, strength: Int, stamina: Int, bodyWeight: Int, experienceLevel: String, workoutType: String): String {
         // Safety check if input is valid
         if (mass !in 1..5 || strength !in 1..5 || stamina !in 1..5) {
             return "Rankings must be between 1 and 5."
