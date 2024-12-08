@@ -91,7 +91,12 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
             // insert user's ranked preferences into database
             CoroutineScope(Dispatchers.IO).launch {
-                exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+                if(exerciseDB.rankedDao().getUserPreferences(userId) == null) {
+                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+                } else {
+                    exerciseDB.deleteDao().removeUserPreferences(userId)
+                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+                }
             }
             findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
 
