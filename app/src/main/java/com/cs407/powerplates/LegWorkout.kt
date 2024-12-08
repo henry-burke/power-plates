@@ -63,8 +63,9 @@ class LegWorkout(
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
 
-    //Finish Button
+    // Buttons
     private lateinit var finishButton: Button
+    private lateinit var changeExerciseButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,8 +108,9 @@ class LegWorkout(
         card2Text = view.findViewById(R.id.card2_text)
         card3Text = view.findViewById(R.id.card3_text)
 
-        //Initialize Finish Button
+        //Initialize Buttons
         finishButton = view.findViewById(R.id.finishButton)
+        changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
 
 
 
@@ -188,6 +190,11 @@ class LegWorkout(
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
             }
+        }
+
+        changeExerciseButton.setOnClickListener {
+            val action = LegWorkoutDirections.actionsLegWorkoutToChooseExercise(category, true)
+            findNavController().navigate(action)
         }
     }
 

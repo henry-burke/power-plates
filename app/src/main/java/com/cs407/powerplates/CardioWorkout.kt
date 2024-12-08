@@ -63,8 +63,9 @@ class CardioWorkout(
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
 
-    //Finish Button
+    // Buttons
     private lateinit var finishButton: Button
+    private lateinit var changeExerciseButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,8 +109,9 @@ class CardioWorkout(
         card3Text = view.findViewById(R.id.card3_text)
 
 
-        //Initialize Finish Button
+        //Initialize Buttons
         finishButton = view.findViewById(R.id.finishButton)
+        changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
 
         // Set up submit button to check if all checkboxes are checked
         /*
@@ -187,6 +189,11 @@ class CardioWorkout(
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
             }
+        }
+
+        changeExerciseButton.setOnClickListener {
+            val action = CardioWorkoutDirections.actionsCardioWorkoutToChooseExercise(category, true)
+            findNavController().navigate(action)
         }
     }
 
