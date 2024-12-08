@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -144,10 +145,32 @@ class LegWorkout(
             }
 
             CoroutineScope(Dispatchers.Main).launch {
+
+
                 if(savedWorkouts.isNotEmpty() && savedWorkoutLevels.isNotEmpty()) {
-                    card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", 30)
-                    card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", 20)
-                    card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", 10)
+                    CoroutineScope(Dispatchers.IO).launch{
+                        val lis = exerciseDB.rankedDao().getUserPreferences(userId)
+
+                        val arr = arrayOf(lis.r1, lis.r2, lis.r3, lis.r4, lis.r5 )
+
+                        val massIndex = arr.indexOf("Muscle Mass") + 1
+                        val strengthIndex = arr.indexOf("Strength") + 1
+                        val staminaIndex = arr.indexOf("Stamina") + 1
+
+                        val userState = userViewModel.userState.value
+                        val name1 = userState.name + "_level"
+                        val userLevel = userPasswdKV.getString(name1, "").toString()
+
+                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "legs")
+                        Log.d("Crash", reps)
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                            card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                            card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                        }
+
+                    }
                 }
             }
         }
@@ -245,5 +268,50 @@ class LegWorkout(
             }
             .create()
             .show()
+    }
+
+    private fun calculateReps(mass: Int, strength: Int, stamina: Int, experienceLevel: String, workoutType: String): String {
+        // Safety check if input is valid
+        if (mass !in 1..5 || strength !in 1..5 || stamina !in 1..5) {
+            return "Rankings must be between 1 and 5."
+        }
+
+        if (experienceLevel !in listOf("beginner", "intermediate", "advanced")) {
+            return "Experience level must be 'beginner', 'intermediate', or 'advanced'."
+        }
+
+        if (workoutType !in listOf("push", "pull", "legs")) {
+            return "Workout type must be 'push', 'pull', or 'legs'."
+        }
+
+        // Define base reps
+        val levels = mapOf(
+            "beginner" to mapOf("push" to 10, "pull" to 12, "legs" to 13),
+            "intermediate" to mapOf("push" to 10, "pull" to 8, "legs" to 11),
+            "advanced'" to mapOf("push" to 6, "pull" to 6, "legs" to 9)
+        )
+
+        // Overall score
+        val combinedScore = mass + strength + stamina
+
+        // Base number of reps
+        var baseReps = 0
+
+        if (experienceLevel == "beginner" || experienceLevel == "intermediate"){
+            baseReps = 10
+        }
+        else{
+            baseReps = 6
+        }
+
+        // Adjust number of reps
+        baseReps = when {
+            combinedScore >= 13 -> baseReps + 1
+            combinedScore < 10 -> baseReps - 1
+            else -> baseReps
+        }
+
+        // Return the number of reps as a string
+        return baseReps.toString()
     }
 }
