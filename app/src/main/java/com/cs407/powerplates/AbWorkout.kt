@@ -63,8 +63,9 @@ class AbWorkout(
     private lateinit var card3Text: TextView
 
 
-    //Finish Button
+    // Buttons
     private lateinit var finishButton: Button
+    private lateinit var changeExerciseButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +110,7 @@ class AbWorkout(
 
         //Initialize Finish Button
         finishButton = view.findViewById(R.id.finishButton)
+        changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
 
 
 
@@ -186,6 +188,11 @@ class AbWorkout(
                 unfinishedDialog()
             }
         }
+
+//        changeExerciseButton.setOnClickListener {
+////            findNavController().navigate()
+//            Log.v("test", "change exercise")
+//        }
     }
 
 

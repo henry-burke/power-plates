@@ -52,6 +52,8 @@ class WorkoutContentFragment : Fragment() {
         // get WorkoutAdapter.kt input: a stringified list of [exerciseName, muscleGrp, level]
         workoutAdaptInput = (arguments?.getString("workoutName") ?: 0).toString()
 
+        Log.v("test", "LOOKFORTHIS: $workoutAdaptInput")
+
         // change WorkoutAdapter.kt input from a String into a List<String>
         val exerciseData = workoutAdaptInput.drop(1).dropLast(1).split(", ")
         val exerciseList = exerciseData.chunked(exerciseData.size / 2).map { it.joinToString(",") }

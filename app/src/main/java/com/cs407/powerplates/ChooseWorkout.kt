@@ -99,6 +99,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
         done = view.findViewById(R.id.done)
 
+        val inputCategory = (arguments?.getString("workoutName") ?: 0).toString()
+        currCategory = inputCategory
+        currentCategoryIndex = categories.indexOf(currCategory)
+
         // TODO: remove greeting text
         // greetingTextView = view.findViewById(R.id.greetingTextView)
 
@@ -217,6 +221,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private fun moveToNextCategory(view: View) {
         CoroutineScope(Dispatchers.Main).launch {
             currentCategoryIndex++
+
+            if(exerciseDB.exerciseDao().getAllUserExercises(userId) == 15) {
+                findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+            }
 
             if (currentCategoryIndex < categories.size) {
                 // Load workouts for the next category

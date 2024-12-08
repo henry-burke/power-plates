@@ -57,6 +57,11 @@
         android:label="@string/choose_workout"
         tools:layout="@layout/fragment_choose_workout">
 
+    <!--TODO: ADD ARG FOR CHOOSE WORKOUT-->
+        <argument
+            android:name="category"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_chooseWorkout_to_WorkoutContentFragment"
 
