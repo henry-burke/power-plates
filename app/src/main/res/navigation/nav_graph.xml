@@ -40,6 +40,9 @@
         android:name="com.cs407.powerplates.RankPrefs"
         android:label="@string/rank_prefs"
         tools:layout="@layout/fragment_rank_prefs">
+        <argument
+            android:name="workoutName"
+            app:argType="string" />
 
         <action
             android:id="@+id/action_rankPrefsFragment_to_chooseWorkout"
