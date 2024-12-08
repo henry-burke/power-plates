@@ -1,7 +1,9 @@
 package com.cs407.powerplates.data
 
 import android.content.Context
+import android.database.Cursor
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Database
@@ -31,6 +33,44 @@ import java.util.Date
 data class User(
     @PrimaryKey(autoGenerate = true) val userId: Int = 0, // Auto-generated primary key for User
     val userName: String = "" // The username field, unique due to the index
+)
+
+// History entity with primary key on userId
+@Entity(
+    primaryKeys = ["userId"], // composite primary key combining userId and exerciseId
+    foreignKeys = [ForeignKey(
+        entity = User::class, // Foreign key referencing User
+        parentColumns = ["userId"], // Parent column in User entity
+        childColumns = ["userId"], // Corresponding child column in this entity
+        onDelete = ForeignKey.CASCADE // Cascade delete UserExerciseRelation when User is deleted
+    )]
+)
+data class History(
+    val userId: Int,
+    val category: String,
+    val exercise1: String,
+    val exercise2: String,
+    val exercise3: String,
+    val date: Date
+)
+
+// RankedPrefernces entity with primary key on userId
+@Entity(
+    primaryKeys = ["userId"], // composite primary key combining userId and exerciseId
+    foreignKeys = [ForeignKey(
+        entity = User::class, // Foreign key referencing User
+        parentColumns = ["userId"], // Parent column in User entity
+        childColumns = ["userId"], // Corresponding child column in this entity
+        onDelete = ForeignKey.CASCADE // Cascade delete UserExerciseRelation when User is deleted
+    )]
+)
+data class RankedPrefs(
+    val userId: Int,
+    val r1: String,
+    val r2: String,
+    val r3: String,
+    val r4: String,
+    val r5: String,
 )
 
 // TODO: uncomment if need converter classes
@@ -63,7 +103,6 @@ data class Exercise(
     val level: String, // beginner, intermediate, advanced
     val progressionType: String, // reps, weight, or time
     val category: String, // push, pull, legs, abs, or cardio
-    val chosen: Boolean // true if chosen by user, false otherwise
 )
 
 // UserExerciseRelation
@@ -232,6 +271,26 @@ interface ExerciseDao {
     suspend fun userExerciseCount(userId: Int, category: String): Int
 }
 
+// DAO to handle adding and editing user's ranked preferences
+@Dao
+interface RankedDao {
+    @Insert
+    suspend fun insertPrefs(userPrefs: RankedPrefs)
+
+    @Query("""
+        SELECT * FROM RankedPrefs rp
+        WHERE userId == :userId
+    """)
+    fun getUserPreferences(userId: Int): RankedPrefs
+}
+
+// DAO to handle adding workouts to history
+@Dao
+interface HistoryDao {
+    @Insert
+    suspend fun insertExercise(exercise: History)
+}
+
 // DAO to handle deleting a user and its related exercises
 @Dao
 interface DeleteDao {
@@ -272,7 +331,7 @@ interface DeleteDao {
 
 // Room Database Class with ALL Entities and DAO
 // Database class with all entities and DAOs
-@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class], version = 2)
+@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 4)
 // Database class with all entities and DAOs
 @TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
@@ -280,6 +339,8 @@ abstract class ExerciseDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun deleteDao(): DeleteDao
+    abstract fun rankedDao(): RankedDao
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the same time
@@ -315,9 +376,6 @@ suspend fun populateExercises(context: Context, exerciseDao: ExerciseDao) {
     // read the JSON file from assets
     val exercisesJson = readJsonFromAssets(context)
 
-    // TODO: see if this comes up???
-    Log.v("test", exercisesJson[0].toString())
-
     // map the JSON objects to Exercise objects and upsert into db
     for (i in 0 until exercisesJson.length()){
         val item = exercisesJson.getJSONObject(i)
@@ -330,10 +388,9 @@ suspend fun populateExercises(context: Context, exerciseDao: ExerciseDao) {
         val level = item.getString("Level")
         val progressionType = item.getString("Progression Type")
         val category = item.getString("Category")
-        val chosen = false
 
         val exerciseEntity = Exercise(
-            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category, chosen
+            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category
         )
         exerciseDao.upsert(exerciseEntity)
     }
