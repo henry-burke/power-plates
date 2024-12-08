@@ -3,7 +3,9 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +18,12 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.data.ExerciseDatabase
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.cs407.powerplates.data.History
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class AbWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -171,7 +173,13 @@ class AbWorkout(
         finishButton.setOnClickListener {
             if (areAllCheckboxesChecked()) {
                 Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
-                // TODO: add history to database
+
+                // add history to database
+                CoroutineScope(Dispatchers.IO).launch {
+                    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                    exerciseDB.historyDao().insertExercise(History(userId = userId, category = category, exercise1 = savedWorkouts[0], exercise2 = savedWorkouts[1], exercise3 = savedWorkouts[2], date = formatter.format(Calendar.getInstance().time)))
+                }
+
                 findNavController().navigate(R.id.action_abWorkout_to_homePage)
             } else {
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()

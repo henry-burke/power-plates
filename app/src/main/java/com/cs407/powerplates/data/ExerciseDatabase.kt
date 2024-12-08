@@ -1,10 +1,6 @@
 package com.cs407.powerplates.data
 
 import android.content.Context
-import android.database.Cursor
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -21,7 +17,6 @@ import androidx.room.TypeConverters
 import androidx.room.Upsert
 import com.cs407.powerplates.R
 import org.json.JSONArray
-import java.io.File
 import java.util.Date
 
 // User Entity with a unique ID on user name
@@ -36,22 +31,15 @@ data class User(
 )
 
 // History entity with primary key on userId
-@Entity(
-    primaryKeys = ["userId"], // composite primary key combining userId and exerciseId
-    foreignKeys = [ForeignKey(
-        entity = User::class, // Foreign key referencing User
-        parentColumns = ["userId"], // Parent column in User entity
-        childColumns = ["userId"], // Corresponding child column in this entity
-        onDelete = ForeignKey.CASCADE // Cascade delete UserExerciseRelation when User is deleted
-    )]
-)
+@Entity
 data class History(
+    @PrimaryKey(autoGenerate = true) val historyId: Int = 0, // Auto-generated primary key for History
     val userId: Int,
     val category: String,
     val exercise1: String,
     val exercise2: String,
     val exercise3: String,
-    val date: Date
+    val date: String
 )
 
 // RankedPrefernces entity with primary key on userId
@@ -294,8 +282,12 @@ interface HistoryDao {
 // DAO to handle deleting a user and its related exercises
 @Dao
 interface DeleteDao {
-
-    //TODO: use to delete selections
+    // delete user preferences based on userId
+    @Query("""
+        DELETE FROM RankedPrefs
+        WHERE userId == :userId
+    """)
+    suspend fun removeUserPreferences(userId: Int)
 
     // Query to delete an exercise from a user's relation based on its name
     @Query("""DELETE FROM UserExerciseRelation 
@@ -331,7 +323,7 @@ interface DeleteDao {
 
 // Room Database Class with ALL Entities and DAO
 // Database class with all entities and DAOs
-@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 4)
+@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 6)
 // Database class with all entities and DAOs
 @TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
