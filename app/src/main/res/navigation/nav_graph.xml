@@ -60,12 +60,21 @@
     <!--TODO: ADD ARG FOR CHOOSE WORKOUT-->
         <argument
             android:name="category"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="Push"
+            />
+        <argument
+            android:name="droppedIn"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
 
         <action
             android:id="@+id/action_chooseWorkout_to_WorkoutContentFragment"
 
             app:destination="@+id/WorkoutContentFragment"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseWorkout_to_homePage"
@@ -88,6 +97,41 @@
 
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseWorkout_to_abWorkout"
+
+            app:destination="@+id/AbWorkout"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+            />
+        <action
+            android:id="@+id/action_chooseWorkout_to_cardioWorkout"
+
+            app:destination="@+id/CardioWorkout"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        />
+        <action
+            android:id="@+id/action_chooseWorkout_to_legWorkout"
+
+            app:destination="@+id/LegWorkout"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        />
+        <action
+            android:id="@+id/action_chooseWorkout_to_pullWorkout"
+
+            app:destination="@+id/PullWorkout"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        />
+        <action
+            android:id="@+id/action_chooseWorkout_to_pushWorkout"
+
+            app:destination="@+id/PushWorkout"
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        />
 
     </fragment>
 
@@ -181,7 +225,13 @@
             app:popUpTo="@id/PushWorkout"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/actions_pushWorkout_to_chooseExercise"
 
+            app:destination="@+id/chooseWorkout"
+            app:popUpTo="@id/PushWorkout"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
@@ -196,7 +246,13 @@
             app:popUpTo="@id/PullWorkout"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/actions_pullWorkout_to_chooseExercise"
 
+            app:destination="@+id/chooseWorkout"
+            app:popUpTo="@id/PullWorkout"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
@@ -211,7 +267,13 @@
             app:popUpTo="@id/LegWorkout"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/actions_legWorkout_to_chooseExercise"
 
+            app:destination="@+id/chooseWorkout"
+            app:popUpTo="@id/LegWorkout"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
@@ -226,7 +288,13 @@
             app:popUpTo="@id/CardioWorkout"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/actions_cardioWorkout_to_chooseExercise"
 
+            app:destination="@+id/chooseWorkout"
+            app:popUpTo="@id/CardioWorkout"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
@@ -238,6 +306,13 @@
             android:id="@+id/action_abWorkout_to_homePage"
 
             app:destination="@+id/homePage"
+            app:popUpTo="@id/AbWorkout"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/actions_abWorkout_to_chooseExercise"
+
+            app:destination="@+id/chooseWorkout"
             app:popUpTo="@id/AbWorkout"
             app:popUpToInclusive="true"
             />

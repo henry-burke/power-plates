@@ -62,7 +62,6 @@ class AbWorkout(
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
 
-
     // Buttons
     private lateinit var finishButton: Button
     private lateinit var changeExerciseButton: Button
@@ -108,7 +107,7 @@ class AbWorkout(
         card2Text = view.findViewById(R.id.card2_text)
         card3Text = view.findViewById(R.id.card3_text)
 
-        //Initialize Finish Button
+        //Initialize Buttons
         finishButton = view.findViewById(R.id.finishButton)
         changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
 
@@ -189,10 +188,10 @@ class AbWorkout(
             }
         }
 
-//        changeExerciseButton.setOnClickListener {
-////            findNavController().navigate()
-//            Log.v("test", "change exercise")
-//        }
+        changeExerciseButton.setOnClickListener {
+            val action = AbWorkoutDirections.actionsAbWorkoutToChooseExercise(category, true)
+            findNavController().navigate(action)
+        }
     }
 
 
