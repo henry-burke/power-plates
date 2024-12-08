@@ -33,6 +33,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+import com.cs407.powerplates.RepCount
+import com.cs407.powerplates.RankPrefs
+
 class PushWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
