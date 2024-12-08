@@ -3,6 +3,7 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.data.Exercise
 import com.cs407.powerplates.data.ExerciseDatabase
+import com.cs407.powerplates.data.History
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 
 class PushWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -171,6 +174,16 @@ class PushWorkout(
         finishButton.setOnClickListener {
             if (areAllCheckboxesChecked()) {
                 Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+
+                // add history to database
+                CoroutineScope(Dispatchers.IO).launch {
+                    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                    exerciseDB.historyDao().insertExercise(
+                        History(userId = userId, category = category, exercise1 = savedWorkouts[0], exercise2 = savedWorkouts[1], exercise3 = savedWorkouts[2], date = formatter.format(
+                            Calendar.getInstance().time))
+                    )
+                }
+
                 findNavController().navigate(R.id.action_pushWorkout_to_homePage)
             } else {
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
