@@ -15,6 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.cs407.powerplates.data.ExerciseDatabase
+import com.cs407.powerplates.data.RankedPrefs
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 
@@ -40,6 +45,8 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
     private lateinit var itemsArrayList: ArrayList<WorkoutData>
 
+    private lateinit var exerciseDB: ExerciseDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,19 +70,8 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_rank_prefs, container, false)
-
-
-
         greetingTextView = view.findViewById(R.id.greetingTextView)
         fab = view.findViewById(R.id.fab1)
-        itemsArrayList = arrayListOf()
-
-
-        //attempt to pass array to another fragment
-        val secondFragment = PushWorkout()
-        val bundle = Bundle()
-        val stringArr = getPrefs()
-
         return view
     }
 
@@ -87,9 +83,16 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
      
         showPrefs(view)
-
         fab.setOnClickListener {
-            navTo(getPrefs())
+            // get current order of user's ranked preferences
+            exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+            val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
+                itemsArrayList[2].title, itemsArrayList[3].title, itemsArrayList[4].title)
+
+            // insert user's ranked preferences into database
+            CoroutineScope(Dispatchers.IO).launch {
+                exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+            }
             findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
 
         }
@@ -99,6 +102,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         recyclerView = view.findViewById(R.id.recyclerView)
 
+        itemsArrayList = arrayListOf()
 
         itemsArrayList = arrayListOf(
             WorkoutData("Strength", R.drawable.baseline_fitness_center_24),        // Strength icon
@@ -107,7 +111,6 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
             WorkoutData("Mobility", R.drawable.mobility_icon),      // Mobility icon
             WorkoutData("Body Fat", R.drawable.body_fat_icon)     // Body Fat icon
         )
-
 
         myAdapter = Adapter(itemsArrayList)
         recyclerView.setHasFixedSize(true)
@@ -124,9 +127,6 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
                 Collections.swap(itemsArrayList,sourcePosition,targetPosition)
                 myAdapter.notifyItemMoved(sourcePosition,targetPosition)
-                //Log.d("print", itemsArrayList[0].title)
-                getPrefs()
-
 
                 return true
             }
@@ -137,25 +137,5 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
-    }
-
-    fun getPrefs():Array<String>{
-        val arrList = Array<String>(5)
-        for (items in itemsArrayList){
-            arrList.add(items.title)
-        }
-        Log.d("list", arrList.toString())
-        return arrList
-    }
-
-    private fun navTo(updatedList: ArrayList<String>){
-        //attempt to pass an array of strings
-        val secondFragment = PushWorkout()
-        val bundle = Bundle()
-        bundle.putStringArray("prefs", getPrefs())
-        secondFragment.arguments = bundle
-
-
     }
 }

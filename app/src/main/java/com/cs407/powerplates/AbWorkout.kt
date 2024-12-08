@@ -171,6 +171,7 @@ class AbWorkout(
         finishButton.setOnClickListener {
             if (areAllCheckboxesChecked()) {
                 Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
+                // TODO: add history to database
                 findNavController().navigate(R.id.action_abWorkout_to_homePage)
             } else {
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
