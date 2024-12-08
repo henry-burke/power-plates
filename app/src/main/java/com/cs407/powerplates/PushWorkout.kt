@@ -176,7 +176,7 @@ class PushWorkout(
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
                         val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
-                        //Log.d("Crash", reps)
+                        //Log.d("Crash", userLevel)
 
                         CoroutineScope(Dispatchers.Main).launch {
                             card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
