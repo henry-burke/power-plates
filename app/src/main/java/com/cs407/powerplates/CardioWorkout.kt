@@ -168,19 +168,6 @@ class CardioWorkout(
                         val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
                         val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
 
-                        //determine time for time based workouts based on level
-                        var time = 0
-                        if (userLevel == "beginner"){
-                            time = 25
-                        }
-                        else if (userLevel == "intermediate"){
-                            time = 35
-                        }
-                        else{
-                            time = 45
-                        }
-
-
 
                         CoroutineScope(Dispatchers.Main).launch {
 

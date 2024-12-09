@@ -178,10 +178,44 @@ class PushWorkout(
                         val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
                         //Log.d("Crash", userLevel)
 
+                        //get exercise object progType: reps, weights, or time
+                        val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
+                        val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
+                        val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
+
                         CoroutineScope(Dispatchers.Main).launch {
-                            card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
-                            card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
-                            card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                            //check progression type for first workout
+                            if (firstWorkoutProgType == "Reps"){
+                                card1Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}")
+                            }
+                            else if(firstWorkoutProgType == "Weight"){
+                                card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                            }
+                            else{
+                                card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", timeForWorkout(userLevel,savedWorkouts[0]))
+                            }
+
+                            //check progression type for second workout
+                            if (secondWorkoutProgType == "Reps"){
+                                card2Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}")
+                            }
+                            else if(secondWorkoutProgType == "Weight"){
+                                card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                            }
+                            else{
+                                card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", timeForWorkout(userLevel,savedWorkouts[1]))
+                            }
+
+                            //check progression type for third workout
+                            if (thirdWorkoutProgType == "Reps"){
+                                card3Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}")
+                            }
+                            else if(thirdWorkoutProgType == "Weight"){
+                                card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                            }
+                            else{
+                                card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", timeForWorkout(userLevel,savedWorkouts[2]))
+                            }
                         }
 
                     }
@@ -321,6 +355,72 @@ class PushWorkout(
 
         // Return the number of reps as a string
         return baseReps.toString()
+    }
+
+    private fun timeForWorkout(experienceLevel: String, workoutType: String): String? {
+        val timeWorkouts: Map<String, Map<String, String>> = mapOf(
+            "beginner" to mapOf(
+                "Leg Raise Hold" to "15 seconds each set",
+                "Plank" to "30 seconds each set",
+                "Side Plank" to "15 seconds each set",
+                "Biking" to "5 minutes each set",
+                "Cardio Rows" to "5 minutes each set",
+                "Elliptical" to "5 minutes each set",
+                "Jumping Jacks" to "30 seconds each set",
+                "Walking" to "8 minutes each set",
+                "Squat Hold" to "20 seconds each set",
+                "Wall Sit" to "20 seconds each set",
+                "Iron Cross" to "20 seconds each set",
+                "Jump Rope" to "30 seconds each set",
+                "Mountain Climber" to "25 seconds each set",
+                "Running" to "5 minutes each set",
+                "Swimming" to "5 minutes each set",
+                "Dead Hang" to "10 seconds each set",
+                "Stair Stepper" to "5 minutes each set",
+                "Single Arm Dead Hang" to "10 seconds each set"
+            ),
+            "intermediate" to mapOf(
+                "Leg Raise Hold" to "30 seconds each set",
+                "Plank" to "1 minute each set",
+                "Side Plank" to "30 seconds each set",
+                "Biking" to "8 minutes each set",
+                "Cardio Rows" to "8 minutes each set",
+                "Elliptical" to "8 minutes each set",
+                "Jumping Jacks" to "1 minute 30 seconds each set",
+                "Walking" to "15 minutes each set",
+                "Squat Hold" to "45 seconds each set",
+                "Wall Sit" to "30 seconds each set",
+                "Iron Cross" to "45 seconds each set",
+                "Jump Rope" to "1 minute 30 seconds each set",
+                "Mountain Climber" to "45 seconds each set",
+                "Running" to "8 minutes each set",
+                "Swimming" to "8 minutes each set",
+                "Dead Hang" to "20 seconds each set",
+                "Stair Stepper" to "8 minutes each set",
+                "Single Arm Dead Hang" to "25 seconds each set"
+            ),
+            "advanced" to mapOf(
+                "Leg Raise Hold" to "1 minute each set",
+                "Plank" to "2 minutes each set",
+                "Side Plank" to "1 minute each set",
+                "Biking" to "15 minutes each set",
+                "Cardio Rows" to "15 minutes each set",
+                "Elliptical" to "15 minutes each set",
+                "Jumping Jacks" to "4 minutes each set",
+                "Walking" to "20 minutes each set",
+                "Squat Hold" to "1 minute 30 seconds each set",
+                "Wall Sit" to "1 minute each set",
+                "Iron Cross" to "1 minute each set",
+                "Jump Rope" to "3 minutes each set",
+                "Mountain Climber" to "1 minute 30 seconds each set",
+                "Running" to "15 minutes each set",
+                "Swimming" to "15 minutes each set",
+                "Dead Hang" to "50 seconds each set",
+                "Stair Stepper" to "12 minutes each set",
+                "Single Arm Dead Hang" to "20 seconds each set"
+            )
+        )
+        return timeWorkouts[experienceLevel]?.get(workoutType)
     }
 
 
