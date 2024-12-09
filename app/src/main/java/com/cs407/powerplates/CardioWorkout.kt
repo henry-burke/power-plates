@@ -168,6 +168,17 @@ class CardioWorkout(
                         val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
                         val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
 
+                        var time = 0
+                        if (userLevel == "beginner"){
+                            time = 25
+                        }
+                        else if (userLevel == "intermediate"){
+                            time = 35
+                        }
+                        else{
+                            time = 45
+                        }
+
                         CoroutineScope(Dispatchers.Main).launch {
 
                             //check progression type for first workout
@@ -175,7 +186,7 @@ class CardioWorkout(
                                 card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
                             }
                             else{
-                                card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                                card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", time.toString())
                             }
 
                             //check progression type for second workout
@@ -183,7 +194,7 @@ class CardioWorkout(
                                 card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
                             }
                             else{
-                                card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                                card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", time.toString())
                             }
 
                             //check progression type for third workout
@@ -191,7 +202,7 @@ class CardioWorkout(
                                 card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
                             }
                             else{
-                                card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                                card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", time.toString())
                             }
                         }
 
