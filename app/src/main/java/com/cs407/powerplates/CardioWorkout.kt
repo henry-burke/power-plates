@@ -160,14 +160,15 @@ class CardioWorkout(
                         val name1 = userState.name + "_level"
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
-                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
+                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "cardio")
                         //Log.d("Crash", userLevel)
 
-                        //get excercise object
+                        //get exercise object progType: reps, weights, or time
                         val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
                         val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
                         val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
 
+                        //determine time for time based workouts based on level
                         var time = 0
                         if (userLevel == "beginner"){
                             time = 25
@@ -183,7 +184,7 @@ class CardioWorkout(
 
                             //check progression type for first workout
                             if (firstWorkoutProgType == "Reps"){
-                                card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                                card1Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}")
                             }
                             else{
                                 card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", time.toString())
@@ -191,7 +192,7 @@ class CardioWorkout(
 
                             //check progression type for second workout
                             if (secondWorkoutProgType == "Reps"){
-                                card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                                card2Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}")
                             }
                             else{
                                 card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", time.toString())
@@ -199,7 +200,7 @@ class CardioWorkout(
 
                             //check progression type for third workout
                             if (thirdWorkoutProgType == "Reps"){
-                                card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                                card3Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}")
                             }
                             else{
                                 card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", time.toString())
@@ -312,39 +313,27 @@ class CardioWorkout(
             return "Rankings must be between 1 and 5."
         }
 
-        if (experienceLevel !in listOf("beginner", "intermediate", "advanced")) {
-            return "Experience level must be 'beginner', 'intermediate', or 'advanced'."
-        }
-
-        if (workoutType !in listOf("push", "pull", "legs")) {
-            return "Workout type must be 'push', 'pull', or 'legs'."
-        }
 
         // Define base reps
         val levels = mapOf(
-            "beginner" to mapOf("push" to 10, "pull" to 12, "legs" to 13),
-            "intermediate" to mapOf("push" to 10, "pull" to 8, "legs" to 11),
-            "advanced'" to mapOf("push" to 6, "pull" to 6, "legs" to 9)
+            "beginner" to mapOf("cardio" to 10, "pull" to 12, "legs" to 13),
+            "intermediate" to mapOf("cardio" to 10, "pull" to 8, "legs" to 11),
+            "advanced'" to mapOf("cardio" to 6, "pull" to 6, "legs" to 9)
         )
 
         // Overall score
         val combinedScore = mass + strength + stamina
 
         // Base number of reps
-        var baseReps = 0
-
-        if (experienceLevel == "beginner" || experienceLevel == "intermediate"){
-            baseReps = 10
-        }
-        else{
-            baseReps = 6
-        }
+        var baseReps = levels[experienceLevel]?.get(workoutType)
 
         // Adjust number of reps
-        baseReps = when {
-            combinedScore >= 13 -> baseReps + 1
-            combinedScore < 10 -> baseReps - 1
-            else -> baseReps
+        if (baseReps != null) {
+            baseReps = when {
+                combinedScore >= 13 -> baseReps + 1
+                combinedScore < 10 -> baseReps - 1
+                else -> baseReps
+            }
         }
 
         // Return the number of reps as a string

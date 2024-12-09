@@ -294,21 +294,15 @@ class PullWorkout(
         // Overall score
         val combinedScore = mass + strength + stamina
 
-        // Base number of reps
-        var baseReps = 0
-
-        if (experienceLevel == "beginner" || experienceLevel == "intermediate"){
-            baseReps = 10
-        }
-        else{
-            baseReps = 6
-        }
+        var baseReps = levels[experienceLevel]?.get(workoutType)
 
         // Adjust number of reps
-        baseReps = when {
-            combinedScore >= 13 -> baseReps + 1
-            combinedScore < 10 -> baseReps - 1
-            else -> baseReps
+        if (baseReps != null) {
+            baseReps = when {
+                combinedScore >= 13 -> baseReps + 1
+                combinedScore < 10 -> baseReps - 1
+                else -> baseReps
+            }
         }
 
         // Return the number of reps as a string

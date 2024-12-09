@@ -295,20 +295,16 @@ class LegWorkout(
         val combinedScore = mass + strength + stamina
 
         // Base number of reps
-        var baseReps = 0
+        var baseReps = levels[experienceLevel]?.get(workoutType)
 
-        if (experienceLevel == "beginner" || experienceLevel == "intermediate"){
-            baseReps = 10
-        }
-        else{
-            baseReps = 6
-        }
 
         // Adjust number of reps
-        baseReps = when {
-            combinedScore >= 13 -> baseReps + 1
-            combinedScore < 10 -> baseReps - 1
-            else -> baseReps
+        if (baseReps != null) {
+            baseReps = when {
+                combinedScore >= 13 -> baseReps + 1
+                combinedScore < 10 -> baseReps - 1
+                else -> baseReps
+            }
         }
 
         // Return the number of reps as a string
