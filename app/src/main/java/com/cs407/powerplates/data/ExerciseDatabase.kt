@@ -230,6 +230,12 @@ interface ExerciseDao {
             """
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
+
+    @Query("""
+        SELECT COUNT(*) FROM UserExerciseRelation uer
+        WHERE uer.userId == :userId
+    """)
+    suspend fun getAllUserExercisesCount(userId: Int): Int
 }
 
 // DAO to handle deleting a user and its related exercises

@@ -140,6 +140,14 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                         findNavController().navigate(R.id.action_chooseWorkout_to_StopwatchFragment)
                         true
                     }
+                    R.id.choosePreff -> {
+                        findNavController().navigate(R.id.action_chooseWorkout_to_rankPrefsFragment)
+                        true
+                    }
+                    R.id.chooseLvl -> {
+                        findNavController().navigate(R.id.action_chooseWorkout_to_choiceLevelFragment)
+                        true
+                    }
                     else -> false
                 }
             }
@@ -187,6 +195,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         worAdap = WorkoutAdapter(
             onClick = { workout ->
                 handleWorkoutSelection(workout[0], currCategory, view)
+            },
+            onLongClick = { workoutDetail ->
+                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutDetail)
+                findNavController().navigate(action)
             },
             exerciseArrayList,
             currentSavedWorkouts,

@@ -120,8 +120,18 @@ class LoginFragment(
 
                     // no functional database implementation
                     // userViewModel.setUser(UserState(id, user, pass))
+                    val name1 = user + "_level"
 
-                    findNavController().navigate(R.id.action_loginFragment_to_choiceLevelFragment)
+
+                    if(userPasswdKV.contains(name1) && exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15){
+                        // navigate directly to the home page
+                        findNavController().navigate(R.id.action_loginFragment_to_homePage)
+                    }else if (userPasswdKV.contains(name1) && !(exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15)){
+                        // navigate to the excersie choice page
+                        findNavController().navigate(R.id.action_loginFragment_to_chooseWorkout)
+                    } else {
+                        findNavController().navigate(R.id.action_loginFragment_to_choiceLevelFragment)
+                    }
                 } else {
                     // Show an error message if login fails
                     errorTextView.visibility = View.VISIBLE

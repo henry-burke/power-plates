@@ -14,5 +14,15 @@
         android:title="@string/stopwatch"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/choosePreff"
+        android:title="Change Preference"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/chooseLvl"
+        android:title="Change Level"
+        app:showAsAction="never" />
+
 
 </menu>

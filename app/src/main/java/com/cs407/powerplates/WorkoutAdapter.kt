@@ -16,7 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WorkoutAdapter(
-    private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
+    private val onClick: (List<String>) -> Unit,
+    private val onLongClick: (String) -> Unit,
     private val workList: List<WorkoutType>,
     private var savedWorkouts: ArrayList<String>,
     private val savedWorkoutsCategories: ArrayList<String>
@@ -69,6 +70,12 @@ class WorkoutAdapter(
             }
             notifyItemChanged(position)
         }
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick(wType.exerciseName.toString())
+            true // Return true to indicate the event was handled
+        }
+
     }
 
     // Return the size of the dataset
