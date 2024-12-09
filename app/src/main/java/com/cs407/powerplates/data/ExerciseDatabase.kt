@@ -91,6 +91,7 @@ data class Exercise(
     val level: String, // beginner, intermediate, advanced
     val progressionType: String, // reps, weight, or time
     val category: String, // push, pull, legs, abs, or cardio
+    val description: String // description of exercise
 )
 
 // UserExerciseRelation
@@ -153,6 +154,10 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // Query: get all exercise data from all exercises
+    @Query("SELECT * FROM Exercise")
+    suspend fun getAllExerciseData(): List<Exercise>
+
     // get primary muscle group given exercise name
 //    @Query("SELECT e.primaryMuscle FROM exercise e WHERE e.exerciseName == :name")
 //    suspend fun getPrimaryMuscleFromName(name: String): String
@@ -329,7 +334,7 @@ interface DeleteDao {
 
 // Room Database Class with ALL Entities and DAO
 // Database class with all entities and DAOs
-@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 6)
+@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 7)
 // Database class with all entities and DAOs
 @TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
@@ -386,9 +391,10 @@ suspend fun populateExercises(context: Context, exerciseDao: ExerciseDao) {
         val level = item.getString("Level")
         val progressionType = item.getString("Progression Type")
         val category = item.getString("Category")
+        val description = item.getString("Description")
 
         val exerciseEntity = Exercise(
-            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category
+            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category, description
         )
         exerciseDao.upsert(exerciseEntity)
     }

@@ -104,7 +104,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         val args = ChooseWorkoutArgs.fromBundle(requireArguments())
         val inputCategory = args.category
         droppedIn = args.droppedIn
-        Log.v("test", "Dropped In: $droppedIn")
 
         if(categories.contains(inputCategory)) {
             currCategory = inputCategory
@@ -131,10 +130,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             CoroutineScope(Dispatchers.IO).launch {
                 // if user has selected 3 workouts, move on to next category
                 val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, categories[currentCategoryIndex])
+
                 if (selectedCount == 3) {
-
-                    Log.v("test", "Dropped In: $droppedIn")
-
                     CoroutineScope(Dispatchers.Main).launch {
                         val args = ChooseWorkoutArgs.fromBundle(requireArguments())
                         droppedIn = args.droppedIn
