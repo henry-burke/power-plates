@@ -164,17 +164,35 @@ class CardioWorkout(
                         //Log.d("Crash", userLevel)
 
                         //get excercise object
-                        //val first = exerciseDB.exerciseDao().getIdFromName("${savedWorkouts[0]}")
-                        //val test = exerciseDB.userDao().getUsersWithExerciseListsById(userId)
-                        val test = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
-
+                        val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
+                        val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
+                        val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
 
                         CoroutineScope(Dispatchers.Main).launch {
-                           // Log.d("checking"," ${savedWorkouts}")
-                            Log.d("checking", test)
-                            card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
-                            card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
-                            card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+
+                            //check progression type for first workout
+                            if (firstWorkoutProgType == "Reps"){
+                                card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                            }
+                            else{
+                                card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                            }
+
+                            //check progression type for second workout
+                            if (secondWorkoutProgType == "Reps"){
+                                card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                            }
+                            else{
+                                card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                            }
+
+                            //check progression type for third workout
+                            if (thirdWorkoutProgType == "Reps"){
+                                card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                            }
+                            else{
+                                card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                            }
                         }
 
                     }
