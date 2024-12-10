@@ -26,6 +26,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class LegWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -67,6 +69,12 @@ class LegWorkout(
     //Finish Button
     private lateinit var finishButton: Button
 
+    //make sure checkbox persists for the day
+    private lateinit var checkboxPrefs: SharedPreferences
+    private val pref_name = "prefs"
+    //private val check_box1_state_key = "checkbox1"
+    private val last_date_changed_key = "last_changed_date"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,6 +84,9 @@ class LegWorkout(
         )
         userLevelKV = requireContext().getSharedPreferences(
             getString(R.string.userPasswdKV), Context.MODE_PRIVATE
+        )
+        checkboxPrefs = requireContext().getSharedPreferences(
+            pref_name, Context.MODE_PRIVATE
         )
 
         userViewModel = injectedUserViewModel ?: ViewModelProvider(requireActivity())[UserViewModel::class.java]
@@ -161,7 +172,7 @@ class LegWorkout(
                         val name1 = userState.name + "_level"
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
-                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "legs")
+                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
                         //Log.d("Crash", userLevel)
 
                         //get exercise object progType: reps, weights, or time
@@ -170,6 +181,7 @@ class LegWorkout(
                         val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
 
                         CoroutineScope(Dispatchers.Main).launch {
+
                             //check progression type for first workout
                             if (firstWorkoutProgType == "Reps"){
                                 card1Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}")
@@ -180,6 +192,13 @@ class LegWorkout(
                             else{
                                 card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", timeForWorkout(userLevel,savedWorkouts[0]))
                             }
+
+                            //load last checkbox state for card1
+                            workoutCheckBox(checkBox1, "checkBox1_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox2, "checkBox2_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox3, "checkBox3_"+"${savedWorkouts[0]}")
+
+
 
                             //check progression type for second workout
                             if (secondWorkoutProgType == "Reps"){
@@ -192,6 +211,11 @@ class LegWorkout(
                                 card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", timeForWorkout(userLevel,savedWorkouts[1]))
                             }
 
+                            //load last checkbox state for card2
+                            workoutCheckBox(checkBox4, "checkBox4_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox5, "checkBox5_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox6, "checkBox6_"+"${savedWorkouts[1]}")
+
                             //check progression type for third workout
                             if (thirdWorkoutProgType == "Reps"){
                                 card3Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}")
@@ -202,6 +226,10 @@ class LegWorkout(
                             else{
                                 card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", timeForWorkout(userLevel,savedWorkouts[2]))
                             }
+                            //load last checkbox state for card3
+                            workoutCheckBox(checkBox7, "checkBox7_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox8, "checkBox8_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox9, "checkBox9_"+"${savedWorkouts[2]}")
                         }
 
                     }
@@ -409,5 +437,95 @@ class LegWorkout(
             )
         )
         return timeWorkouts[experienceLevel]?.get(workoutType)
+    }
+
+    private fun getCurrentDate():String{
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return date.format(Date())
+    }
+
+    private fun saveCheckboxState(isChecked: Boolean, currentDate:String, key:String){
+        val editor = checkboxPrefs.edit()
+        editor.putBoolean(key, isChecked)
+        editor.putString(last_date_changed_key, currentDate)
+        editor.apply()
+    }
+
+    private fun getCheckboxState(key: String): Boolean{
+        return checkboxPrefs.getBoolean(key, false)
+    }
+
+    private fun getLastChangeDate(): String?{
+        return checkboxPrefs.getString(last_date_changed_key, "")
+    }
+
+    private fun workoutCheckBox(check: CheckBox, workout: String){
+        //get current date and past date
+        val currentDate = getCurrentDate()
+        val lastDate = getLastChangeDate()
+
+        val isChecked = getCheckboxState(workout)
+        if (lastDate != currentDate){
+            check.isChecked = false
+            saveCheckboxState(false, currentDate, workout)
+        }
+        else{
+            check.isChecked = isChecked
+        }
+        //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
+        check.setOnCheckedChangeListener { _, _ ->
+            // Save checkbox state asynchronously in SharedPreferences
+            CoroutineScope(Dispatchers.IO).launch {
+                saveCheckboxState(check.isChecked, currentDate, workout)
+            }
+            // Update card color immediately (on the main thread)
+            updateCardColor()
+        }
+        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
+
+
+    }
+
+    private fun updateCardColor() {
+        // Update card colors based on checkbox states immediately
+        // Run on the main thread to ensure UI updates are smooth
+        CoroutineScope(Dispatchers.Main).launch {
+            card1AllCheckBoxesDynamic()
+            card2AllCheckBoxesDynamic()
+            card3AllCheckBoxesDynamic()
+        }
+    }
+
+    private fun card1AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked) {
+                card1.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card1.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
+    }
+
+    private fun card2AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox4.isChecked && checkBox5.isChecked && checkBox6.isChecked) {
+                card2.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card2.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
+    }
+
+    private fun card3AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox7.isChecked && checkBox8.isChecked && checkBox9.isChecked) {
+                card3.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card3.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
     }
 }
