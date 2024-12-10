@@ -172,7 +172,7 @@ class PullWorkout(
                         val name1 = userState.name + "_level"
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
-                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
+                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "pull")
                         //Log.d("Crash", userLevel)
 
                         //get exercise object progType: reps, weights, or time
