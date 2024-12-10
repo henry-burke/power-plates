@@ -5,6 +5,7 @@
     <!-- Background Colors -->
     <color name="backgroundColor">#1A1D21</color> <!-- Dark grey background -->
     <color name="inputBackground">#2D2F36</color> <!-- Slightly lighter for input fields -->
+    <color name="secondaryBackgroundColor">#2D2F36</color>
 
     <!-- Text Colors -->
     <color name="primaryTextColor">#E8EAED</color> <!-- Light grey text -->
