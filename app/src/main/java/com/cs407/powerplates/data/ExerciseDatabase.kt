@@ -235,7 +235,7 @@ interface ExerciseDao {
     @Query("SELECT COUNT(*) FROM UserExerciseRelation uer WHERE uer.userId = :userId AND uer.exerciseId = :exerciseId")
     suspend fun countUerByUIDandEID(userId: Int, exerciseId: Int): Int
 
-    // Query to get number of UserExerciseRelations based on exercise category and user ID
+    // Query to get number of UserExerciseRelations (saved exercises) based on exercise category and user ID
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer 
         WHERE uer.exerciseId IN
@@ -244,6 +244,7 @@ interface ExerciseDao {
         """)
     suspend fun getUserExerciseCountByCategory(userId: Int, category: String): Int
 
+    // Query to get a list of exerciseNames of the exercises the user has saved of a specific category, given userId and category
     @Query("""
         SELECT e.exerciseName FROM UserExerciseRelation uer, Exercise e
         WHERE uer.userId == :userId
@@ -252,7 +253,7 @@ interface ExerciseDao {
     """)
     suspend fun getSavedWorkoutsByCategory(userId: Int, category: String): List<String>
 
-    // Query to count the number of exercises a user has
+    // Query to count the user's number of saved exercises in a given category, given userId and category
     @Query(
         """SELECT COUNT(*) FROM User, Exercise, UserExerciseRelation
                 WHERE User.userId = :userId
@@ -263,19 +264,22 @@ interface ExerciseDao {
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
 
+    // Query to count the user's total number of saved exercises, given their userId
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer
         WHERE uer.userId == :userId
     """)
-    suspend fun getAllUserExercises(userId: Int): Int
+    suspend fun getUsersSavedExerciseCount(userId: Int): Int
 }
 
 // DAO to handle adding and editing user's ranked preferences
 @Dao
 interface RankedDao {
+    // Insert a user's ranked preferences into db
     @Insert
     suspend fun insertPrefs(userPrefs: RankedPrefs)
 
+    // Query to get a user's RankedPrefs object, given their userId
     @Query("""
         SELECT * FROM RankedPrefs rp
         WHERE userId == :userId
@@ -286,32 +290,36 @@ interface RankedDao {
 // DAO to handle adding workouts to history
 @Dao
 interface HistoryDao {
+    // inserts an exercise into the corresponding user's history
     @Insert
     suspend fun insertExercise(exercise: History)
+
+    // Query to get the entire history of a user, given their userId
+    @Query("SELECT * FROM History WHERE userId == :userId")
+    suspend fun getAllHistoryByUID(userId: Int): List<History>
 }
 
 // DAO to handle deleting a user and its related exercises
 @Dao
 interface DeleteDao {
-    // delete user preferences based on userId
+    // Query to delete user's ranked preferences, given their userId
     @Query("""
         DELETE FROM RankedPrefs
         WHERE userId == :userId
     """)
     suspend fun removeUserPreferences(userId: Int)
 
-    // Query to delete an exercise from a user's relation based on its name
+    // Query to delete an exercise from a user's saved exercises (UER = User Exercise Relation) based on exerciseName
     @Query("""DELETE FROM UserExerciseRelation 
                 WHERE UserExerciseRelation.exerciseId IN 
                 (SELECT e.exerciseId FROM Exercise e WHERE e.exerciseName == :exerciseName)""")
     suspend fun deleteExerciseFromUERelation(exerciseName: String)
 
-
-    // Delete a user by their userId
+    // Query to delete a user, given their userId
     @Query("DELETE FROM user WHERE userId = :userId")
     suspend fun deleteUser(userId: Int)
 
-    // Query to get all exercise IDs related to a user
+    // Query to get all exerciseIds of saved exercises by a user, given userId
     @Query(
         """SELECT Exercise.exerciseId FROM User, Exercise, UserExerciseRelation
             WHERE User.userId = :userId
@@ -320,7 +328,7 @@ interface DeleteDao {
     )
     suspend fun getAllExerciseIdsByUser(userId: Int): List<Int>
 
-    // Delete exercises by their IDs
+    // Query to delete one or more exercises given a list of their IDs
     @Query("DELETE FROM exercise WHERE exerciseId IN (:exercisesIds)")
     suspend fun deleteExercises(exercisesIds: List<Int>)
 
