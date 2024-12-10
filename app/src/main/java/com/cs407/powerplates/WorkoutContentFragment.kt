@@ -52,8 +52,6 @@ class WorkoutContentFragment : Fragment() {
         // get WorkoutAdapter.kt input: a stringified list of [exerciseName, muscleGrp, level]
         workoutAdaptInput = (arguments?.getString("workoutName") ?: 0).toString()
 
-        Log.v("test", "LOOKFORTHIS: $workoutAdaptInput")
-
         // change WorkoutAdapter.kt input from a String into a List<String>
         val exerciseData = workoutAdaptInput.drop(1).dropLast(1).split(", ")
         val exerciseList = exerciseData.chunked(exerciseData.size / 2).map { it.joinToString(",") }
@@ -70,7 +68,6 @@ class WorkoutContentFragment : Fragment() {
         val setLevel = view?.findViewById<TextView>(R.id.level)
         setLevel?.text = exerciseList[2]
 
-        // TODO: adjust max selection logic
         // Handle the workout selection logic
         setExerciseName?.setOnClickListener {
             if (selectedCount < maxSelections) {
@@ -88,7 +85,6 @@ class WorkoutContentFragment : Fragment() {
         return view
     }
 
-    // TODO: adjust max selection logic
     // Disable all workout selections (grey out and make unclickable)
     private fun disableAllSelections(view: View) {
         val allWorkouts = listOf<TextView>(
