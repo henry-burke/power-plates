@@ -197,9 +197,6 @@ class PushWorkout(
 
                         CoroutineScope(Dispatchers.Main).launch {
 
-                            //get current date and past date
-
-
                             //check progression type for first workout
                             if (firstWorkoutProgType == "Reps"){
                                 card1Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}")
@@ -211,24 +208,11 @@ class PushWorkout(
                                 card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", timeForWorkout(userLevel,savedWorkouts[0]))
                             }
 
-                            //load last checkbox state
+                            //load last checkbox state for card1
                             workoutCheckBox(checkBox1, "checkBox1_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox2, "checkBox2_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox3, "checkBox3_"+"${savedWorkouts[0]}")
 
-                            /*
-                            if( getCheckboxState("checkBox1_"+"${savedWorkouts[0]}") && getCheckboxState("checkBox2_"+"${savedWorkouts[0]}") && getCheckboxState("checkBox3_"+"${savedWorkouts[0]}")){
-                                card1.setCardBackgroundColor(Color.argb(255, 50, 205,50))
-                            }
-                            else{
-                                card1.setCardBackgroundColor(Color.argb(255, 255, 0,0))
-                            }
-
-                             */
-
-
-                            //checkBox2.setOnCheckedChangeListener { _, _ -> saveCheckboxState(checkBox1.isChecked, currentDate, "${savedWorkouts[1]}") }}
-                            //checkBox3.setOnCheckedChangeListener { _, _ ->  saveCheckboxState(checkBox1.isChecked, currentDate, "${savedWorkouts[2]}") }}
 
 
                             //check progression type for second workout
@@ -242,6 +226,7 @@ class PushWorkout(
                                 card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", timeForWorkout(userLevel,savedWorkouts[1]))
                             }
 
+                            //load last checkbox state for card2
                             workoutCheckBox(checkBox4, "checkBox4_"+"${savedWorkouts[1]}")
                             workoutCheckBox(checkBox5, "checkBox5_"+"${savedWorkouts[1]}")
                             workoutCheckBox(checkBox6, "checkBox6_"+"${savedWorkouts[1]}")
@@ -256,7 +241,7 @@ class PushWorkout(
                             else{
                                 card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", timeForWorkout(userLevel,savedWorkouts[2]))
                             }
-
+                            //load last checkbox state for card3
                             workoutCheckBox(checkBox7, "checkBox7_"+"${savedWorkouts[2]}")
                             workoutCheckBox(checkBox8, "checkBox8_"+"${savedWorkouts[2]}")
                             workoutCheckBox(checkBox9, "checkBox9_"+"${savedWorkouts[2]}")
