@@ -12,6 +12,7 @@
 <!--card layout for long list of exercises after selecting level and preferences-->
 
     <LinearLayout
+        android:id="@+id/card_lin_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

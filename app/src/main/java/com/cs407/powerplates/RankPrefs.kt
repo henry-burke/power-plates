@@ -15,6 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.cs407.powerplates.data.ExerciseDatabase
+import com.cs407.powerplates.data.RankedPrefs
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 
@@ -40,6 +45,8 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
     private lateinit var itemsArrayList: ArrayList<WorkoutData>
 
+    private lateinit var exerciseDB: ExerciseDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,7 +59,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
+            // Use ViewModelProvider to init UserViewModel
             ViewModelProvider(requireActivity())[UserViewModel::class.java]
         }
         userId = userViewModel.userState.value.id
@@ -77,6 +84,20 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
      
         showPrefs(view)
         fab.setOnClickListener {
+            // get current order of user's ranked preferences
+            exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+            val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
+                itemsArrayList[2].title, itemsArrayList[3].title, itemsArrayList[4].title)
+
+            // insert user's ranked preferences into database
+            CoroutineScope(Dispatchers.IO).launch {
+                if(exerciseDB.rankedDao().getUserPreferences(userId) == null) {
+                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+                } else {
+                    exerciseDB.deleteDao().removeUserPreferences(userId)
+                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+                }
+            }
             findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
 
         }

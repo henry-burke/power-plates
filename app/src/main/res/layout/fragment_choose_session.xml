@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/abs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+
+    <Button
+        android:id="@+id/pushButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="142dp"
+        android:text="Push"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pullButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="48dp"
+        android:text="Pull"
+        app:layout_constraintStart_toStartOf="@+id/pushButton"
+        app:layout_constraintTop_toBottomOf="@+id/pushButton" />
+
+    <Button
+        android:id="@+id/legButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="50dp"
+        android:text="Legs"
+        app:layout_constraintStart_toStartOf="@+id/pullButton"
+        app:layout_constraintTop_toBottomOf="@+id/pullButton" />
+
+    <Button
+        android:id="@+id/cardioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Cardio"
+        app:layout_constraintStart_toStartOf="@+id/legButton"
+        app:layout_constraintTop_toBottomOf="@+id/legButton" />
+
+    <Button
+        android:id="@+id/absButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="71dp"
+        android:text="Abs"
+        app:layout_constraintStart_toStartOf="@+id/cardioButton"
+        app:layout_constraintTop_toBottomOf="@+id/cardioButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
