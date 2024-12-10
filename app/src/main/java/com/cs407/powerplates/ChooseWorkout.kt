@@ -178,6 +178,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                         findNavController().navigate(R.id.action_chooseWorkout_to_StopwatchFragment)
                         true
                     }
+                    R.id.history -> {
+                        findNavController().navigate(R.id.action_chooseWorkout_to_historyFragment)
+                        true
+                    }
                     else -> false
                 }
             }
@@ -256,7 +260,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         CoroutineScope(Dispatchers.Main).launch {
             currentCategoryIndex++
 
-            if(exerciseDB.exerciseDao().getAllUserExercises(userId) == 15) {
+            if(exerciseDB.exerciseDao().getUsersSavedExerciseCount(userId) == 15) {
                 findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
             } else if (currentCategoryIndex < categories.size) {
                 // Load workouts for the next category
