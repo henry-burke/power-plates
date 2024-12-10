@@ -8,7 +8,7 @@
     android:elevation="8dp"
     app:cardCornerRadius="10dp">
 
-    <!--card layout for long list of exercises after selecting level and preferences-->
+    <!-- card layout for long list of exercises after selecting level and preferences -->
 
     <LinearLayout
         android:id="@+id/card_lin_layout"

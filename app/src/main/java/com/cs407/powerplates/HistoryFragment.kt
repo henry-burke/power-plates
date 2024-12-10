@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 
 class HistoryFragment(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
+
+    // declare variables
     private lateinit var userViewModel: UserViewModel
     private lateinit var userPasswdKV: SharedPreferences
     private var userId: Int = 0
@@ -39,8 +41,8 @@ class HistoryFragment(private val injectedUserViewModel: UserViewModel? = null /
         userLevelKV = requireContext().getSharedPreferences(
             getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
 
-        userViewModel = injectedUserViewModel
-            ?: ViewModelProvider(requireActivity())[UserViewModel::class.java]
+        // use ViewModelProvider to init UserViewModel
+        userViewModel = injectedUserViewModel ?: ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
         // find current user's ID
         userId = userViewModel.userState.value.id
@@ -69,9 +71,5 @@ class HistoryFragment(private val injectedUserViewModel: UserViewModel? = null /
             historyRecyclerView.adapter = historyAdapter
         }
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
     }
 }

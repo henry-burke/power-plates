@@ -145,6 +145,14 @@
     <string name="exercise_name_2">exercise_name_2</string>
     <string name="exercise_name_3">exercise_name_3</string>
     <string name="category_workout_on_date">Category Workout on Date</string>
+    <string name="start">Start</string>
+    <string name="your_workout_statistics">Your Workout Statistics</string>
+    <string name="category">Category</string>
+    <string name="workouts_done"># Workouts Done</string>
+    <string name="top_exercise">Top Exercise</string>
+    <string name="card_category">Category</string>
+    <string name="card_workouts_done"># Workouts Done</string>
+    <string name="card_top_exercise">Top Exercise</string>
 
 
 </resources>

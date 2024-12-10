@@ -297,6 +297,25 @@ interface HistoryDao {
     // Query to get the entire history of a user, given their userId
     @Query("SELECT * FROM History WHERE userId == :userId")
     suspend fun getAllHistoryByUID(userId: Int): List<History>
+
+    // Query to get count of exercises of a specified category from a user's history
+    @Query("SELECT COUNT(*) FROM History WHERE userId == :userId AND category == :category")
+    suspend fun getExerciseCountByCategory(userId: Int, category: String): Int
+
+//    data class StringIntPair(val userId: Int, val category: String, val exercises: String, val count: Int)
+data class StringIntPair(val exercises: String, val count: Int)
+
+    // Query to get all the top exercises of a specified category from a user's history in descending order
+    @Query("""
+        SELECT exercises, COUNT(*) as count FROM (SELECT userId, category, exercise1 as exercises FROM History WHERE category == :category AND userId == :userId
+                            UNION ALL 
+                            SELECT userId, category, exercise2 as exercises FROM History WHERE category == :category AND userId == :userId
+                            UNION ALL 
+                            SELECT userId, category, exercise3 as exercises FROM History WHERE category == :category AND userId == :userId) A
+                            GROUP BY exercises
+                            ORDER BY count DESC
+    """)
+    suspend fun getTopExercisesByCategory(userId: Int, category: String): List<StringIntPair>
 }
 
 // DAO to handle deleting a user and its related exercises
