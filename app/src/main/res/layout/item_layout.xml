@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="32dp"
         android:background="@drawable/card_border">
 
         <!-- Icon -->
@@ -23,7 +24,8 @@
             android:layout_height="48dp"
             android:src="@drawable/baseline_fitness_center_24"
             android:contentDescription="Icon"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_gravity="center"
             app:tint="@color/primaryTextColor"/>
 
         <!-- Title -->
@@ -34,9 +36,9 @@
             android:layout_weight="1"
             android:text="Preference"
             android:textColor="@color/primaryTextColor"
-            android:textSize="24dp"
+            android:textSize="28dp"
             android:textStyle="bold"
-            />
+            android:layout_gravity="center"/>
         <!-- Icon -->
         <ImageView
             android:id="@+id/dragIndicator"
@@ -44,7 +46,7 @@
             android:layout_height="48dp"
             android:src="@drawable/baseline_drag_indicator_24"
             android:contentDescription="Handle"
-            android:layout_gravity="end"
+            android:layout_gravity="center"
             android:layout_marginStart="16dp"
             app:tint="@color/primaryTextColor"/>
     </LinearLayout>
