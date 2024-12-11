@@ -193,9 +193,9 @@ class AbWorkout(
                             }
 
                             //load last checkbox state for card1
-                            workoutCheckBox(checkBox1, "checkBox1_"+"${savedWorkouts[0]}")
-                            workoutCheckBox(checkBox2, "checkBox2_"+"${savedWorkouts[0]}")
-                            workoutCheckBox(checkBox3, "checkBox3_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox1, userState.name +"checkBox1_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox2, userState.name +"checkBox2_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox3, userState.name +"checkBox3_"+"${savedWorkouts[0]}")
 
 
 
@@ -211,9 +211,9 @@ class AbWorkout(
                             }
 
                             //load last checkbox state for card2
-                            workoutCheckBox(checkBox4, "checkBox4_"+"${savedWorkouts[1]}")
-                            workoutCheckBox(checkBox5, "checkBox5_"+"${savedWorkouts[1]}")
-                            workoutCheckBox(checkBox6, "checkBox6_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox4, userState.name +"checkBox4_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox5, userState.name +"checkBox5_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox6, userState.name +"checkBox6_"+"${savedWorkouts[1]}")
 
                             //check progression type for third workout
                             if (thirdWorkoutProgType == "Reps"){
@@ -226,9 +226,9 @@ class AbWorkout(
                                 card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", timeForWorkout(userLevel,savedWorkouts[2]))
                             }
                             //load last checkbox state for card3
-                            workoutCheckBox(checkBox7, "checkBox7_"+"${savedWorkouts[2]}")
-                            workoutCheckBox(checkBox8, "checkBox8_"+"${savedWorkouts[2]}")
-                            workoutCheckBox(checkBox9, "checkBox9_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox7, userState.name +"checkBox7_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox8, userState.name +"checkBox8_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox9, userState.name +"checkBox9_"+"${savedWorkouts[2]}")
                         }
 
                     }
