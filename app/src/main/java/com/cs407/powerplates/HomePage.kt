@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HomePage(private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -116,25 +117,28 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
                     topExerciseArr.add("N/A")
                 }
             }
-            pushCategory.text = categories[0]
-            pushNumWorkouts.text = "${countArr[0]}"
-            pushTopExercise.text = topExerciseArr[0]
+            // Switch to the main thread for UI updates
+            withContext(Dispatchers.Main) {
+                pushCategory.text = categories[0]
+                pushNumWorkouts.text = "${countArr[0]}"
+                pushTopExercise.text = topExerciseArr[0]
 
-            pullCategory.text = categories[1]
-            pullNumWorkouts.text = "${countArr[1]}"
-            pullTopExercise.text = topExerciseArr[1]
+                pullCategory.text = categories[1]
+                pullNumWorkouts.text = "${countArr[1]}"
+                pullTopExercise.text = topExerciseArr[1]
 
-            legsCategory.text = categories[2]
-            legsNumWorkouts.text = "${countArr[2]}"
-            legsTopExercise.text = topExerciseArr[2]
+                legsCategory.text = categories[2]
+                legsNumWorkouts.text = "${countArr[2]}"
+                legsTopExercise.text = topExerciseArr[2]
 
-            cardioCategory.text = categories[3]
-            cardioNumWorkouts.text = "${countArr[3]}"
-            cardioTopExercise.text = topExerciseArr[3]
+                cardioCategory.text = categories[3]
+                cardioNumWorkouts.text = "${countArr[3]}"
+                cardioTopExercise.text = topExerciseArr[3]
 
-            absCategory.text = categories[4]
-            absNumWorkouts.text = "${countArr[4]}"
-            absTopExercise.text = topExerciseArr[4]
+                absCategory.text = categories[4]
+                absNumWorkouts.text = "${countArr[4]}"
+                absTopExercise.text = topExerciseArr[4]
+            }
         }
         return view
     }
