@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -84,6 +85,10 @@ class PushWorkout(
     private lateinit var finishButton: Button
     private lateinit var changeExerciseButton: Button
 
+    private lateinit var linearLayout1: LinearLayout
+    private lateinit var linearLayout2: LinearLayout
+    private lateinit var linearLayout3: LinearLayout
+
     //make sure checkbox persists for the day
     private lateinit var checkboxPrefs: SharedPreferences
     private val pref_name = "prefs"
@@ -137,6 +142,14 @@ class PushWorkout(
         //Initialize Buttons
         finishButton = view.findViewById(R.id.finishButton)
         changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
+
+        // Initialize Linear Layouts
+        linearLayout1 = card1.findViewById(R.id.checkbox_layout1)
+        linearLayout2 = card2.findViewById(R.id.checkbox_layout2)
+        linearLayout3 = card3.findViewById(R.id.checkbox_layout3)
+        linearLayout1.setBackgroundResource(R.drawable.start_border)
+        linearLayout2.setBackgroundResource(R.drawable.start_border)
+        linearLayout3.setBackgroundResource(R.drawable.start_border)
 
 
 
@@ -302,28 +315,28 @@ class PushWorkout(
 
     private fun card1AllCheckBoxes(){
         if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked){
-            card1.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+            linearLayout1.setBackgroundResource(R.drawable.selected_card_border)
         }
         else{
-            card1.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+            linearLayout1.setBackgroundResource(R.drawable.start_border)
         }
     }
 
     private fun card2AllCheckBoxes(){
         if (checkBox4.isChecked && checkBox5.isChecked && checkBox6.isChecked){
-            card2.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+            linearLayout2.setBackgroundResource(R.drawable.selected_card_border)
         }
         else{
-            card2.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+            linearLayout2.setBackgroundResource(R.drawable.start_border)
         }
     }
 
     private fun card3AllCheckBoxes(){
         if (checkBox7.isChecked && checkBox8.isChecked && checkBox9.isChecked){
-            card3.setCardBackgroundColor(Color.argb(255, 50, 205,50))
+            linearLayout3.setBackgroundResource(R.drawable.selected_card_border)
         }
         else{
-            card3.setCardBackgroundColor(Color.argb(255, 255, 0,0))
+            linearLayout3.setBackgroundResource(R.drawable.start_border)
         }
     }
 
@@ -526,9 +539,9 @@ class PushWorkout(
         // Use CoroutineScope to ensure UI updates happen on the main thread
         CoroutineScope(Dispatchers.Main).launch {
             if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked) {
-                card1.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+                linearLayout1.setBackgroundResource(R.drawable.selected_card_border)
             } else {
-                card1.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+                linearLayout1.setBackgroundResource(R.drawable.start_border)
             }
         }
     }
@@ -537,9 +550,9 @@ class PushWorkout(
         // Use CoroutineScope to ensure UI updates happen on the main thread
         CoroutineScope(Dispatchers.Main).launch {
             if (checkBox4.isChecked && checkBox5.isChecked && checkBox6.isChecked) {
-                card2.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+                linearLayout2.setBackgroundResource(R.drawable.selected_card_border)
             } else {
-                card2.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+                linearLayout2.setBackgroundResource(R.drawable.start_border)
             }
         }
     }
@@ -548,9 +561,9 @@ class PushWorkout(
         // Use CoroutineScope to ensure UI updates happen on the main thread
         CoroutineScope(Dispatchers.Main).launch {
             if (checkBox7.isChecked && checkBox8.isChecked && checkBox9.isChecked) {
-                card3.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+                linearLayout3.setBackgroundResource(R.drawable.selected_card_border)
             } else {
-                card3.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+                linearLayout3.setBackgroundResource(R.drawable.start_border)
             }
         }
     }
