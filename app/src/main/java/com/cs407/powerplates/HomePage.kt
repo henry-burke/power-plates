@@ -116,6 +116,7 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
                     topExerciseArr.add("N/A")
                 }
             }
+            CoroutineScope(Dispatchers.Main).launch {
             pushCategory.text = categories[0]
             pushNumWorkouts.text = "${countArr[0]}"
             pushTopExercise.text = topExerciseArr[0]
@@ -135,6 +136,7 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
             absCategory.text = categories[4]
             absNumWorkouts.text = "${countArr[4]}"
             absTopExercise.text = topExerciseArr[4]
+            }
         }
         return view
     }
