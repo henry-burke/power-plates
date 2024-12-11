@@ -39,7 +39,7 @@ data class History(
     val date: String
 )
 
-// RankedPrefernces entity with primary key on userId
+// RankedPreferences entity with primary key on userId
 @Entity(
     primaryKeys = ["userId"], // composite primary key combining userId and exerciseId
     foreignKeys = [ForeignKey(
