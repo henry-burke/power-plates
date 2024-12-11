@@ -135,13 +135,13 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         CoroutineScope(Dispatchers.IO).launch {
             userPrefs = exerciseDB.rankedDao().getUserPreferences(userId)
-        }
+
         CoroutineScope(Dispatchers.Main).launch {
             recyclerView = view.findViewById(R.id.recyclerView)
 
             itemsArrayList = arrayListOf()
 
-            if (userPrefs.r1.isEmpty()) {
+            if (!::userPrefs.isInitialized) {
                 itemsArrayList = arrayListOf(
                     WorkoutData(
                         "Strength",
@@ -212,6 +212,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
+        }
     }
 
     private fun buttonClicked(level: String){
