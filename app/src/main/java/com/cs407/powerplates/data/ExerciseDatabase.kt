@@ -166,6 +166,9 @@ interface ExerciseDao {
     @Query("SELECT e.level FROM exercise e WHERE e.exerciseName == :name")
     suspend fun getLevelFromName(name: String): String
 
+    @Query("SELECT e.progressionType FROM exercise e WHERE e.exerciseName == :name")
+    suspend fun getProgTypeFromName(name: String): String
+
     // Query to count all exercises
     @Query("SELECT COUNT(*) FROM exercise")
     suspend fun getExerciseCount(): Int

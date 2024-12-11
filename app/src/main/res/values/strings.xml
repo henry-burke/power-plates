@@ -39,8 +39,9 @@
     <string name="stopwatch">Stopwatch</string>
 
 
-    <string name="workout_details">%1$s\n• Level: %2$s\n• %3$d reps each set</string>
-    <string name="workout_details_no_reps">%1$s\n• Level: %2$s\n• %3$d min</string>
+    <string name="workout_details">%1$s\n• Level: %2$s\n• %3$s reps each set</string>
+    <string name="workout_details_no_reps">%1$s\n• Level: %2$s\n• %3$s</string>
+    <string name="workout_details_push_to_fail">%1$s\n• Level: %2$s\n• Push until Fatigue</string>
 
 
     <!-- checkbox strings -->

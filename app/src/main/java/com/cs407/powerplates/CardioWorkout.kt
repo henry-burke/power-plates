@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class CardioWorkout(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -67,6 +70,12 @@ class CardioWorkout(
     private lateinit var finishButton: Button
     private lateinit var changeExerciseButton: Button
 
+    //make sure checkbox persists for the day
+    private lateinit var checkboxPrefs: SharedPreferences
+    private val pref_name = "prefs"
+    //private val check_box1_state_key = "checkbox1"
+    private val last_date_changed_key = "last_changed_date"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,6 +85,9 @@ class CardioWorkout(
         )
         userLevelKV = requireContext().getSharedPreferences(
             getString(R.string.userPasswdKV), Context.MODE_PRIVATE
+        )
+        checkboxPrefs = requireContext().getSharedPreferences(
+            pref_name, Context.MODE_PRIVATE
         )
 
         userViewModel = injectedUserViewModel ?: ViewModelProvider(requireActivity())[UserViewModel::class.java]
@@ -145,10 +157,83 @@ class CardioWorkout(
             }
 
             CoroutineScope(Dispatchers.Main).launch {
+
+
                 if(savedWorkouts.isNotEmpty() && savedWorkoutLevels.isNotEmpty()) {
-                    card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", 30)
-                    card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", 20)
-                    card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", 10)
+                    CoroutineScope(Dispatchers.IO).launch{
+                        val lis = exerciseDB.rankedDao().getUserPreferences(userId)
+
+                        val arr = arrayOf(lis.r1, lis.r2, lis.r3, lis.r4, lis.r5 )
+
+                        val massIndex = arr.indexOf("Muscle Mass") + 1
+                        val strengthIndex = arr.indexOf("Strength") + 1
+                        val staminaIndex = arr.indexOf("Stamina") + 1
+
+                        val userState = userViewModel.userState.value
+                        val name1 = userState.name + "_level"
+                        val userLevel = userPasswdKV.getString(name1, "").toString()
+
+                        val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "cardio")
+                        //Log.d("Crash", userLevel)
+
+                        //get exercise object progType: reps, weights, or time
+                        val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
+                        val secondWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[1]}")
+                        val thirdWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[2]}")
+
+                        CoroutineScope(Dispatchers.Main).launch {
+
+                            //check progression type for first workout
+                            if (firstWorkoutProgType == "Reps"){
+                                card1Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}")
+                            }
+                            else if(firstWorkoutProgType == "Weight"){
+                                card1Text.text = getString(R.string.workout_details, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", reps)
+                            }
+                            else{
+                                card1Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[0]}", "${savedWorkoutLevels[0]}", timeForWorkout(userLevel,savedWorkouts[0]))
+                            }
+
+                            //load last checkbox state for card1
+                            workoutCheckBox(checkBox1, userState.name +"checkBox1_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox2, userState.name +"checkBox2_"+"${savedWorkouts[0]}")
+                            workoutCheckBox(checkBox3, userState.name +"checkBox3_"+"${savedWorkouts[0]}")
+
+
+
+                            //check progression type for second workout
+                            if (secondWorkoutProgType == "Reps"){
+                                card2Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}")
+                            }
+                            else if(secondWorkoutProgType == "Weight"){
+                                card2Text.text = getString(R.string.workout_details, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", reps)
+                            }
+                            else{
+                                card2Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[1]}", "${savedWorkoutLevels[1]}", timeForWorkout(userLevel,savedWorkouts[1]))
+                            }
+
+                            //load last checkbox state for card2
+                            workoutCheckBox(checkBox4, userState.name +"checkBox4_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox5, userState.name +"checkBox5_"+"${savedWorkouts[1]}")
+                            workoutCheckBox(checkBox6, userState.name +"checkBox6_"+"${savedWorkouts[1]}")
+
+                            //check progression type for third workout
+                            if (thirdWorkoutProgType == "Reps"){
+                                card3Text.text = getString(R.string.workout_details_push_to_fail, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}")
+                            }
+                            else if(thirdWorkoutProgType == "Weight"){
+                                card3Text.text = getString(R.string.workout_details, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", reps)
+                            }
+                            else{
+                                card3Text.text = getString(R.string.workout_details_no_reps, "${savedWorkouts[2]}", "${savedWorkoutLevels[2]}", timeForWorkout(userLevel,savedWorkouts[2]))
+                            }
+                            //load last checkbox state for card3
+                            workoutCheckBox(checkBox7, userState.name +"checkBox7_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox8, userState.name +"checkBox8_"+"${savedWorkouts[2]}")
+                            workoutCheckBox(checkBox9, userState.name +"checkBox9_"+"${savedWorkouts[2]}")
+                        }
+
+                    }
                 }
             }
         }
@@ -251,5 +336,195 @@ class CardioWorkout(
             }
             .create()
             .show()
+    }
+
+    private fun calculateReps(mass: Int, strength: Int, stamina: Int, experienceLevel: String, workoutType: String): String {
+        // Safety check if input is valid
+        if (mass !in 1..5 || strength !in 1..5 || stamina !in 1..5) {
+            return "Rankings must be between 1 and 5."
+        }
+
+
+        // Define base reps
+        val levels = mapOf(
+            "beginner" to mapOf("cardio" to 10, "pull" to 12, "legs" to 13),
+            "intermediate" to mapOf("cardio" to 10, "pull" to 8, "legs" to 11),
+            "advanced'" to mapOf("cardio" to 6, "pull" to 6, "legs" to 9)
+        )
+
+        // Overall score
+        val combinedScore = mass + strength + stamina
+
+        // Base number of reps
+        var baseReps = levels[experienceLevel]?.get(workoutType)
+
+        // Adjust number of reps
+        if (baseReps != null) {
+            baseReps = when {
+                combinedScore >= 13 -> baseReps + 1
+                combinedScore < 10 -> baseReps - 1
+                else -> baseReps
+            }
+        }
+
+        // Return the number of reps as a string
+        return baseReps.toString()
+    }
+
+
+    private fun timeForWorkout(experienceLevel: String, workoutType: String): String? {
+        val timeWorkouts: Map<String, Map<String, String>> = mapOf(
+            "beginner" to mapOf(
+                "Leg Raise Hold" to "15 seconds each set",
+                "Plank" to "30 seconds each set",
+                "Side Plank" to "15 seconds each set",
+                "Biking" to "5 minutes each set",
+                "Cardio Rows" to "5 minutes each set",
+                "Elliptical" to "5 minutes each set",
+                "Jumping Jacks" to "30 seconds each set",
+                "Walking" to "8 minutes each set",
+                "Squat Hold" to "20 seconds each set",
+                "Wall Sit" to "20 seconds each set",
+                "Iron Cross" to "20 seconds each set",
+                "Jump Rope" to "30 seconds each set",
+                "Mountain Climber" to "25 seconds each set",
+                "Running" to "5 minutes each set",
+                "Swimming" to "5 minutes each set",
+                "Dead Hang" to "10 seconds each set",
+                "Stair Stepper" to "5 minutes each set",
+                "Single Arm Dead Hang" to "10 seconds each set"
+            ),
+            "intermediate" to mapOf(
+                "Leg Raise Hold" to "30 seconds each set",
+                "Plank" to "1 minute each set",
+                "Side Plank" to "30 seconds each set",
+                "Biking" to "8 minutes each set",
+                "Cardio Rows" to "8 minutes each set",
+                "Elliptical" to "8 minutes each set",
+                "Jumping Jacks" to "1 minute 30 seconds each set",
+                "Walking" to "15 minutes each set",
+                "Squat Hold" to "45 seconds each set",
+                "Wall Sit" to "30 seconds each set",
+                "Iron Cross" to "45 seconds each set",
+                "Jump Rope" to "1 minute 30 seconds each set",
+                "Mountain Climber" to "45 seconds each set",
+                "Running" to "8 minutes each set",
+                "Swimming" to "8 minutes each set",
+                "Dead Hang" to "20 seconds each set",
+                "Stair Stepper" to "8 minutes each set",
+                "Single Arm Dead Hang" to "25 seconds each set"
+            ),
+            "advanced" to mapOf(
+                "Leg Raise Hold" to "1 minute each set",
+                "Plank" to "2 minutes each set",
+                "Side Plank" to "1 minute each set",
+                "Biking" to "15 minutes each set",
+                "Cardio Rows" to "15 minutes each set",
+                "Elliptical" to "15 minutes each set",
+                "Jumping Jacks" to "4 minutes each set",
+                "Walking" to "20 minutes each set",
+                "Squat Hold" to "1 minute 30 seconds each set",
+                "Wall Sit" to "1 minute each set",
+                "Iron Cross" to "1 minute each set",
+                "Jump Rope" to "3 minutes each set",
+                "Mountain Climber" to "1 minute 30 seconds each set",
+                "Running" to "15 minutes each set",
+                "Swimming" to "15 minutes each set",
+                "Dead Hang" to "50 seconds each set",
+                "Stair Stepper" to "12 minutes each set",
+                "Single Arm Dead Hang" to "20 seconds each set"
+            )
+        )
+        return timeWorkouts[experienceLevel]?.get(workoutType)
+    }
+
+    private fun getCurrentDate():String{
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return date.format(Date())
+    }
+
+    private fun saveCheckboxState(isChecked: Boolean, currentDate:String, key:String){
+        val editor = checkboxPrefs.edit()
+        editor.putBoolean(key, isChecked)
+        editor.putString(last_date_changed_key, currentDate)
+        editor.apply()
+    }
+
+    private fun getCheckboxState(key: String): Boolean{
+        return checkboxPrefs.getBoolean(key, false)
+    }
+
+    private fun getLastChangeDate(): String?{
+        return checkboxPrefs.getString(last_date_changed_key, "")
+    }
+
+    private fun workoutCheckBox(check: CheckBox, workout: String){
+        //get current date and past date
+        val currentDate = getCurrentDate()
+        val lastDate = getLastChangeDate()
+
+        val isChecked = getCheckboxState(workout)
+        if (lastDate.toString() != currentDate){
+            check.isChecked = false
+            saveCheckboxState(false, currentDate, workout)
+        }
+        else{
+            check.isChecked = isChecked
+        }
+        //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
+        check.setOnCheckedChangeListener { _, _ ->
+            // Save checkbox state asynchronously in SharedPreferences
+            CoroutineScope(Dispatchers.IO).launch {
+                saveCheckboxState(check.isChecked, currentDate, workout)
+            }
+            // Update card color immediately (on the main thread)
+            updateCardColor()
+        }
+        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
+
+
+    }
+
+    private fun updateCardColor() {
+        // Update card colors based on checkbox states immediately
+        // Run on the main thread to ensure UI updates are smooth
+        CoroutineScope(Dispatchers.Main).launch {
+            card1AllCheckBoxesDynamic()
+            card2AllCheckBoxesDynamic()
+            card3AllCheckBoxesDynamic()
+        }
+    }
+
+    private fun card1AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked) {
+                card1.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card1.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
+    }
+
+    private fun card2AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox4.isChecked && checkBox5.isChecked && checkBox6.isChecked) {
+                card2.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card2.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
+    }
+
+    private fun card3AllCheckBoxesDynamic() {
+        // Use CoroutineScope to ensure UI updates happen on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            if (checkBox7.isChecked && checkBox8.isChecked && checkBox9.isChecked) {
+                card3.setCardBackgroundColor(Color.argb(255, 50, 205, 50))
+            } else {
+                card3.setCardBackgroundColor(Color.argb(255, 255, 0, 0))
+            }
+        }
     }
 }

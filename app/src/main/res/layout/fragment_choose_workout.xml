@@ -75,4 +75,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="8dp" />
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="back" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

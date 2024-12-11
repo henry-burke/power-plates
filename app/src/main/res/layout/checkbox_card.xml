@@ -60,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 1"
+                        android:text="First Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 2"
+                        android:text="Second Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 3"
+                        android:text="Third Set"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -126,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 4"
+                        android:text="First Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -134,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 5"
+                        android:text="Second Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -142,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 6"
+                        android:text="Third Set"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -192,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 7"
+                        android:text="First Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -200,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 8"
+                        android:text="Second Set"
                         android:textSize="18sp" />
 
                     <CheckBox
@@ -208,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="7dp"
-                        android:text="Option 9"
+                        android:text="Third Set"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>

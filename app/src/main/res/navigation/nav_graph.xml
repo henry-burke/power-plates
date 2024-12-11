@@ -98,6 +98,13 @@
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
         <action
+            android:id="@+id/action_chooseWorkout_to_rankPrefs"
+
+            app:destination="@+id/rankPrefsFragment"
+
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_chooseWorkout_to_historyFragment"
 
             app:destination="@+id/HistoryFragment"
