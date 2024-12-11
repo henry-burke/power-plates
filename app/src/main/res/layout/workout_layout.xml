@@ -2,11 +2,13 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exercise_select_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:elevation="8dp"
-    app:cardCornerRadius="10dp">
+    app:cardElevation="16dp"
+    app:cardCornerRadius="15dp"
+    android:backgroundTint="@color/backgroundColor">
 
 <!--card layout for long list of exercises after selecting level and preferences-->
 
@@ -15,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp"
+        android:background="@drawable/card_border">
 
         <TextView
             android:id="@+id/exercise_name"
@@ -24,7 +27,8 @@
             android:text="@string/card_exercise_name"
             android:textAlignment="center"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,10 +39,11 @@
                 android:id="@+id/muscleGrp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
                 android:text="@string/card_musclegrp"
+                android:textSize="15sp"
+                android:layout_weight="0.5"
                 android:textAlignment="center"
-                android:textSize="15sp" />
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/level"
@@ -46,9 +51,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="0.5"
+                android:textSize="15sp"
                 android:text="@string/card_level"
                 android:textAlignment="center"
-                android:textSize="15sp" />
+                android:textColor="@color/primaryTextColor"/>
         </LinearLayout>
     </LinearLayout>
 

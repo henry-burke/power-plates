@@ -44,8 +44,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var worAdap: WorkoutAdapter
-    private lateinit var done: Button
     private lateinit var prev: Button
+    private lateinit var done: FloatingActionButton
 
     // showWorkouts() variables
     private lateinit var exerciseDB: ExerciseDatabase
@@ -60,6 +60,8 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var savedWorkouts: List<String>
     private lateinit var currentSavedWorkouts: ArrayList<String>
     private lateinit var currentSavedCategories: ArrayList<String>
+
+    private var droppedIn = false
 
     // handleWorkoutSelection() variables
     private var exerciseId = -1
@@ -101,6 +103,22 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         done = view.findViewById(R.id.done)
         prev = view.findViewById(R.id.backButton)
 
+        val args = ChooseWorkoutArgs.fromBundle(requireArguments())
+        val inputCategory = args.category
+        droppedIn = args.droppedIn
+
+        if(categories.contains(inputCategory)) {
+            currCategory = inputCategory
+            currentCategoryIndex = categories.indexOf(currCategory)
+        }
+
+        // TODO: maybe args
+//        val inputCategory = (arguments?.getString("workoutName") ?: 0).toString()
+//        if (categories.contains(inputCategory)) {
+//            currCategory = inputCategory
+//            currentCategoryIndex = categories.indexOf(currCategory)
+//        }
+
         // TODO: remove greeting text
         // greetingTextView = view.findViewById(R.id.greetingTextView)
 
@@ -119,8 +137,27 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 // if user has selected 3 workouts, move on to next category
                 val selectedCount = exerciseDB.exerciseDao().userExerciseCount(userId, categories[currentCategoryIndex])
                 if (selectedCount == 3) {
-                    moveToNextCategory(view)
-                    // otherwise, send toast to prompt 3 exercises
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val args = ChooseWorkoutArgs.fromBundle(requireArguments())
+                        droppedIn = args.droppedIn
+
+                        if(droppedIn) {
+                            if (currCategory == "Abs") {
+                                findNavController().navigate(R.id.action_chooseWorkout_to_abWorkout)
+                            } else if (currCategory == "Cardio") {
+                                findNavController().navigate(R.id.action_chooseWorkout_to_cardioWorkout)
+                            } else if (currCategory == "Legs") {
+                                findNavController().navigate(R.id.action_chooseWorkout_to_legWorkout)
+                            } else if (currCategory == "Pull") {
+                                findNavController().navigate(R.id.action_chooseWorkout_to_pullWorkout)
+                            } else if (currCategory == "Push") {
+                                findNavController().navigate(R.id.action_chooseWorkout_to_pushWorkout)
+                            }
+                        } else {
+                            moveToNextCategory(view)
+                        }
+                    }
+                // otherwise, send toast to prompt 3 exercises
                 } else {
                     CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(context, "Please select 3 workouts before proceeding.", Toast.LENGTH_SHORT).show()
@@ -128,7 +165,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 }
             }
         }
-
 
         val menuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
@@ -145,6 +181,10 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                     }
                     R.id.stopwatch -> {
                         findNavController().navigate(R.id.action_chooseWorkout_to_StopwatchFragment)
+                        true
+                    }
+                    R.id.history -> {
+                        findNavController().navigate(R.id.action_chooseWorkout_to_historyFragment)
                         true
                     }
                     else -> false
@@ -225,7 +265,9 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         CoroutineScope(Dispatchers.Main).launch {
             currentCategoryIndex++
 
-            if (currentCategoryIndex < categories.size) {
+            if(exerciseDB.exerciseDao().getUsersSavedExerciseCount(userId) == 15) {
+                findNavController().navigate(R.id.action_chooseWorkout_to_homePage)
+            } else if (currentCategoryIndex < categories.size) {
                 // Load workouts for the next category
                 showWorkouts(view)
             } else {

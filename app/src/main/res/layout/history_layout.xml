@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="10dp">
+
+    <!-- card layout for long list of exercises after selecting level and preferences -->
+
+    <LinearLayout
+        android:id="@+id/card_lin_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/history_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_workout_on_date"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/exercise_name_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise_name_1"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/exercise_name_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise_name_2"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/exercise_name_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise_name_3"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

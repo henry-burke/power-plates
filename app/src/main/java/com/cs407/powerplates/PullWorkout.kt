@@ -66,8 +66,9 @@ class PullWorkout(
     private lateinit var card2Text: TextView
     private lateinit var card3Text: TextView
 
-    //Finish Button
+    // Buttons
     private lateinit var finishButton: Button
+    private lateinit var changeExerciseButton: Button
 
     //make sure checkbox persists for the day
     private lateinit var checkboxPrefs: SharedPreferences
@@ -120,8 +121,9 @@ class PullWorkout(
         card3Text = view.findViewById(R.id.card3_text)
 
 
-        //Initialize Finish Button
+        //Initialize Buttons
         finishButton = view.findViewById(R.id.finishButton)
+        changeExerciseButton = view.findViewById(R.id.changeExerciseButton)
 
 
         // Set up submit button to check if all checkboxes are checked
@@ -273,6 +275,11 @@ class PullWorkout(
                 //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
             }
+        }
+
+        changeExerciseButton.setOnClickListener {
+            val action = PullWorkoutDirections.actionsPullWorkoutToChooseExercise(category, true)
+            findNavController().navigate(action)
         }
     }
 

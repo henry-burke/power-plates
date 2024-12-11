@@ -91,6 +91,7 @@ data class Exercise(
     val level: String, // beginner, intermediate, advanced
     val progressionType: String, // reps, weight, or time
     val category: String, // push, pull, legs, abs, or cardio
+    val description: String // description of exercise
 )
 
 // UserExerciseRelation
@@ -153,6 +154,10 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // Query: get all exercise data from all exercises
+    @Query("SELECT * FROM Exercise")
+    suspend fun getAllExerciseData(): List<Exercise>
+
     // get primary muscle group given exercise name
 //    @Query("SELECT e.primaryMuscle FROM exercise e WHERE e.exerciseName == :name")
 //    suspend fun getPrimaryMuscleFromName(name: String): String
@@ -233,7 +238,7 @@ interface ExerciseDao {
     @Query("SELECT COUNT(*) FROM UserExerciseRelation uer WHERE uer.userId = :userId AND uer.exerciseId = :exerciseId")
     suspend fun countUerByUIDandEID(userId: Int, exerciseId: Int): Int
 
-    // Query to get number of UserExerciseRelations based on exercise category and user ID
+    // Query to get number of UserExerciseRelations (saved exercises) based on exercise category and user ID
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer 
         WHERE uer.exerciseId IN
@@ -242,6 +247,7 @@ interface ExerciseDao {
         """)
     suspend fun getUserExerciseCountByCategory(userId: Int, category: String): Int
 
+    // Query to get a list of exerciseNames of the exercises the user has saved of a specific category, given userId and category
     @Query("""
         SELECT e.exerciseName FROM UserExerciseRelation uer, Exercise e
         WHERE uer.userId == :userId
@@ -250,7 +256,7 @@ interface ExerciseDao {
     """)
     suspend fun getSavedWorkoutsByCategory(userId: Int, category: String): List<String>
 
-    // Query to count the number of exercises a user has
+    // Query to count the user's number of saved exercises in a given category, given userId and category
     @Query(
         """SELECT COUNT(*) FROM User, Exercise, UserExerciseRelation
                 WHERE User.userId = :userId
@@ -260,14 +266,23 @@ interface ExerciseDao {
             """
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
+
+    // Query to count the user's total number of saved exercises, given their userId
+    @Query("""
+        SELECT COUNT(*) FROM UserExerciseRelation uer
+        WHERE uer.userId == :userId
+    """)
+    suspend fun getUsersSavedExerciseCount(userId: Int): Int
 }
 
 // DAO to handle adding and editing user's ranked preferences
 @Dao
 interface RankedDao {
+    // Insert a user's ranked preferences into db
     @Insert
     suspend fun insertPrefs(userPrefs: RankedPrefs)
 
+    // Query to get a user's RankedPrefs object, given their userId
     @Query("""
         SELECT * FROM RankedPrefs rp
         WHERE userId == :userId
@@ -278,32 +293,55 @@ interface RankedDao {
 // DAO to handle adding workouts to history
 @Dao
 interface HistoryDao {
+    // inserts an exercise into the corresponding user's history
     @Insert
     suspend fun insertExercise(exercise: History)
+
+    // Query to get the entire history of a user, given their userId
+    @Query("SELECT * FROM History WHERE userId == :userId")
+    suspend fun getAllHistoryByUID(userId: Int): List<History>
+
+    // Query to get count of exercises of a specified category from a user's history
+    @Query("SELECT COUNT(*) FROM History WHERE userId == :userId AND category == :category")
+    suspend fun getExerciseCountByCategory(userId: Int, category: String): Int
+
+//    data class StringIntPair(val userId: Int, val category: String, val exercises: String, val count: Int)
+data class StringIntPair(val exercises: String, val count: Int)
+
+    // Query to get all the top exercises of a specified category from a user's history in descending order
+    @Query("""
+        SELECT exercises, COUNT(*) as count FROM (SELECT userId, category, exercise1 as exercises FROM History WHERE category == :category AND userId == :userId
+                            UNION ALL 
+                            SELECT userId, category, exercise2 as exercises FROM History WHERE category == :category AND userId == :userId
+                            UNION ALL 
+                            SELECT userId, category, exercise3 as exercises FROM History WHERE category == :category AND userId == :userId) A
+                            GROUP BY exercises
+                            ORDER BY count DESC
+    """)
+    suspend fun getTopExercisesByCategory(userId: Int, category: String): List<StringIntPair>
 }
 
 // DAO to handle deleting a user and its related exercises
 @Dao
 interface DeleteDao {
-    // delete user preferences based on userId
+    // Query to delete user's ranked preferences, given their userId
     @Query("""
         DELETE FROM RankedPrefs
         WHERE userId == :userId
     """)
     suspend fun removeUserPreferences(userId: Int)
 
-    // Query to delete an exercise from a user's relation based on its name
+    // Query to delete an exercise from a user's saved exercises (UER = User Exercise Relation) based on exerciseName
     @Query("""DELETE FROM UserExerciseRelation 
                 WHERE UserExerciseRelation.exerciseId IN 
                 (SELECT e.exerciseId FROM Exercise e WHERE e.exerciseName == :exerciseName)""")
     suspend fun deleteExerciseFromUERelation(exerciseName: String)
 
-
-    // Delete a user by their userId
+    // Query to delete a user, given their userId
     @Query("DELETE FROM user WHERE userId = :userId")
     suspend fun deleteUser(userId: Int)
 
-    // Query to get all exercise IDs related to a user
+    // Query to get all exerciseIds of saved exercises by a user, given userId
     @Query(
         """SELECT Exercise.exerciseId FROM User, Exercise, UserExerciseRelation
             WHERE User.userId = :userId
@@ -312,7 +350,7 @@ interface DeleteDao {
     )
     suspend fun getAllExerciseIdsByUser(userId: Int): List<Int>
 
-    // Delete exercises by their IDs
+    // Query to delete one or more exercises given a list of their IDs
     @Query("DELETE FROM exercise WHERE exerciseId IN (:exercisesIds)")
     suspend fun deleteExercises(exercisesIds: List<Int>)
 
@@ -326,7 +364,7 @@ interface DeleteDao {
 
 // Room Database Class with ALL Entities and DAO
 // Database class with all entities and DAOs
-@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 6)
+@Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 7)
 // Database class with all entities and DAOs
 @TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
@@ -383,9 +421,10 @@ suspend fun populateExercises(context: Context, exerciseDao: ExerciseDao) {
         val level = item.getString("Level")
         val progressionType = item.getString("Progression Type")
         val category = item.getString("Category")
+        val description = item.getString("Description")
 
         val exerciseEntity = Exercise(
-            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category
+            i, exerciseName, primaryMuscle, secondaryMuscle, compound, type, type2, level, progressionType, category, description
         )
         exerciseDao.upsert(exerciseEntity)
     }

@@ -6,15 +6,209 @@
     android:layout_height="match_parent"
     android:padding="24dp">
 
-
     <Button
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="133dp"
-        android:layout_marginEnd="142dp"
-        android:text="Start"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="97dp"
+        android:text="@string/start"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startButton">
+
+        <TextView
+            android:id="@+id/workout_stats_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_workout_statistics"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TableRow
+            android:id="@+id/table_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#51B435"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/category_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/num_workouts_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/top_exercise_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+
+        <!--PUSH-->
+        <TableRow
+            android:id="@+id/push_stat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/push_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/push_num_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/push_top_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+
+        <!--PULL-->
+        <TableRow
+            android:id="@+id/pull_stat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/pull_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/pull_num_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/pull_top_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+
+        <!--LEGS-->
+        <TableRow
+            android:id="@+id/legs_stat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/legs_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/legs_num_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/legs_top_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+
+        <!--CARDIO-->
+        <TableRow
+            android:id="@+id/cardio_stat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/cardio_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/cardio_num_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/cardio_top_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+
+        <!--ABS-->
+        <TableRow
+            android:id="@+id/abs_stat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/abs_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/abs_num_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/workouts_done" />
+
+            <TextView
+                android:id="@+id/abs_top_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/top_exercise" />
+        </TableRow>
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,7 +68,6 @@ class WorkoutContentFragment : Fragment() {
         val setLevel = view?.findViewById<TextView>(R.id.level)
         setLevel?.text = exerciseList[2]
 
-        // TODO: adjust max selection logic
         // Handle the workout selection logic
         setExerciseName?.setOnClickListener {
             if (selectedCount < maxSelections) {
@@ -86,7 +85,6 @@ class WorkoutContentFragment : Fragment() {
         return view
     }
 
-    // TODO: adjust max selection logic
     // Disable all workout selections (grey out and make unclickable)
     private fun disableAllSelections(view: View) {
         val allWorkouts = listOf<TextView>(
