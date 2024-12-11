@@ -28,7 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/finishButton">
 
-
             <!-- Horizontal LinearLayout to divide TextView and CheckBoxes -->
             <LinearLayout
                 android:id="@+id/checkbox_layout1"
@@ -49,7 +48,6 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:padding="8dp"/>
-
 
                 <!-- Checkboxes for Card 1 (right side) -->
                 <LinearLayout
@@ -259,6 +257,4 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.core.widget.NestedScrollView>

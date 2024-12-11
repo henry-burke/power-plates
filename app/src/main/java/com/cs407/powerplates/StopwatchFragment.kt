@@ -14,44 +14,28 @@ import android.widget.Button
 import android.widget.Chronometer
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
 
 class StopwatchFragment(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
-    // TODO: Rename and change types of parameters
+    // declare variables
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var userPasswdKV: SharedPreferences
-
     private var userId: Int = 0
-
-    private lateinit var greetingTextView: TextView
-    private lateinit var noteRecyclerView: RecyclerView
-    private lateinit var fab: FloatingActionButton
-    private lateinit var start: Button
-    private lateinit var push: Button
-    private lateinit var pull: Button
-    private lateinit var leg: Button
     private lateinit var userLevelKV: SharedPreferences
     private lateinit var chronometer: Chronometer
     private lateinit var startPauseButton: Button
     private lateinit var resetButton: Button
     private lateinit var lapButton: Button
     private lateinit var lapList: RecyclerView
-
     private var isRunning = false
     private var elapsedTime = 0L
     private var startTime = 0L
     private val laps = mutableListOf<String>()
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var millisecondsText: TextView
-
     private lateinit var lapAdapter: LapAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +49,7 @@ class StopwatchFragment(private val injectedUserViewModel: UserViewModel? = null
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
+            // Use ViewModelProvider to init UserViewModel
             ViewModelProvider(requireActivity())[UserViewModel::class.java]
         }
         userId = userViewModel.userState.value.id
@@ -132,7 +116,6 @@ class StopwatchFragment(private val injectedUserViewModel: UserViewModel? = null
                 lapAdapter.notifyDataSetChanged()
             }
         }
-
         return view
     }
 
@@ -147,7 +130,5 @@ class StopwatchFragment(private val injectedUserViewModel: UserViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 }

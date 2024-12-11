@@ -1,13 +1,11 @@
 package com.cs407.powerplates
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
 
 class Adapter(
     private val itemsList: List<WorkoutData>
@@ -33,4 +31,3 @@ class Adapter(
         return itemsList.size
     }
 }
-

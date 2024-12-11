@@ -3,19 +3,14 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.cs407.powerplates.UserState
-import com.cs407.powerplates.UserViewModel
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.User
 import com.cs407.powerplates.data.populateExercises
@@ -29,16 +24,14 @@ class LoginFragment(
     private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
 
+    // declare variables
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var errorTextView: TextView
-
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var userPasswdKV: SharedPreferences
     private lateinit var userLevelKV: SharedPreferences
-
     private lateinit var exerciseDB: ExerciseDatabase
 
     override fun onCreateView(
@@ -56,7 +49,6 @@ class LoginFragment(
         userViewModel = injectedUserViewModel ?:
                 ViewModelProvider(requireActivity())[UserViewModel::class.java]
 
-
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
         // if db is empty, populate with existing exercise data
@@ -66,7 +58,6 @@ class LoginFragment(
             }
         }
 
-        // TODO - Get shared preferences from using R.string.userPasswdKV as the name
         this.userPasswdKV = activity?.getSharedPreferences(
             getString(R.string.userPasswdKV), Context.MODE_PRIVATE)!!
         this.userLevelKV = activity?.getSharedPreferences(
@@ -98,11 +89,6 @@ class LoginFragment(
             // Launch a coroutine to call the suspend function
             CoroutineScope(Dispatchers.Main).launch {
                 val loginSuccessful = getUserPasswd(user, pass)
-                val userCreated = userCreated(user)
-
-                if (userCreated){
-                    // TODO go directly to the shared page
-                }
 
                 // Navigate to another fragment after successful login
                 if (loginSuccessful) {
@@ -122,7 +108,6 @@ class LoginFragment(
                     // userViewModel.setUser(UserState(id, user, pass))
                     val name1 = user + "_level"
 
-
                     if(userPasswdKV.contains(name1) && exerciseDB.historyDao().getAllUserExercisesCount(usersId) == 15){
                         // navigate directly to the home page
                         findNavController().navigate(R.id.action_loginFragment_to_homePage)
@@ -139,10 +124,6 @@ class LoginFragment(
             }
 
         }
-    }
-
-    private suspend fun userCreated(user: String): Boolean {
-        return userLevelKV.contains(user)
     }
 
     private suspend fun getUserPasswd(

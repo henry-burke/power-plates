@@ -2,7 +2,6 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -20,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.WorkoutType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.view.Menu
 import android.view.MenuInflater
@@ -28,14 +26,12 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuProvider
-import androidx.core.view.get
 import com.cs407.powerplates.data.Exercise
 import com.cs407.powerplates.data.ExerciseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null // For testing only
 ): Fragment() {
@@ -45,10 +41,12 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var userLevelKV: SharedPreferences
     private var userId: Int = 0
 
+    // navigation variables
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var worAdap: WorkoutAdapter
     private lateinit var prev: FloatingActionButton
     private lateinit var done: FloatingActionButton
+    private var droppedIn = false
 
     // showWorkouts() variables
     private lateinit var exerciseDB: ExerciseDatabase
@@ -64,24 +62,13 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     private lateinit var currentSavedWorkouts: ArrayList<String>
     private lateinit var currentSavedCategories: ArrayList<String>
 
-    private var droppedIn = false
-
     // handleWorkoutSelection() variables
     private var exerciseId = -1
     private var isSelected = false
     private var selectedCount = -1
 
-    // currently unused variables
-    private lateinit var greetingTextView: TextView
-    private lateinit var workoutName: String
-    private lateinit var intermediate: Button
-    private lateinit var fab: FloatingActionButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: remove deprecated function?
-        super.setHasOptionsMenu(true)
 
         //load user view model
         userPasswdKV = requireContext().getSharedPreferences(
@@ -114,17 +101,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
             currCategory = inputCategory
             currentCategoryIndex = categories.indexOf(currCategory)
         }
-
-        // TODO: maybe args
-//        val inputCategory = (arguments?.getString("workoutName") ?: 0).toString()
-//        if (categories.contains(inputCategory)) {
-//            currCategory = inputCategory
-//            currentCategoryIndex = categories.indexOf(currCategory)
-//        }
-
-        // TODO: remove greeting text
-        // greetingTextView = view.findViewById(R.id.greetingTextView)
-
         return view
     }
 
@@ -202,11 +178,6 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 }
             }
         }, viewLifecycleOwner)
-
-        // TODO: remove greetingText?
-        // val userState = userViewModel.userState.value
-        // showWorkouts(view)
-        // greetingTextView.text = getString(R.string.greeting_text, userState.name)
 
         // call showWorkouts from coroutine to query from db
         CoroutineScope(Dispatchers.Main).launch {

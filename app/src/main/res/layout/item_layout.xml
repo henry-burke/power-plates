@@ -39,6 +39,7 @@
             android:textSize="28dp"
             android:textStyle="bold"
             android:layout_gravity="center"/>
+
         <!-- Icon -->
         <ImageView
             android:id="@+id/dragIndicator"

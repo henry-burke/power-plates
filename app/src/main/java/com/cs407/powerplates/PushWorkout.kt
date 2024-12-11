@@ -2,14 +2,9 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -17,29 +12,17 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.data.Exercise
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.History
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-
-import com.cs407.powerplates.RepCount
-import com.cs407.powerplates.RankPrefs
 import java.util.Date
 import java.util.Locale
 
@@ -151,20 +134,6 @@ class PushWorkout(
         linearLayout2.setBackgroundResource(R.drawable.start_border)
         linearLayout3.setBackgroundResource(R.drawable.start_border)
 
-
-
-        // Set up submit button to check if all checkboxes are checked
-        /*
-        submitButton.setOnClickListener {
-            if (areAllCheckboxesChecked()) {
-                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-         */
-
         return view
     }
 
@@ -174,7 +143,6 @@ class PushWorkout(
         // query db for user selected exercises
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
         val getDao = exerciseDB.exerciseDao()
-
 
         CoroutineScope(Dispatchers.IO).launch {
             savedWorkouts = getDao.getSavedWorkoutsByCategory(userId, category)
@@ -186,7 +154,6 @@ class PushWorkout(
             }
 
             CoroutineScope(Dispatchers.Main).launch {
-
 
                 if(savedWorkouts.isNotEmpty() && savedWorkoutLevels.isNotEmpty()) {
                     CoroutineScope(Dispatchers.IO).launch{
@@ -204,7 +171,6 @@ class PushWorkout(
 
 
                         val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "push")
-                        //Log.d("Crash", userLevel)
 
                         //get exercise object progType: reps, weights, or time
                         val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
@@ -228,8 +194,6 @@ class PushWorkout(
                             workoutCheckBox(checkBox1, userState.name +"checkBox1_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox2, userState.name +"checkBox2_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox3, userState.name +"checkBox3_"+"${savedWorkouts[0]}")
-
-
 
                             //check progression type for second workout
                             if (secondWorkoutProgType == "Reps"){
@@ -278,7 +242,6 @@ class PushWorkout(
         checkBox5.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
         checkBox6.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
 
-
         checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox9.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
@@ -300,7 +263,6 @@ class PushWorkout(
 
                 findNavController().navigate(R.id.action_pushWorkout_to_homePage)
             } else {
-                //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
             }
         }
@@ -310,8 +272,6 @@ class PushWorkout(
             findNavController().navigate(action)
         }
     }
-
-
 
     private fun card1AllCheckBoxes(){
         if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked){
@@ -402,7 +362,6 @@ class PushWorkout(
                 else -> baseReps
             }
         }
-
         // Return the number of reps as a string
         return baseReps.toString()
     }
@@ -473,7 +432,6 @@ class PushWorkout(
         return timeWorkouts[experienceLevel]?.get(workoutType)
     }
 
-
     private fun getCurrentDate():String{
         val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return date.format(Date())
@@ -518,11 +476,6 @@ class PushWorkout(
                 updateCardColor()
             }
         }
-        //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
-
-        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
-
-
     }
 
     private fun updateCardColor() {
@@ -567,7 +520,4 @@ class PushWorkout(
             }
         }
     }
-
-
-
 }
