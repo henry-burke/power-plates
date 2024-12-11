@@ -158,12 +158,8 @@ class StopwatchFragment(private val injectedUserViewModel: UserViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupMenu()
         setupBackNavigation()
-
-
-
     }
 
     private fun setupMenu() {

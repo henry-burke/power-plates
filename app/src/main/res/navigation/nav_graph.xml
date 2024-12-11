@@ -149,15 +149,12 @@
 
             app:destination="@+id/StopwatchFragment"
 
-            app:popUpTo="@id/chooseWorkout"
-            app:popUpToInclusive="true"/>
+           />
         <action
             android:id="@+id/action_chooseWorkout_to_historyFragment"
 
             app:destination="@+id/HistoryFragment"
-
-            app:popUpTo="@id/chooseWorkout"
-            app:popUpToInclusive="true"/>
+           />
         <action
             android:id="@+id/action_chooseWorkout_to_abWorkout"
 
@@ -229,8 +226,7 @@
 
         app:destination="@+id/HistoryFragment"
 
-        app:popUpTo="@id/homePage"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/homePage" />
         <action
             android:id="@+id/action_homePage_to_loginFragment"
 
@@ -272,8 +268,7 @@
 
             app:destination="@+id/HistoryFragment"
 
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"/>
+           />
         <action
             android:id="@+id/action_chooseSession_to_pushWorkout"
 
@@ -462,6 +457,7 @@
             android:id="@+id/actions_stopwatch_to_history"
 
             app:destination="@+id/HistoryFragment"
+
             />
         <action
             android:id="@+id/actions_stopwatch_to_rankPrefs"
@@ -473,9 +469,6 @@
 
             app:destination="@+id/choiceLevelFragment"
             />
-
-
-
     </fragment>
 
     <fragment
@@ -483,6 +476,28 @@
         android:name="com.cs407.powerplates.HistoryFragment"
         android:label="History"
         tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/actions_history_to_Logout"
+
+            app:destination="@+id/loginFragment"
+            app:popUpTo="@id/HistoryFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/actions_history_to_stopwatch"
+
+            app:destination="@+id/StopwatchFragment"
+            />
+        <action
+            android:id="@+id/actions_history_to_rankPrefs"
+
+            app:destination="@+id/rankPrefsFragment"
+            />
+        <action
+            android:id="@+id/actions_history_to_chooseLevel"
+
+            app:destination="@+id/choiceLevelFragment"
+            />
 
     </fragment>
 
