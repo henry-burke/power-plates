@@ -16,6 +16,22 @@
 
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_loginFragment_to_chooseWorkout"
+
+            app:destination="@+id/chooseWorkout"
+
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_loginFragment_to_homePage"
+
+            app:destination="@+id/homePage"
+
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
         <!--TODO: action for login to workout screen when user is logged in and has chosen exercises-->
     </fragment>
 
@@ -32,6 +48,20 @@
 
             app:popUpTo="@id/choiceLevelFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_choiceLevelFragment_to_homePage"
+
+            app:destination="@id/homePage"
+
+            app:popUpTo="@id/choiceLevelFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_choiceLevelFragment_to_chooseWorkout"
+
+            app:destination="@id/chooseWorkout"
+
+            app:popUpTo="@id/choiceLevelFragment"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -40,11 +70,21 @@
         android:name="com.cs407.powerplates.RankPrefs"
         android:label="@string/rank_prefs"
         tools:layout="@layout/fragment_rank_prefs">
+        <argument
+            android:name="level"
+            app:argType="string" />
 
         <action
             android:id="@+id/action_rankPrefsFragment_to_chooseWorkout"
 
             app:destination="@+id/chooseWorkout"
+
+            app:popUpTo="@id/rankPrefsFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_rankPrefsFragment_to_homePage"
+
+            app:destination="@+id/homePage"
 
             app:popUpTo="@id/rankPrefsFragment"
             app:popUpToInclusive="true"/>
@@ -87,6 +127,20 @@
             android:id="@+id/action_chooseWorkout_to_loginFragment"
 
             app:destination="@+id/loginFragment"
+
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseWorkout_to_choiceLevelFragment"
+
+            app:destination="@+id/choiceLevelFragment"
+
+            app:popUpTo="@id/chooseWorkout"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseWorkout_to_rankPrefsFragment"
+
+            app:destination="@+id/rankPrefsFragment"
 
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
@@ -179,6 +233,34 @@
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_homePage_to_loginFragment"
+
+            app:destination="@+id/loginFragment"
+
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_homePage_to_choiceLevelFragment"
+
+            app:destination="@+id/choiceLevelFragment"
+
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_homePage_to_rankPrefsFragment"
+
+            app:destination="@+id/rankPrefsFragment"
+
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_homePage_to_StopwatchFragment"
+
+            app:destination="@+id/StopwatchFragment"
+
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -223,6 +305,34 @@
             app:popUpTo="@id/ChooseSession"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_chooseSession_to_loginFragment"
+
+            app:destination="@+id/loginFragment"
+
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseSession_to_choiceLevelFragment"
+
+            app:destination="@+id/choiceLevelFragment"
+
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseSession_to_rankPrefsFragment"
+
+            app:destination="@+id/rankPrefsFragment"
+
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_chooseSession_to_StopwatchFragment"
+
+            app:destination="@+id/StopwatchFragment"
+
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 

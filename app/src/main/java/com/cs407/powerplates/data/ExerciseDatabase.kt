@@ -319,6 +319,12 @@ data class StringIntPair(val exercises: String, val count: Int)
                             ORDER BY count DESC
     """)
     suspend fun getTopExercisesByCategory(userId: Int, category: String): List<StringIntPair>
+
+    @Query("""
+        SELECT COUNT(*) FROM UserExerciseRelation uer
+        WHERE uer.userId == :userId
+    """)
+    suspend fun getAllUserExercisesCount(userId: Int): Int
 }
 
 // DAO to handle deleting a user and its related exercises

@@ -42,10 +42,10 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     private lateinit var items: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
     private lateinit var myAdapter: Adapter
+    private lateinit var userLev: String
+    private lateinit var exerciseDB: ExerciseDatabase
 
     private lateinit var itemsArrayList: ArrayList<WorkoutData>
-
-    private lateinit var exerciseDB: ExerciseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +71,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     ): View? {
         val view = inflater.inflate(R.layout.fragment_rank_prefs, container, false)
         greetingTextView = view.findViewById(R.id.greetingTextView)
+        userLev = (arguments?.getString("level") ?: 0).toString()
         fab = view.findViewById(R.id.fab1)
         return view
     }
@@ -83,7 +84,23 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
      
         showPrefs(view)
+
+        // TODO: fix merges URGENT
         fab.setOnClickListener {
+            buttonClicked(userLev)
+            Log.d("inside rank pref", userLev)
+            val usersId = userState.id
+            exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+            // Push correctly
+            CoroutineScope(Dispatchers.Main).launch {
+                if(exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15){
+                    // navigate directly to the home page
+                    findNavController().navigate(R.id.action_rankPrefsFragment_to_homePage)
+                } else {
+                    // navigate to the excersie choice page
+                    findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
+                }
+            }
             // get current order of user's ranked preferences
             exerciseDB = ExerciseDatabase.getDatabase(requireContext())
             val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
@@ -142,5 +159,19 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun buttonClicked(level: String){
+        // TODO make a new shared preference
+        val userState = userViewModel.userState.value
+        val name1 = userState.name + "_level"
+        Log.d("test", name1)
+        val editor = userLevelKV.edit()
+        //hash password
+        editor?.putString(name1, level)
+        editor?.apply()
+        Log.d("sharedPref Level", userLevelKV.getString(name1, "").toString())
+
+        // TODO going to the next page
     }
 }
