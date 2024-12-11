@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundColor"
         tools:context=".PushWorkout"
-        android:padding="40dp">
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="48dp">
 
         <!-- Card 1 -->
         <androidx.cardview.widget.CardView
