@@ -152,13 +152,6 @@
             app:popUpTo="@id/chooseWorkout"
             app:popUpToInclusive="true"/>
         <action
-            android:id="@+id/action_chooseWorkout_to_rankPrefs"
-
-            app:destination="@+id/rankPrefsFragment"
-
-            app:popUpTo="@id/chooseWorkout"
-            app:popUpToInclusive="true"/>
-        <action
             android:id="@+id/action_chooseWorkout_to_historyFragment"
 
             app:destination="@+id/HistoryFragment"
@@ -234,6 +227,13 @@
             app:popUpToInclusive="true"
             />
         <action
+        android:id="@+id/action_homePage_to_historyFragment"
+
+        app:destination="@+id/HistoryFragment"
+
+        app:popUpTo="@id/homePage"
+        app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_homePage_to_loginFragment"
 
             app:destination="@+id/loginFragment"
@@ -270,6 +270,13 @@
         android:label="Choose Session"
         tools:layout="@layout/fragment_choose_session">
 
+        <action
+            android:id="@+id/action_chooseSession_to_historyFragment"
+
+            app:destination="@+id/HistoryFragment"
+
+            app:popUpTo="@id/ChooseSession"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_chooseSession_to_pushWorkout"
 
