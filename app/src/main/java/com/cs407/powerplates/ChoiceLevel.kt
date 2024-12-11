@@ -22,7 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.UserState
 import com.cs407.powerplates.UserViewModel
+import com.cs407.powerplates.data.ExerciseDatabase
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChoiceLevel (
     private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -41,6 +45,7 @@ class ChoiceLevel (
     private lateinit var intermediate: CardView
     private lateinit var advanced: CardView
     private lateinit var userLevelKV: SharedPreferences
+    private lateinit var exerciseDB: ExerciseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +75,7 @@ class ChoiceLevel (
         beginner = view.findViewById(R.id.begButton)
         intermediate = view.findViewById(R.id.interButton)
         advanced = view.findViewById(R.id.advButton)
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
        // noteRecyclerView = view.findViewById(R.id.noteRecyclerView)
         //fab = view.findViewById(R.id.fab)
@@ -83,19 +89,64 @@ class ChoiceLevel (
 
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.greeting_text, userState.name)
+        val name1 = userState.name.toString() + "_level"
+        val useId1 = userState.id
 
         // setting up the button
-        beginner.setOnClickListener{
-            buttonClicked("beginner")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+        var userExcCount = -1;
+        CoroutineScope(Dispatchers.Main).launch {
+            userExcCount = exerciseDB.exerciseDao().getUsersSavedExerciseCount(useId1)
         }
+
+        beginner.setOnClickListener{
+            if (userPasswdKV.contains(name1)){
+                buttonClicked("beginner")
+                if (userExcCount == 15) {
+                    // navigate directly to the home page
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_homePage)
+                } else {
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkout)
+                }
+            }
+            else {
+                val action = ChoiceLevelDirections.actionChoiceLevelFragmentToRankPrefFragment("beginner")
+                findNavController().navigate(action)
+            }
+            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+        }
+
         intermediate.setOnClickListener{
-            buttonClicked("intermediate")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            Log.d("DEBUG", userPasswdKV.contains(name1).toString())
+            if (userPasswdKV.contains(name1)){
+                buttonClicked("intermediate")
+                if (userExcCount == 15) {
+                    // navigate directly to the home page
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_homePage)
+                } else {
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkout)
+                }
+            } else {
+                val action = ChoiceLevelDirections.actionChoiceLevelFragmentToRankPrefFragment("intermediate")
+                findNavController().navigate(action)
+            }
+
+            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         advanced.setOnClickListener{
-            buttonClicked("advanced")
-            findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
+            //buttonClicked("advanced")
+            if (userPasswdKV.contains(name1)){
+                buttonClicked("advanced")
+                if (userExcCount == 15) {
+                    // navigate directly to the home page
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_homePage)
+                } else {
+                    findNavController().navigate(R.id.action_choiceLevelFragment_to_chooseWorkout)
+                }
+            }
+            else {
+                val action = ChoiceLevelDirections.actionChoiceLevelFragmentToRankPrefFragment("advanced")
+                findNavController().navigate(action)
+            }
         }
     }
 

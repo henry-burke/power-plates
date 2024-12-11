@@ -267,6 +267,8 @@ interface ExerciseDao {
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
 
+
+    // TODO: change name
     // Query to count the user's total number of saved exercises, given their userId
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer
@@ -319,6 +321,12 @@ data class StringIntPair(val exercises: String, val count: Int)
                             ORDER BY count DESC
     """)
     suspend fun getTopExercisesByCategory(userId: Int, category: String): List<StringIntPair>
+
+    @Query("""
+        SELECT COUNT(*) FROM UserExerciseRelation uer
+        WHERE uer.userId == :userId
+    """)
+    suspend fun getAllUserExercisesCount(userId: Int): Int
 }
 
 // DAO to handle deleting a user and its related exercises

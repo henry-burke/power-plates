@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -78,6 +82,36 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         super.onViewCreated(view, savedInstanceState)
 
         val userState = userViewModel.userState.value
+
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.nav_bar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_logout -> {
+                        userViewModel.setUser(UserState())
+                        findNavController().navigate(R.id.action_chooseSession_to_loginFragment)
+                        true
+                    }
+                    R.id.stopwatch -> {
+                        findNavController().navigate(R.id.action_chooseSession_to_StopwatchFragment)
+                        true
+                    }
+                    R.id.choosePreff -> {
+                        findNavController().navigate(R.id.action_chooseSession_to_rankPrefsFragment)
+                        true
+                    }
+                    R.id.chooseLvl -> {
+                        findNavController().navigate(R.id.action_chooseSession_to_choiceLevelFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
 
         push.setOnClickListener{
             //buttonClicked("beginner")
