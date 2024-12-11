@@ -34,6 +34,7 @@ import com.cs407.powerplates.data.ExerciseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null // For testing only
@@ -304,31 +305,42 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
         }
     }
 
-    private fun descriptionDialog(workout: String){
+    private fun descriptionDialog(workout: String) {
         Log.v("test", "ALERT: $workout")
         var ex: Exercise
-        var message: String? = "error404"
+
         CoroutineScope(Dispatchers.IO).launch {
             ex = exerciseDB.exerciseDao().getExerciseByName(workout)
-            CoroutineScope(Dispatchers.Main).launch {
-            message = "Primary Muscle: ${ex.primaryMuscle}\n" +
-                    "Secondary Muscle: ${ex.secondaryMuscle}\n" +
-                    "Compound: ${ex.compound}\n" +
-                    "Type: ${ex.type}\n" +
-                    "Level: ${ex.level}\n" +
-                    "Progression Type: ${ex.progressionType}\n" +
-                    "Category: ${ex.category}\n" +
-                    "Description: ${ex.description}\n"
 
-                AlertDialog.Builder(requireContext())
-                    .setTitle(workout)
-                    .setMessage(message)
-                    .setPositiveButton("Okay"){ dialog, _->
-                        dialog.dismiss()
-                    }
+            withContext(Dispatchers.Main) {
+                // Inflate the custom layout
+                val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_workout_content, null)
+
+                // Populate the custom layout views
+                dialogView.findViewById<TextView>(R.id.exercise_name).text = workout
+                dialogView.findViewById<TextView>(R.id.primary_muscle).text = "Primary Muscle: ${ex.primaryMuscle}"
+                dialogView.findViewById<TextView>(R.id.secondary_muscle).text = "Secondary Muscle: ${ex.secondaryMuscle}"
+                dialogView.findViewById<TextView>(R.id.level).text = "Level: ${ex.level}"
+                dialogView.findViewById<TextView>(R.id.category).text = "Category: ${ex.category}"
+                dialogView.findViewById<TextView>(R.id.description).text = "Description: ${ex.description}"
+                dialogView.findViewById<TextView>(R.id.compound).text = "Compound: ${ex.compound}"
+                dialogView.findViewById<TextView>(R.id.progression_type).text = "Progression Type: ${ex.progressionType}"
+                dialogView.findViewById<TextView>(R.id.type).text = "Type: ${ex.type}"
+
+                // Create the dialog
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setView(dialogView) // Set the custom layout
                     .create()
-                    .show()
+
+                // Set up the "Okay" button click listener
+                dialogView.findViewById<Button>(R.id.dialog_okay_button).setOnClickListener {
+                    dialog.dismiss()
+                }
+
+                dialog.show()
             }
         }
     }
+
+
 }
