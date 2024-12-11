@@ -352,7 +352,7 @@ class AbWorkout(
         val levels = mapOf(
             "beginner" to mapOf("abs" to 15, "pull" to 12, "legs" to 13),
             "intermediate" to mapOf("abs" to 20, "pull" to 8, "legs" to 11),
-            "advanced'" to mapOf("abs" to 25, "pull" to 6, "legs" to 9)
+            "advanced" to mapOf("abs" to 25, "pull" to 6, "legs" to 9)
         )
 
         // Overall score

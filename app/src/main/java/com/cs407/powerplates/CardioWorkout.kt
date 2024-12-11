@@ -349,7 +349,7 @@ class CardioWorkout(
         val levels = mapOf(
             "beginner" to mapOf("cardio" to 10, "pull" to 12, "legs" to 13),
             "intermediate" to mapOf("cardio" to 10, "pull" to 8, "legs" to 11),
-            "advanced'" to mapOf("cardio" to 6, "pull" to 6, "legs" to 9)
+            "advanced" to mapOf("cardio" to 6, "pull" to 6, "legs" to 9)
         )
 
         // Overall score
