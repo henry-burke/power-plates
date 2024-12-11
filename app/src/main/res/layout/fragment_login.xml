@@ -33,7 +33,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp"/>
 
-
     <!-- Error Text -->
     <TextView
         android:id="@+id/errorTextView"
@@ -60,6 +59,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/usernameEditText"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/inputBackground"
@@ -91,7 +91,6 @@
             android:textColorHint="@color/secondaryTextColor"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <!-- Login Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
@@ -107,6 +106,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

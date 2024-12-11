@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     android:elevation="8dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="15dp">
 
     <!-- card layout for long list of exercises after selecting level and preferences -->
 
@@ -15,13 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp"
+        android:background="@drawable/card_border">
 
         <TextView
             android:id="@+id/history_card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/category_workout_on_date"
+            android:textColor="@color/primaryTextColor"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -30,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/exercise_name_1"
+            android:textColor="@color/primaryTextColor"
             android:textSize="17sp" />
 
         <TextView
@@ -37,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/exercise_name_2"
+            android:textColor="@color/primaryTextColor"
             android:textSize="17sp" />
 
         <TextView
@@ -44,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/exercise_name_3"
+            android:textColor="@color/primaryTextColor"
             android:textSize="17sp" />
     </LinearLayout>
 

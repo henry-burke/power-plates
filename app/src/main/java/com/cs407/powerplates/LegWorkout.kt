@@ -2,10 +2,8 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -27,10 +25,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.cs407.powerplates.data.ExerciseDatabase
 import com.cs407.powerplates.data.History
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -145,20 +141,6 @@ class LegWorkout(
         linearLayout2.setBackgroundResource(R.drawable.start_border)
         linearLayout3.setBackgroundResource(R.drawable.start_border)
 
-
-
-        // Set up submit button to check if all checkboxes are checked
-        /*
-        submitButton.setOnClickListener {
-            if (areAllCheckboxesChecked()) {
-                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-         */
-
         return view
     }
 
@@ -199,7 +181,6 @@ class LegWorkout(
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
                         val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "legs")
-                        //Log.d("Crash", userLevel)
 
                         //get exercise object progType: reps, weights, or time
                         val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
@@ -223,8 +204,6 @@ class LegWorkout(
                             workoutCheckBox(checkBox1, userState.name +"checkBox1_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox2, userState.name +"checkBox2_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox3, userState.name +"checkBox3_"+"${savedWorkouts[0]}")
-
-
 
                             //check progression type for second workout
                             if (secondWorkoutProgType == "Reps"){
@@ -263,17 +242,14 @@ class LegWorkout(
             }
         }
 
-
         //card changes color if all text boxes are checked for that card
         checkBox1.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         checkBox2.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         checkBox3.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
 
-
         checkBox4.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
         checkBox5.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
         checkBox6.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
-
 
         checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
@@ -296,7 +272,6 @@ class LegWorkout(
 
                 findNavController().navigate(R.id.action_legWorkout_to_homePage)
             } else {
-                //Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
                 unfinishedDialog()
             }
         }
@@ -306,8 +281,6 @@ class LegWorkout(
             findNavController().navigate(action)
         }
     }
-
-
 
     private fun card1AllCheckBoxes(){
         if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked){
@@ -399,7 +372,6 @@ class LegWorkout(
                 else -> baseReps
             }
         }
-
         // Return the number of reps as a string
         return baseReps.toString()
     }
@@ -503,7 +475,6 @@ class LegWorkout(
         else{
             check.isChecked = isChecked
         }
-        //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         check.setOnCheckedChangeListener { _, _ ->
             // Save checkbox state asynchronously in SharedPreferences
             CoroutineScope(Dispatchers.IO).launch {
@@ -512,9 +483,6 @@ class LegWorkout(
             // Update card color immediately (on the main thread)
             updateCardColor()
         }
-        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
-
-
     }
 
     private fun updateCardColor() {

@@ -1,17 +1,20 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:background="@drawable/square_border">
 
     <TextView
         android:id="@+id/exercise_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Exercise Name"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -19,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Primary Muscle"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -26,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Secondary Muscle"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -33,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Level"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -40,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Category"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -47,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -54,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Compound/Isolated"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -61,6 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Progression Type"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -68,6 +78,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Type"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginBottom="4dp" />
+
+    <!-- Okay Button -->
+    <Button
+        android:id="@+id/dialog_okay_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Okay"
+        android:backgroundTint="@color/buttonColor"
+        android:textColor="@color/primaryTextColor" />
 
 </LinearLayout>

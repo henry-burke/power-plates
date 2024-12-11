@@ -5,26 +5,16 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.UserState
-import com.cs407.powerplates.UserViewModel
 import com.cs407.powerplates.data.ExerciseDatabase
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,8 +30,6 @@ class ChoiceLevel (
     private var userId: Int = 0
 
     private lateinit var greetingTextView: TextView
-    private lateinit var noteRecyclerView: RecyclerView
-    private lateinit var fab: FloatingActionButton
     private lateinit var beginner: CardView
     private lateinit var intermediate: CardView
     private lateinit var advanced: CardView
@@ -66,7 +54,6 @@ class ChoiceLevel (
         userId = userViewModel.userState.value.id
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -78,11 +65,7 @@ class ChoiceLevel (
         advanced = view.findViewById(R.id.advButton)
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-       // noteRecyclerView = view.findViewById(R.id.noteRecyclerView)
-        //fab = view.findViewById(R.id.fab)
-        //return view
         return view
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,7 +101,6 @@ class ChoiceLevel (
                 val action = ChoiceLevelDirections.actionChoiceLevelFragmentToRankPrefFragment("beginner")
                 findNavController().navigate(action)
             }
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
 
         intermediate.setOnClickListener{
@@ -135,11 +117,8 @@ class ChoiceLevel (
                 val action = ChoiceLevelDirections.actionChoiceLevelFragmentToRankPrefFragment("intermediate")
                 findNavController().navigate(action)
             }
-
-            //findNavController().navigate(R.id.action_choiceLevelFragment_to_rankPrefFragment)
         }
         advanced.setOnClickListener{
-            //buttonClicked("advanced")
             if (userPasswdKV.contains(name1)){
                 buttonClicked("advanced")
                 if (userExcCount == 15) {
@@ -157,17 +136,11 @@ class ChoiceLevel (
     }
 
     private fun buttonClicked(level: String){
-        // TODO make a new shared preference
         val userState = userViewModel.userState.value
         val name1 = userState.name + "_level"
         val editor = userLevelKV.edit()
         //hash password
         editor?.putString(name1, level)
         editor?.apply()
-        Log.d("sharedPref Level", userLevelKV.getString(name1, "").toString())
-
-        // TODO going to the next page
     }
-
-
 }

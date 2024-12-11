@@ -10,25 +10,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.data.ExerciseDao
 import com.cs407.powerplates.data.ExerciseDatabase
-import com.cs407.powerplates.data.History
 import com.cs407.powerplates.data.HistoryDao
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class HomePage(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
@@ -62,7 +55,6 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
     private lateinit var legsTopExercise: TextView
     private lateinit var cardioTopExercise: TextView
     private lateinit var absTopExercise: TextView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,7 +144,6 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userState = userViewModel.userState.value
 
         if (activity is AppCompatActivity) {
             val actionBar = (activity as AppCompatActivity).supportActionBar

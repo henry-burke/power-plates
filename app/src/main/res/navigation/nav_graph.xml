@@ -194,24 +194,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/WorkoutContentFragment"
-        android:name="com.cs407.powerplates.WorkoutContentFragment"
-        android:label="@string/about_workout"
-        tools:layout="@layout/fragment_workout_content">
-        <argument
-            android:name="workoutName"
-            app:argType="string" />
-
-<!--        <action-->
-<!--            android:id="@+id/action_chooseWorkoutFragment_to_WorkoutContentFragment"-->
-
-<!--            app:destination="@+id/WorkoutContentFragment"-->
-
-<!--            app:popUpTo="@id/ChooseWorkoutFragment"-->
-<!--            app:popUpToInclusive="true"/>-->
-    </fragment>
-
-    <fragment
         android:id="@+id/homePage"
         android:name="com.cs407.powerplates.HomePage"
         android:label="Home Page"

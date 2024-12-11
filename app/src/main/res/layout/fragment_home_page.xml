@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
@@ -10,7 +9,7 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="72dp"
         android:layout_marginBottom="60dp"
         android:gravity="center"
         android:backgroundTint="@color/buttonColor"
@@ -44,8 +43,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startButton"
-        android:layout_marginTop="60dp"
-        android:padding="24dp"
+        android:layout_marginTop="72dp"
+        android:paddingVertical="36dp"
+        android:paddingHorizontal="24dp"
         android:background="@color/inputBackground">
 
         <TextView
@@ -57,7 +57,7 @@
             android:textStyle="bold"
             android:textColor="@color/primaryTextColor"
             android:layout_marginBottom="32dp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="60dp"/>
 
         <TableRow
             android:id="@+id/table_header"
@@ -275,5 +275,4 @@
                 android:textColor="@color/primaryTextColor"/>
         </TableRow>
     </TableLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

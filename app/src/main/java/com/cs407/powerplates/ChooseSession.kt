@@ -3,7 +3,6 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,40 +15,26 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
+import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.recyclerview.widget.ItemTouchHelper
-import java.util.Collections
-
 
 class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ): Fragment() {
-    // TODO: Rename and change types of parameters
+
+    // declare variables
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var userPasswdKV: SharedPreferences
-
     private var userId: Int = 0
-
-    private lateinit var greetingTextView: TextView
-    private lateinit var noteRecyclerView: RecyclerView
-    private lateinit var fab: FloatingActionButton
-    private lateinit var push: Button
-    private lateinit var pull: Button
-    private lateinit var leg: Button
-    private lateinit var cardio: Button
-    private lateinit var abs: Button
+    private lateinit var push: CardView
+    private lateinit var pull: CardView
+    private lateinit var leg: CardView
+    private lateinit var cardio: CardView
+    private lateinit var abs: CardView
     private lateinit var userLevelKV: SharedPreferences
-
-    private lateinit var items: ArrayList<String>
-    private lateinit var recyclerView: RecyclerView
-
-
-    private lateinit var itemsArrayList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +48,7 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         userViewModel = if (injectedUserViewModel != null) {
             injectedUserViewModel
         } else {
-            // TODO - Use ViewModelProvider to init UserViewModel
+            // Use ViewModelProvider to init UserViewModel
             ViewModelProvider(requireActivity())[UserViewModel::class.java]
         }
         userId = userViewModel.userState.value.id
@@ -132,29 +117,22 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         }, viewLifecycleOwner)
 
         push.setOnClickListener{
-            //buttonClicked("beginner")
             findNavController().navigate(R.id.action_chooseSession_to_pushWorkout)
         }
         pull.setOnClickListener{
-            //buttonClicked("beginner")
             findNavController().navigate(R.id.action_chooseSession_to_pullWorkout)
         }
         leg.setOnClickListener{
-            //buttonClicked("beginner")
             findNavController().navigate(R.id.action_chooseSession_to_legWorkout)
         }
         cardio.setOnClickListener{
-            //buttonClicked("beginner")
             findNavController().navigate(R.id.action_chooseSession_to_cardioWorkout)
         }
         abs.setOnClickListener{
-            //buttonClicked("beginner")
             findNavController().navigate(R.id.action_chooseSession_to_abWorkout)
         }
-
-
-
     }
+}
 
     private fun setupBackNavigation() {
         val callback = object : OnBackPressedCallback(true) {
