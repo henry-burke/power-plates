@@ -1,22 +1,15 @@
 package com.cs407.powerplates
 
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.powerplates.data.Exercise
-import com.cs407.powerplates.data.ExerciseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class WorkoutAdapter(
-    private val onClick: (List<String>) -> Unit,  // Updated to expect a String (workoutName)
+    private val onClick: (List<String>) -> Unit,
     private val workList: List<WorkoutType>,
     private var savedWorkouts: ArrayList<String>,
     private val savedWorkoutsCategories: ArrayList<String>
@@ -24,19 +17,18 @@ class WorkoutAdapter(
 
     // ViewHolder class
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val linearLayout: LinearLayout = itemView.findViewById(R.id.card_lin_layout)
         val exItems: TextView = itemView.findViewById(R.id.exercise_name)
         val difItems: TextView = itemView.findViewById(R.id.level)
         val musItems: TextView = itemView.findViewById(R.id.muscleGrp)
     }
 
-    // Create ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.workout_layout, parent, false)
         return ViewHolder(itemView)
     }
 
-    // Bind data to ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wType: WorkoutType = workList[position]
 
@@ -45,34 +37,35 @@ class WorkoutAdapter(
         holder.difItems.text = wType.difficulty
         holder.musItems.text = wType.muscleGrp
 
-        // highlight if already selected, default color (white for now) if otherwise
+        // Update background drawable based on selection
         if (savedWorkouts.contains(wType.exerciseName)) {
-            holder.itemView.setBackgroundColor(Color.argb(255, 50, 255, 50))
+            holder.linearLayout.setBackgroundResource(R.drawable.selected_card_border) // Highlighted border
         } else {
-            holder.itemView.setBackgroundColor(Color.argb(255, 255, 255, 255))
+            holder.linearLayout.setBackgroundResource(R.drawable.card_border) // Default border
         }
 
-        // Set onClickListener to pass workoutName to the callback
+        // Handle item selection and deselection
         holder.itemView.setOnClickListener {
             val categoryCount = savedWorkoutsCategories.count { it == wType.category }
 
-            if(savedWorkouts.contains(wType.exerciseName)) {
-                // deselect workout
+            if (savedWorkouts.contains(wType.exerciseName)) {
+                // Deselect workout
                 savedWorkouts.remove(wType.exerciseName)
                 savedWorkoutsCategories.remove(wType.category)
-                onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
-            } else if(categoryCount < 3 && savedWorkouts.size < 15) {
-                // select workout
+            } else if (categoryCount < 3 && savedWorkouts.size < 15) {
+                // Select workout
                 savedWorkouts.add(wType.exerciseName)
                 savedWorkoutsCategories.add(wType.category)
-                onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
             }
+
+            // Trigger the callback and update the UI
+            onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
             notifyItemChanged(position)
         }
     }
 
-    // Return the size of the dataset
     override fun getItemCount(): Int {
         return workList.size
     }
 }
+

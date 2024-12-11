@@ -17,6 +17,7 @@ import com.cs407.powerplates.data.HistoryDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HistoryFragment(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ) : Fragment() {
@@ -67,8 +68,10 @@ class HistoryFragment(private val injectedUserViewModel: UserViewModel? = null /
             historyAdapter = HistoryAdapter(
                 userHistory
             )
-            historyRecyclerView.setHasFixedSize(true)
-            historyRecyclerView.adapter = historyAdapter
+            withContext(Dispatchers.Main) {
+                historyRecyclerView.setHasFixedSize(true)
+                historyRecyclerView.adapter = historyAdapter
+            }
         }
         return view
     }
