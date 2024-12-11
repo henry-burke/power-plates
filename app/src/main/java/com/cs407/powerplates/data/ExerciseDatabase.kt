@@ -12,12 +12,9 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import androidx.room.Upsert
 import com.cs407.powerplates.R
 import org.json.JSONArray
-import java.util.Date
 
 // User Entity with a unique ID on user name
 @Entity(
@@ -61,23 +58,6 @@ data class RankedPrefs(
     val r5: String,
 )
 
-// TODO: uncomment if need converter classes
-// Converter class to handle Date <-> Long type conversions
-// Converter class to handle conversion between custom type Data and SQL-compatible type Long
-class Converters {
-    // Converts a timestamp (Long) to a Date object
-    @TypeConverter
-    fun fromTimestamp(value: Long): Date {
-        return Date(value)
-    }
-
-    // Converts a Date object to a timestamp (Long)
-    @TypeConverter
-    fun dateToTimestamp(date: Date): Long {
-        return date.time
-    }
-}
-
 // Define the Exercise entity with a primary key and various fields, including nullable fields
 @Entity
 data class Exercise(
@@ -115,15 +95,6 @@ data class UserExerciseRelation(
     val exerciseId: Int // Foreign key to Exercise
 )
 
-// Summary projection of the Exercise entity, for displaying limited fields in queries
-data class ExerciseSummary(
-    val exerciseId: Int,
-    val primaryMuscle: String,
-    val type: String,
-    val level: String,
-    val category: String
-)
-
 // DAO for interacting with the User Entity
 @Dao
 interface UserDao {
@@ -135,17 +106,6 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE userId = :id")
     suspend fun getById(id: Int): User
 
-    // Query to get a list of ExerciseSummary for a user, ordered by lastEdited
-    @Query(
-        """SELECT * FROM User u, Exercise e, UserExerciseRelation ue
-                WHERE u.userId = :id
-                AND ue.userId = u.userId
-                AND e.exerciseId = ue.exerciseId
-                ORDER BY e.exerciseName DESC"""
-    // TODO: ORDER BY BEGINNER INTERMEDIATE ADVANCED
-    )
-    suspend fun getUsersWithExerciseListsById(id: Int): List<ExerciseSummary>
-
     // Insert a new user into the database
     @Insert(entity = User::class)
     suspend fun insert(user: User)
@@ -154,21 +114,15 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    // Query to get Exercise object from exerciseName
     @Query("SELECT * FROM Exercise WHERE exerciseName == :exerciseName")
     suspend fun getExerciseByName(exerciseName: String): Exercise
 
-    // Query: get all exercise data from all exercises
-    @Query("SELECT * FROM Exercise")
-    suspend fun getAllExerciseData(): List<Exercise>
-
-    // get primary muscle group given exercise name
-//    @Query("SELECT e.primaryMuscle FROM exercise e WHERE e.exerciseName == :name")
-//    suspend fun getPrimaryMuscleFromName(name: String): String
-
-    // get difficulty level given exercise name
+    // Query to get difficulty level from exerciseName
     @Query("SELECT e.level FROM exercise e WHERE e.exerciseName == :name")
     suspend fun getLevelFromName(name: String): String
 
+    // Query to get progressionType from exerciseName
     @Query("SELECT e.progressionType FROM exercise e WHERE e.exerciseName == :name")
     suspend fun getProgTypeFromName(name: String): String
 
@@ -176,30 +130,17 @@ interface ExerciseDao {
     @Query("SELECT COUNT(*) FROM exercise")
     suspend fun getExerciseCount(): Int
 
-    // Query to get all exercise names
-    @Query("SELECT e.exerciseName FROM Exercise e")
-    suspend fun getAllNames(): List<String>
-
-    // Query to get all exercise primary muscle group
-    @Query("SELECT e.primaryMuscle FROM Exercise e")
-    suspend fun getAllPrimaryMuscles(): List<String>
-
-    // Query to get all exercise levels
-    @Query("SELECT e.level FROM Exercise e")
-    suspend fun getAllLevels(): List<String>
-
+    // Query to get names of all exercises in a specified category
     @Query("SELECT e.exerciseName FROM Exercise e WHERE e.category == :category")
     suspend fun getAllNamesByCategory(category: String): List<String>
 
+    // Query to get primary muscles of all exercises in a specified category
     @Query("SELECT e.primaryMuscle FROM Exercise e WHERE e.category == :category")
     suspend fun getAllPrimaryMusclesByCategory(category: String): List<String>
 
+    // Query to get levels of all exercises in a specified category
     @Query("SELECT e.level FROM Exercise e WHERE e.category == :category")
     suspend fun getAllLevelsByCategory(category: String): List<String>
-
-    // Query to get a Exercise by its exerciseId
-//    @Query("SELECT * FROM exercise WHERE exerciseId = :id")
-//    suspend fun getById(id: Int): Exercise
 
     // Query to get a Exercise's ID by its rowId (SQLite internal ID)
     @Query("SELECT exerciseId FROM exercise WHERE rowid = :rowId")
@@ -227,17 +168,14 @@ interface ExerciseDao {
         }
     }
 
-    @Query("""SELECT Exercise.exerciseName FROM Exercise, UserExerciseRelation
-                WHERE UserExerciseRelation.userId = :userId
-                AND UserExerciseRelation.exerciseId == Exercise.exerciseId""")
-    suspend fun getUerExercisesByUID(userId: Int): List<String>
-
+    // Insert an exercise to a user's UserExerciseRelation
     @Transaction
     suspend fun insertUserExerciseRelation(userId: Int, exerciseName: String) {
         val exerciseId = getIdFromName(exerciseName)
         insertRelation(UserExerciseRelation(userId, exerciseId))
     }
 
+    // Query to count if exerciseId has been saved by userId
     @Query("SELECT COUNT(*) FROM UserExerciseRelation uer WHERE uer.userId = :userId AND uer.exerciseId = :exerciseId")
     suspend fun countUerByUIDandEID(userId: Int, exerciseId: Int): Int
 
@@ -270,8 +208,6 @@ interface ExerciseDao {
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
 
-
-    // TODO: change name
     // Query to count the user's total number of saved exercises, given their userId
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer
@@ -310,8 +246,8 @@ interface HistoryDao {
     @Query("SELECT COUNT(*) FROM History WHERE userId == :userId AND category == :category")
     suspend fun getExerciseCountByCategory(userId: Int, category: String): Int
 
-//    data class StringIntPair(val userId: Int, val category: String, val exercises: String, val count: Int)
-data class StringIntPair(val exercises: String, val count: Int)
+    // String, Int object to pass into List for next query
+    data class StringIntPair(val exercises: String, val count: Int)
 
     // Query to get all the top exercises of a specified category from a user's history in descending order
     @Query("""
@@ -325,6 +261,7 @@ data class StringIntPair(val exercises: String, val count: Int)
     """)
     suspend fun getTopExercisesByCategory(userId: Int, category: String): List<StringIntPair>
 
+    // Query to count all saved exercises from userId
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer
         WHERE uer.userId == :userId
@@ -377,7 +314,6 @@ interface DeleteDao {
 // Database class with all entities and DAOs
 @Database(entities = [User::class, Exercise::class, UserExerciseRelation::class, RankedPrefs::class, History::class], version = 7)
 // Database class with all entities and DAOs
-@TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
     // Provide DAOs to access the database
     abstract fun userDao(): UserDao

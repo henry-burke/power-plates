@@ -3,12 +3,10 @@ package com.cs407.powerplates
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,29 +20,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Collections
 
-
 class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For testing only
 ): Fragment() {
-    // TODO: Rename and change types of parameters
+
+    // declare variables
     private lateinit var userViewModel: UserViewModel
-
     private lateinit var userPasswdKV: SharedPreferences
-
     private var userId: Int = 0
-
     private lateinit var greetingTextView: TextView
-    private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
-    private lateinit var beginner: Button
-    private lateinit var intermediate: Button
     private lateinit var userLevelKV: SharedPreferences
-
-    private lateinit var items: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
     private lateinit var myAdapter: Adapter
     private lateinit var userLev: String
     private lateinit var exerciseDB: ExerciseDatabase
-
     private lateinit var itemsArrayList: ArrayList<WorkoutData>
     private lateinit var userPrefs: RankedPrefs
 
@@ -83,27 +72,21 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.rank_prefs_greeting)
 
-     
         showPrefs(view)
 
-        // TODO: fix merges URGENT
         fab.setOnClickListener {
             buttonClicked(userLev)
-            Log.d("inside rank pref", userLev)
             val usersId = userState.id
 
             exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-            // Push correctly
             CoroutineScope(Dispatchers.Main).launch {
                 if(exerciseDB.exerciseDao().getUsersSavedExerciseCount(usersId) == 15){
                     // navigate directly to the home page
-                    Log.v("test", "going to home page ALERT")
                     savePrefs()
                     findNavController().navigate(R.id.action_rankPrefsFragment_to_homePage)
                 } else {
                     // navigate to the exercise choice page
-                    Log.v("test", "going to choose workout ALERT")
                     savePrefs()
                     findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
                 }
@@ -113,7 +96,6 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     }
 
     private fun savePrefs() {
-        Log.v("test", "savePrefs ALERT")
         // get current order of user's ranked preferences
         exerciseDB = ExerciseDatabase.getDatabase(requireContext())
         val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
@@ -183,7 +165,6 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
                 )
             }
 
-
             myAdapter = Adapter(itemsArrayList)
             recyclerView.setHasFixedSize(true)
             recyclerView.adapter = myAdapter
@@ -216,16 +197,11 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     }
 
     private fun buttonClicked(level: String){
-        // TODO make a new shared preference
         val userState = userViewModel.userState.value
         val name1 = userState.name + "_level"
-        Log.d("test", name1)
         val editor = userLevelKV.edit()
         //hash password
         editor?.putString(name1, level)
         editor?.apply()
-        Log.d("sharedPref Level", userLevelKV.getString(name1, "").toString())
-
-        // TODO going to the next page
     }
 }
