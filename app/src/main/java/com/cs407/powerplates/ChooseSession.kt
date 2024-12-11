@@ -10,7 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,11 +22,11 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userPasswdKV: SharedPreferences
     private var userId: Int = 0
-    private lateinit var push: Button
-    private lateinit var pull: Button
-    private lateinit var leg: Button
-    private lateinit var cardio: Button
-    private lateinit var abs: Button
+    private lateinit var push: CardView
+    private lateinit var pull: CardView
+    private lateinit var leg: CardView
+    private lateinit var cardio: CardView
+    private lateinit var abs: CardView
     private lateinit var userLevelKV: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
