@@ -479,23 +479,27 @@ class PushWorkout(
         val lastDate = getLastChangeDate()
 
         val isChecked = getCheckboxState(workout)
-        if (lastDate != currentDate){
+        if (lastDate.toString() != currentDate){
             check.isChecked = false
+
             saveCheckboxState(false, currentDate, workout)
+
         }
         else{
             check.isChecked = isChecked
+
+            check.setOnCheckedChangeListener { _, _ ->
+                // Save checkbox state asynchronously in SharedPreferences
+                // Update card color immediately (on the main thread)
+                CoroutineScope(Dispatchers.IO).launch {
+                    saveCheckboxState(check.isChecked, currentDate, workout)
+                }
+                updateCardColor()
+            }
         }
         //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
-        check.setOnCheckedChangeListener { _, _ ->
-            // Save checkbox state asynchronously in SharedPreferences
-            CoroutineScope(Dispatchers.IO).launch {
-                saveCheckboxState(check.isChecked, currentDate, workout)
-            }
-            // Update card color immediately (on the main thread)
-            updateCardColor()
-        }
-       // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
+
+        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
 
 
     }

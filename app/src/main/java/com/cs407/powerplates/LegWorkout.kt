@@ -465,7 +465,7 @@ class LegWorkout(
         val lastDate = getLastChangeDate()
 
         val isChecked = getCheckboxState(workout)
-        if (lastDate != currentDate){
+        if (lastDate.toString() != currentDate){
             check.isChecked = false
             saveCheckboxState(false, currentDate, workout)
         }
