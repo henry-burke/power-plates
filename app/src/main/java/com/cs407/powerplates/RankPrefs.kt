@@ -46,6 +46,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
     private lateinit var exerciseDB: ExerciseDatabase
 
     private lateinit var itemsArrayList: ArrayList<WorkoutData>
+    private lateinit var userPrefs: RankedPrefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,55 +91,106 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
             buttonClicked(userLev)
             Log.d("inside rank pref", userLev)
             val usersId = userState.id
+
             exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+
             // Push correctly
             CoroutineScope(Dispatchers.Main).launch {
-                if(exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15){
+                if(exerciseDB.exerciseDao().getUsersSavedExerciseCount(usersId) == 15){
                     // navigate directly to the home page
+                    Log.v("test", "going to home page ALERT")
+                    savePrefs()
                     findNavController().navigate(R.id.action_rankPrefsFragment_to_homePage)
                 } else {
-                    // navigate to the excersie choice page
+                    // navigate to the exercise choice page
+                    Log.v("test", "going to choose workout ALERT")
+                    savePrefs()
                     findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
                 }
             }
-            // get current order of user's ranked preferences
-            exerciseDB = ExerciseDatabase.getDatabase(requireContext())
-            val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
-                itemsArrayList[2].title, itemsArrayList[3].title, itemsArrayList[4].title)
-
-            // insert user's ranked preferences into database
-            CoroutineScope(Dispatchers.IO).launch {
-                if(exerciseDB.rankedDao().getUserPreferences(userId) == null) {
-                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
-                } else {
-                    exerciseDB.deleteDao().removeUserPreferences(userId)
-                    exerciseDB.rankedDao().insertPrefs(prefsToInsert)
-                }
-            }
-            findNavController().navigate(R.id.action_rankPrefsFragment_to_chooseWorkout)
 
         }
     }
 
-    private fun showPrefs(view: View){
+    private fun savePrefs() {
+        Log.v("test", "savePrefs ALERT")
+        // get current order of user's ranked preferences
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
+        val prefsToInsert = RankedPrefs(userId, itemsArrayList[0].title, itemsArrayList[1].title,
+            itemsArrayList[2].title, itemsArrayList[3].title, itemsArrayList[4].title)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
+        // insert user's ranked preferences into database
+        CoroutineScope(Dispatchers.IO).launch {
+            if(exerciseDB.rankedDao().getUserPreferences(userId) == null) {
+                exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+            } else {
+                exerciseDB.deleteDao().removeUserPreferences(userId)
+                exerciseDB.rankedDao().insertPrefs(prefsToInsert)
+            }
+        }
+    }
 
-        itemsArrayList = arrayListOf()
+    private fun showPrefs(view: View) {
+        exerciseDB = ExerciseDatabase.getDatabase(requireContext())
 
-        itemsArrayList = arrayListOf(
-            WorkoutData("Strength", R.drawable.baseline_fitness_center_24),        // Strength icon
-            WorkoutData("Stamina", R.drawable.stamina_icon),        // Stamina icon
-            WorkoutData("Muscle Mass", R.drawable.mass_icon),   // Muscle Mass icon
-            WorkoutData("Mobility", R.drawable.mobility_icon),      // Mobility icon
-            WorkoutData("Body Fat", R.drawable.body_fat_icon)     // Body Fat icon
-        )
+        CoroutineScope(Dispatchers.IO).launch {
+            userPrefs = exerciseDB.rankedDao().getUserPreferences(userId)
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            recyclerView = view.findViewById(R.id.recyclerView)
 
-        myAdapter = Adapter(itemsArrayList)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = myAdapter
+            itemsArrayList = arrayListOf()
 
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0){
+            if (userPrefs.r1.isEmpty()) {
+                itemsArrayList = arrayListOf(
+                    WorkoutData(
+                        "Strength",
+                        R.drawable.baseline_fitness_center_24
+                    ),        // Strength icon
+                    WorkoutData("Stamina", R.drawable.stamina_icon),        // Stamina icon
+                    WorkoutData("Muscle Mass", R.drawable.mass_icon),   // Muscle Mass icon
+                    WorkoutData("Mobility", R.drawable.mobility_icon),      // Mobility icon
+                    WorkoutData("Body Fat", R.drawable.body_fat_icon)     // Body Fat icon
+                )
+            } else {
+                val iconMap = mapOf(
+                    "Strength" to R.drawable.baseline_fitness_center_24,
+                    "Stamina" to R.drawable.stamina_icon, "Muscle Mass" to R.drawable.mass_icon,
+                    "Mobility" to R.drawable.mobility_icon, "Body Fat" to R.drawable.body_fat_icon
+                )
+
+                itemsArrayList = arrayListOf(
+                    WorkoutData(
+                        userPrefs.r1,
+                        iconMap[userPrefs.r1] ?: R.drawable.baseline_fitness_center_24
+                    ),
+                    WorkoutData(
+                        userPrefs.r2,
+                        iconMap[userPrefs.r2] ?: R.drawable.baseline_fitness_center_24
+                    ),
+                    WorkoutData(
+                        userPrefs.r3,
+                        iconMap[userPrefs.r3] ?: R.drawable.baseline_fitness_center_24
+                    ),
+                    WorkoutData(
+                        userPrefs.r4,
+                        iconMap[userPrefs.r4] ?: R.drawable.baseline_fitness_center_24
+                    ),
+                    WorkoutData(
+                        userPrefs.r5,
+                        iconMap[userPrefs.r5] ?: R.drawable.baseline_fitness_center_24
+                    ),
+                )
+            }
+
+
+            myAdapter = Adapter(itemsArrayList)
+            recyclerView.setHasFixedSize(true)
+            recyclerView.adapter = myAdapter
+
+
+        val itemTouchHelper = ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 source: RecyclerView.ViewHolder,
@@ -147,8 +199,8 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
                 val sourcePosition = source.adapterPosition
                 val targetPosition = target.adapterPosition
 
-                Collections.swap(itemsArrayList,sourcePosition,targetPosition)
-                myAdapter.notifyItemMoved(sourcePosition,targetPosition)
+                Collections.swap(itemsArrayList, sourcePosition, targetPosition)
+                myAdapter.notifyItemMoved(sourcePosition, targetPosition)
 
                 return true
             }
@@ -159,6 +211,7 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
     }
 
     private fun buttonClicked(level: String){

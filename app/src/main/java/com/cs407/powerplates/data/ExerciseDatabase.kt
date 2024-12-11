@@ -267,6 +267,8 @@ interface ExerciseDao {
     )
     suspend fun userExerciseCount(userId: Int, category: String): Int
 
+
+    // TODO: change name
     // Query to count the user's total number of saved exercises, given their userId
     @Query("""
         SELECT COUNT(*) FROM UserExerciseRelation uer

@@ -95,7 +95,7 @@ class ChoiceLevel (
         // setting up the button
         var userExcCount = -1;
         CoroutineScope(Dispatchers.Main).launch {
-            userExcCount = exerciseDB.exerciseDao().getAllUserExercisesCount(useId1)
+            userExcCount = exerciseDB.exerciseDao().getUsersSavedExerciseCount(useId1)
         }
 
         beginner.setOnClickListener{

@@ -123,10 +123,10 @@ class LoginFragment(
                     val name1 = user + "_level"
 
 
-                    if(userPasswdKV.contains(name1) && exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15){
+                    if(userPasswdKV.contains(name1) && exerciseDB.historyDao().getAllUserExercisesCount(usersId) == 15){
                         // navigate directly to the home page
                         findNavController().navigate(R.id.action_loginFragment_to_homePage)
-                    }else if (userPasswdKV.contains(name1) && !(exerciseDB.exerciseDao().getAllUserExercisesCount(usersId) == 15)){
+                    }else if (userPasswdKV.contains(name1) && !(exerciseDB.historyDao().getAllUserExercisesCount(usersId) == 15)){
                         // navigate to the excersie choice page
                         findNavController().navigate(R.id.action_loginFragment_to_chooseWorkout)
                     } else {
