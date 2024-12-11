@@ -2,10 +2,8 @@ package com.cs407.powerplates
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,10 +71,9 @@ class AbWorkout(
     private lateinit var linearLayout2: LinearLayout
     private lateinit var linearLayout3: LinearLayout
 
-    //make sure checkbox persists for the day
+    // checkbox persists for the day
     private lateinit var checkboxPrefs: SharedPreferences
     private val pref_name = "prefs"
-    //private val check_box1_state_key = "checkbox1"
     private val last_date_changed_key = "last_changed_date"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,18 +132,6 @@ class AbWorkout(
         linearLayout2.setBackgroundResource(R.drawable.start_border)
         linearLayout3.setBackgroundResource(R.drawable.start_border)
 
-        // Set up submit button to check if all checkboxes are checked
-        /*
-        submitButton.setOnClickListener {
-            if (areAllCheckboxesChecked()) {
-                Toast.makeText(context, "All options selected!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Please select all options", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-         */
-
         return view
     }
 
@@ -184,7 +169,6 @@ class AbWorkout(
                         val userLevel = userPasswdKV.getString(name1, "").toString()
 
                         val reps = calculateReps(massIndex, strengthIndex, staminaIndex, userLevel, "abs")
-                        //Log.d("Crash", userLevel)
 
                         //get exercise object progType: reps, weights, or time
                         val firstWorkoutProgType = exerciseDB.exerciseDao().getProgTypeFromName("${savedWorkouts[0]}")
@@ -208,8 +192,6 @@ class AbWorkout(
                             workoutCheckBox(checkBox1, userState.name +"checkBox1_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox2, userState.name +"checkBox2_"+"${savedWorkouts[0]}")
                             workoutCheckBox(checkBox3, userState.name +"checkBox3_"+"${savedWorkouts[0]}")
-
-
 
                             //check progression type for second workout
                             if (secondWorkoutProgType == "Reps"){
@@ -248,17 +230,14 @@ class AbWorkout(
             }
         }
 
-
         //card changes color if all text boxes are checked for that card
         checkBox1.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         checkBox2.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         checkBox3.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
 
-
         checkBox4.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
         checkBox5.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
         checkBox6.setOnCheckedChangeListener { _, _ -> card2AllCheckBoxes() }
-
 
         checkBox7.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
         checkBox8.setOnCheckedChangeListener { _, _ -> card3AllCheckBoxes() }
@@ -288,8 +267,6 @@ class AbWorkout(
             findNavController().navigate(action)
         }
     }
-
-
 
     private fun card1AllCheckBoxes(){
         if (checkBox1.isChecked && checkBox2.isChecked && checkBox3.isChecked){
@@ -484,7 +461,6 @@ class AbWorkout(
         else{
             check.isChecked = isChecked
         }
-        //check.setOnCheckedChangeListener { _, _ -> card1AllCheckBoxes() }
         check.setOnCheckedChangeListener { _, _ ->
             // Save checkbox state asynchronously in SharedPreferences
             CoroutineScope(Dispatchers.IO).launch {
@@ -493,9 +469,6 @@ class AbWorkout(
             // Update card color immediately (on the main thread)
             updateCardColor()
         }
-        // check.setOnCheckedChangeListener { _, _->  saveCheckboxState(check.isChecked, currentDate, workout) }
-
-
     }
 
     private fun updateCardColor() {
@@ -540,5 +513,4 @@ class AbWorkout(
             }
         }
     }
-
 }

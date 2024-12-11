@@ -2,10 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Order of items below correspond to order in menu -->
 
     <item
         android:id="@+id/stopwatch"
         android:title="@string/stopwatch"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/history"
+        android:title="@string/history"
         app:showAsAction="never" />
 
     <item
@@ -18,19 +24,9 @@
         android:title="Change Level"
         app:showAsAction="never" />
 
-
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout"
         android:icon="@android:drawable/ic_lock_idle_charging"
         app:showAsAction="never" />
-
-
-
-
-    <item
-        android:id="@+id/history"
-        android:title="@string/history"
-        app:showAsAction="never" />
-
 </menu>
