@@ -65,7 +65,7 @@ class WorkoutAdapter(
         }
 
         holder.itemView.setOnLongClickListener {
-            onLongClick(wType.exerciseName.toString())
+            onLongClick(wType.exerciseName)
             true // Return true to indicate the event was handled
         }
 

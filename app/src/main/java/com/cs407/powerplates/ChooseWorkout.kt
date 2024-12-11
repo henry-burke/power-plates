@@ -26,8 +26,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuProvider
 import androidx.core.view.get
+import com.cs407.powerplates.data.Exercise
 import com.cs407.powerplates.data.ExerciseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -244,8 +246,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 handleWorkoutSelection(workout[0], currCategory, view)
             },
             onLongClick = { workoutDetail ->
-                val action = ChooseWorkoutDirections.actionChooseWorkoutToWorkoutContentFragment(workoutDetail)
-                findNavController().navigate(action)
+                descriptionDialog(workoutDetail)
             },
             exerciseArrayList,
             currentSavedWorkouts,
@@ -298,7 +299,35 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
                 showWorkouts(view)
             } else {
                 // All categories processed, navigate or confirm
-                findNavController().navigate(R.id.action_chooseWorkout_to_rankPrefs)
+                findNavController().navigate(R.id.action_chooseWorkout_to_rankPrefsFragment)
+            }
+        }
+    }
+
+    private fun descriptionDialog(workout: String){
+        Log.v("test", "ALERT: $workout")
+        var ex: Exercise
+        var message: String? = "error404"
+        CoroutineScope(Dispatchers.IO).launch {
+            ex = exerciseDB.exerciseDao().getExerciseByName(workout)
+            CoroutineScope(Dispatchers.Main).launch {
+            message = "Primary Muscle: ${ex.primaryMuscle}\n" +
+                    "Secondary Muscle: ${ex.secondaryMuscle}\n" +
+                    "Compound: ${ex.compound}\n" +
+                    "Type: ${ex.type}\n" +
+                    "Level: ${ex.level}\n" +
+                    "Progression Type: ${ex.progressionType}\n" +
+                    "Category: ${ex.category}\n" +
+                    "Description: ${ex.description}\n"
+
+                AlertDialog.Builder(requireContext())
+                    .setTitle(workout)
+                    .setMessage(message)
+                    .setPositiveButton("Okay"){ dialog, _->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
             }
         }
     }
