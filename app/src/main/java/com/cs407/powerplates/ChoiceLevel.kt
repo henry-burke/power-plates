@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -86,6 +87,11 @@ class ChoiceLevel (
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (activity is AppCompatActivity) {
+            val actionBar = (activity as AppCompatActivity).supportActionBar
+            actionBar?.setDisplayHomeAsUpEnabled(false) // Hide the back button
+        }
 
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.greeting_text, userState.name)

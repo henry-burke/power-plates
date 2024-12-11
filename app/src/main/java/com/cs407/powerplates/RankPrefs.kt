@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -79,6 +80,11 @@ class RankPrefs(private val injectedUserViewModel: UserViewModel? = null // For 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (activity is AppCompatActivity) {
+            val actionBar = (activity as AppCompatActivity).supportActionBar
+            actionBar?.setDisplayHomeAsUpEnabled(false) // Hide the back button
+        }
 
         val userState = userViewModel.userState.value
         greetingTextView.text = getString(R.string.rank_prefs_greeting)

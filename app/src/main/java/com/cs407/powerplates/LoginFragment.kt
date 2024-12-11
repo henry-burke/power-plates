@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -75,6 +76,11 @@ class LoginFragment(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        if (activity is AppCompatActivity) {
+            val actionBar = (activity as AppCompatActivity).supportActionBar
+            actionBar?.setDisplayHomeAsUpEnabled(false) // Hide the back button
+        }
 
         usernameEditText.doAfterTextChanged {
             errorTextView.visibility = View.GONE

@@ -13,7 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -80,7 +84,13 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.back_arrow)
 
+
+        }
+        setupBackNavigation()
         val userState = userViewModel.userState.value
 
         val menuHost = requireActivity()
@@ -91,6 +101,10 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().popBackStack()
+                        true
+                    }
                     R.id.action_logout -> {
                         userViewModel.setUser(UserState())
                         findNavController().navigate(R.id.action_chooseSession_to_loginFragment)
@@ -140,6 +154,15 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
 
 
 
+    }
+
+    private fun setupBackNavigation() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
 
