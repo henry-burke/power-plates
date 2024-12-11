@@ -4,19 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="@color/backgroundColor">
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="97dp"
-        android:text="@string/start"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:backgroundTint="@color/buttonColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:cardCornerRadius="16dp"
+        app:cardElevation="16dp">
+
+        <TextView
+            android:id="@+id/beginnerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:textSize="36sp"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="32dp"
+            android:gravity="center"
+            android:background="@color/buttonColor"
+            android:textColor="@color/buttonTextColor"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -26,43 +43,56 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startButton">
+        app:layout_constraintTop_toBottomOf="@+id/startButton"
+        android:layout_marginTop="60dp"
+        android:padding="24dp"
+        android:background="@color/inputBackground">
 
         <TextView
             android:id="@+id/workout_stats_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/your_workout_statistics"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"/>
 
         <TableRow
             android:id="@+id/table_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#51B435"
-            android:padding="10dp">
+            android:background="@color/buttonColor"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/category_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/num_workouts_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/top_exercise_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
 
         <!--PUSH-->
@@ -70,28 +100,35 @@
             android:id="@+id/push_stat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/push_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/push_num_workouts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/push_top_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
 
         <!--PULL-->
@@ -99,28 +136,35 @@
             android:id="@+id/pull_stat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/pull_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/pull_num_workouts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/pull_top_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
 
         <!--LEGS-->
@@ -128,28 +172,35 @@
             android:id="@+id/legs_stat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/legs_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/legs_num_workouts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/legs_top_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
 
         <!--CARDIO-->
@@ -157,28 +208,35 @@
             android:id="@+id/cardio_stat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/cardio_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/cardio_num_workouts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/cardio_top_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
 
         <!--ABS-->
@@ -186,28 +244,35 @@
             android:id="@+id/abs_stat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="18dp">
 
             <TextView
                 android:id="@+id/abs_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/category" />
+                android:text="@string/category"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/abs_num_workouts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/workouts_done" />
+                android:text="@string/workouts_done"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
 
             <TextView
                 android:id="@+id/abs_top_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/top_exercise" />
+                android:text="@string/top_exercise"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"/>
         </TableRow>
     </TableLayout>
 

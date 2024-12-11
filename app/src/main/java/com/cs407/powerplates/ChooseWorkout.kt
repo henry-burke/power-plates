@@ -44,7 +44,7 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
 
     private lateinit var workRecyclerView: RecyclerView
     private lateinit var worAdap: WorkoutAdapter
-    private lateinit var prev: Button
+    private lateinit var prev: FloatingActionButton
     private lateinit var done: FloatingActionButton
 
     // showWorkouts() variables

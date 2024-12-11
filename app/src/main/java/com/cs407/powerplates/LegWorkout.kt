@@ -357,7 +357,7 @@ class LegWorkout(
         val levels = mapOf(
             "beginner" to mapOf("push" to 10, "pull" to 12, "legs" to 13),
             "intermediate" to mapOf("push" to 10, "pull" to 8, "legs" to 11),
-            "advanced'" to mapOf("push" to 6, "pull" to 6, "legs" to 9)
+            "advanced" to mapOf("push" to 6, "pull" to 6, "legs" to 9)
         )
 
         // Overall score
