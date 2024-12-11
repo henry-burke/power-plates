@@ -69,13 +69,16 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupMenu()
+        setupBackNavigation()
+
         if (activity is AppCompatActivity) {
             (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.back_arrow)
 
 
         }
-        setupBackNavigation()
         val userState = userViewModel.userState.value
 
         val menuHost = requireActivity()
@@ -132,7 +135,28 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
             findNavController().navigate(R.id.action_chooseSession_to_abWorkout)
         }
     }
-}
+
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().popBackStack()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+    }
 
     private fun setupBackNavigation() {
         val callback = object : OnBackPressedCallback(true) {
@@ -142,7 +166,4 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
-
-
-
 }
