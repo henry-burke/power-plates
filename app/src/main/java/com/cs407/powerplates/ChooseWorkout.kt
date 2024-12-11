@@ -130,6 +130,11 @@ class ChooseWorkout( private val injectedUserViewModel: UserViewModel? = null //
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (activity is AppCompatActivity) {
+            val actionBar = (activity as AppCompatActivity).supportActionBar
+            actionBar?.setDisplayHomeAsUpEnabled(false) // Hide the back button
+        }
+
         prev.setOnClickListener{
             moveToPrevCategory(view)
         }

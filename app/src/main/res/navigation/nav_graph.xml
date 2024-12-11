@@ -273,36 +273,26 @@
             android:id="@+id/action_chooseSession_to_pushWorkout"
 
             app:destination="@+id/PushWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseSession_to_pullWorkout"
 
             app:destination="@+id/PullWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseSession_to_legWorkout"
 
             app:destination="@+id/LegWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseSession_to_cardioWorkout"
 
             app:destination="@+id/CardioWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseSession_to_abWorkout"
 
             app:destination="@+id/AbWorkout"
-            app:popUpTo="@id/ChooseSession"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_chooseSession_to_loginFragment"
