@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -34,11 +35,11 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
     private lateinit var greetingTextView: TextView
     private lateinit var noteRecyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
-    private lateinit var push: Button
-    private lateinit var pull: Button
-    private lateinit var leg: Button
-    private lateinit var cardio: Button
-    private lateinit var abs: Button
+    private lateinit var push: CardView
+    private lateinit var pull: CardView
+    private lateinit var leg: CardView
+    private lateinit var cardio: CardView
+    private lateinit var abs: CardView
     private lateinit var userLevelKV: SharedPreferences
 
     private lateinit var items: ArrayList<String>
