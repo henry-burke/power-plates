@@ -14,7 +14,7 @@
         android:id="@+id/greetingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose Your Workout Group"
+        android:text="Choose Your Workout Session"
         android:textColor="@color/primaryTextColor"
         android:textSize="36sp"
         android:textStyle="bold"
