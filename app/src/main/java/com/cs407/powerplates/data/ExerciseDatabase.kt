@@ -154,6 +154,9 @@ interface UserDao {
 // DAO for interacting with the Exercise Entity
 @Dao
 interface ExerciseDao {
+    @Query("SELECT * FROM Exercise WHERE exerciseName == :exerciseName")
+    suspend fun getExerciseByName(exerciseName: String): Exercise
+
     // Query: get all exercise data from all exercises
     @Query("SELECT * FROM Exercise")
     suspend fun getAllExerciseData(): List<Exercise>

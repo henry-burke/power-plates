@@ -170,6 +170,10 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
                         findNavController().navigate(R.id.action_homePage_to_StopwatchFragment)
                         true
                     }
+                    R.id.history -> {
+                        findNavController().navigate(R.id.action_homePage_to_historyFragment)
+                        true
+                    }
                     R.id.choosePreff -> {
                         findNavController().navigate(R.id.action_homePage_to_rankPrefsFragment)
                         true

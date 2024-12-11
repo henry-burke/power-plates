@@ -100,6 +100,10 @@ class ChooseSession(private val injectedUserViewModel: UserViewModel? = null // 
                         findNavController().navigate(R.id.action_chooseSession_to_StopwatchFragment)
                         true
                     }
+                    R.id.history -> {
+                        findNavController().navigate(R.id.action_chooseSession_to_historyFragment)
+                        true
+                    }
                     R.id.choosePreff -> {
                         findNavController().navigate(R.id.action_chooseSession_to_rankPrefsFragment)
                         true
