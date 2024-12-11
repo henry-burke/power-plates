@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class WorkoutAdapter(
     private val onClick: (List<String>) -> Unit,
+    private val onLongClick: (String) -> Unit,
     private val workList: List<WorkoutType>,
     private var savedWorkouts: ArrayList<String>,
     private val savedWorkoutsCategories: ArrayList<String>
@@ -62,6 +63,12 @@ class WorkoutAdapter(
             onClick(listOf(wType.exerciseName, wType.difficulty, wType.muscleGrp))
             notifyItemChanged(position)
         }
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick(wType.exerciseName.toString())
+            true // Return true to indicate the event was handled
+        }
+
     }
 
     override fun getItemCount(): Int {
