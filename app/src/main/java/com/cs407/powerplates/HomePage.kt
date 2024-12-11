@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +32,7 @@ class HomePage(private val injectedUserViewModel: UserViewModel? = null // For t
     private lateinit var userViewModel: UserViewModel
     private lateinit var userPasswdKV: SharedPreferences
     private var userId: Int = 0
-    private lateinit var start: Button
+    private lateinit var start: CardView
     private lateinit var userLevelKV: SharedPreferences
     private lateinit var exerciseDB: ExerciseDatabase
     private lateinit var historyDao: HistoryDao
